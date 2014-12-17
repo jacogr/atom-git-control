@@ -8,24 +8,30 @@ class GitControlView extends View
     @div class: 'git-control', =>
 
       @div class: 'menu', outlet: 'menu', =>
-        @div class: 'item', =>
+        @div class: 'item inactive', =>
           @div class: 'icon compare'
           @div 'Compare'
         @div class: 'item', =>
           @div class: 'icon commit'
           @div 'Commit'
-        @div class: 'item', =>
+        @div class: 'item inactive', =>
+          @div class: 'icon clone'
+          @div 'Clone'
+        @div class: 'item inactive', =>
           @div class: 'icon pull'
           @div 'Pull'
         @div class: 'item', =>
           @div class: 'icon push'
           @div 'Push'
-        @div class: 'item', =>
+        @div class: 'item inactive', =>
           @div class: 'icon merge'
           @div 'Merge'
-        @div class: 'item', =>
+        @div class: 'item inactive', =>
           @div class: 'icon branch'
           @div 'Branch'
+        @div class: 'item inactive', =>
+          @div class: 'icon tag'
+          @div 'Tag'
 
       @div class: 'content', =>
         @div class: 'sidebar', =>

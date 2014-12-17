@@ -21,7 +21,11 @@
 
       &:hover {
         color: @text-color-highlight;
-        background: @button-background-color;
+      }
+
+      &.inactive, &.inactive:hover {
+        color: @text-color-subtle;
+        cursor: default;
       }
 
       div {
