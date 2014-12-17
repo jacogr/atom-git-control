@@ -83,6 +83,20 @@
       overflow-y: scroll;
       background: @app-background-color;
       padding: 10px;
+
+      pre {
+        padding: 0;
+        font-size: 11px;
+        background: @app-background-color;
+
+        &.red {
+          color: @text-color-error;
+        }
+
+        &.green {
+          color: @text-color-success;
+        }
+      }
     }
   }
 }

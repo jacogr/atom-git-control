@@ -1,13 +1,17 @@
 GitControlView = require './git-control-view'
 {CompositeDisposable} = require 'atom'
 
+CMD_TOGGLE = 'git-control:toggle'
+EVT_SWITCH = 'pane-container:active-pane-item-changed'
+
 views = []
 
 module.exports = GitControl =
   activate: (state) ->
     console.log 'GitControl: activate'
 
-    atom.workspaceView.command "git-control:toggle", => @newView()
+    atom.workspaceView.command CMD_TOGGLE, => @newView()
+    atom.workspaceView.on EVT_SWITCH, => @showStatus()
     return
 
   deactivate: ->
@@ -24,5 +28,9 @@ module.exports = GitControl =
     item = pane.addItem view, 0
     pane.activateItem item
     return
+
+  showStatus: ->
+    for view in views when view.active
+      view.showStatus()
 
   serialize: ->
