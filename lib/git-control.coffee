@@ -1,33 +1,28 @@
 GitControlView = require './git-control-view'
 {CompositeDisposable} = require 'atom'
 
+views = []
+
 module.exports = GitControl =
-  gitControlView: null
-  modalPanel: null
-  subscriptions: null
-
   activate: (state) ->
-    @gitControlView = new GitControlView(state.gitControlViewState)
-    @modalPanel = atom.workspace.addModalPanel(item: @gitControlView.getElement(), visible: false)
+    console.log 'GitControl: activate'
 
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
-    @subscriptions = new CompositeDisposable
-
-    # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'git-control:toggle': => @toggle()
+    atom.workspaceView.command "git-control:toggle", => @newView()
+    return
 
   deactivate: ->
-    @modalPanel.destroy()
-    @subscriptions.dispose()
-    @gitControlView.destroy()
+    console.log 'GitControl: deactivate'
+    return
+
+  newView: ->
+    console.log 'GitControl: toggle'
+
+    view = new GitControlView()
+    views.push view
+
+    pane = atom.workspace.getActivePane()
+    item = pane.addItem view, 0
+    pane.activateItem item
+    return
 
   serialize: ->
-    gitControlViewState: @gitControlView.serialize()
-
-  toggle: ->
-    console.log 'GitControl was toggled!'
-
-    if @modalPanel.isVisible()
-      @modalPanel.hide()
-    else
-      @modalPanel.show()

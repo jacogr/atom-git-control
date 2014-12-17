@@ -4,7 +4,7 @@
 
 Provides a GUI interface to manage all commonly-used git commands.
 
-### Where
+## Where
 
 The Atom package can be found on the Atom registry, [https://atom.io/packages/git-control](https://atom.io/packages/git-control).
 
