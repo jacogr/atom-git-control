@@ -1,0 +1,49 @@
+@import "ui-variables";
+
+.git-control {
+  // https://octicons.github.com/
+  .icon {
+    width: 100%;
+
+    &:before {
+      //margin-right: 5px;
+      position: relative;
+      top: 0px;
+      font-family: 'Octicons Regular';
+      font-weight: normal;
+      font-style: normal;
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+      font-size: 1.5*@component-icon-size;
+      line-height: 1.5*@component-icon-size;//1.5*@component-line-height;
+      height: 1.5*@component-icon-size;
+      width: 100%;//@component-icon-size;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    &.branch:before {
+      content: '\f020'
+    }
+
+    &.commit:before {
+      content: '\f01f'
+    }
+
+    &.compare:before {
+      content: '\f0ac'
+    }
+
+    &.merge:before {
+      content: '\f023'
+    }
+
+    &.pull:before {
+      content: '\f00b'
+    }
+
+    &.push:before {
+      content: '\f00c'
+    }
+  }
+}

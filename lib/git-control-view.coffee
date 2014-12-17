@@ -6,9 +6,27 @@ module.exports =
 class GitControlView extends View
   @content: ->
     @div class: 'git-control', =>
+
       @div class: 'menu', outlet: 'menu', =>
-        @div class: 'item', 'An item'
-        @div class: 'item', 'Another item'
+        @div class: 'item', =>
+          @div class: 'icon compare'
+          @div 'Compare'
+        @div class: 'item', =>
+          @div class: 'icon commit'
+          @div 'Commit'
+        @div class: 'item', =>
+          @div class: 'icon pull'
+          @div 'Pull'
+        @div class: 'item', =>
+          @div class: 'icon push'
+          @div 'Push'
+        @div class: 'item', =>
+          @div class: 'icon merge'
+          @div 'Merge'
+        @div class: 'item', =>
+          @div class: 'icon branch'
+          @div 'Branch'
+
       @div class: 'content', =>
         @div class: 'sidebar', =>
           @div class: 'heading', 'Local'

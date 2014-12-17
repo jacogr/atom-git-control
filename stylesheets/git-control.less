@@ -3,6 +3,7 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+@import "icons";
 
 .git-control {
   color: @text-color;
@@ -13,8 +14,21 @@
 
     .item {
       display: inline-block;
-      margin: 10px;
+      margin: 5px;
+      padding: 5px;
       cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        color: @text-color-highlight;
+        background: @button-background-color;
+      }
+
+      div {
+        text-align: center;
+        width: 100%;
+        min-width: 60px;
+      }
     }
   }
 
