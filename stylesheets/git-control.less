@@ -9,7 +9,7 @@
 
   .menu {
     border-bottom: 1px solid @base-border-color;
-    background: @inset-panel-background-color;
+    background: @app-background-color;
 
     .item {
       display: inline-block;
@@ -47,12 +47,12 @@
           cursor: pointer;
 
           &.active {
-            background: @button-background-color-selected;
+            background: @button-background-color;
             color: @text-color-highlight;
           }
 
           &:hover {
-            background: @button-background-color;
+            color: @text-color-highlight;
           }
         }
       }
