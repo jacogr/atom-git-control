@@ -1,0 +1,16 @@
+{
+  "name": "git-control",
+  "main": "./lib/git-control",
+  "version": "0.0.0",
+  "description": "GUI interface for git in Atom",
+  "activationCommands": {
+    "atom-workspace": "git-control:toggle"
+  },
+  "repository": "https://github.com/jacogr/atom-git-control",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+  }
+}
