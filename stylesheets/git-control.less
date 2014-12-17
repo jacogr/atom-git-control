@@ -4,16 +4,12 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
-@menu-bg: @inset-panel-background-color;
-@sidebar-bg: #303030;
-@domain-bg: @app-background-color;
-
 .git-control {
   color: @text-color;
 
   .menu {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-    background: @menu-bg;
+    border-bottom: 1px solid @base-border-color;
+    background: @inset-panel-background-color;
 
     .item {
       display: inline-block;
@@ -30,8 +26,8 @@
       width: 25%;
       height: 100%;
       float: left;
-      border-right: 1px solid rgba(0, 0, 0, 0.5);
-      background: @sidebar-bg;
+      border-right: 1px solid @base-border-color;
+      background: @app-background-color;
       padding: 10px;
       overflow-y: scroll;
 
@@ -51,12 +47,12 @@
           cursor: pointer;
 
           &.active {
-            background: #484848;
-            color: #fff;
+            background: @button-background-color-selected;
+            color: @text-color-highlight;
           }
 
           &:hover {
-            background: #404040;
+            background: @button-background-color;
           }
         }
       }
@@ -67,7 +63,7 @@
       height: 100%;
       float: left;
       overflow-y: scroll;
-      background: @domain-bg;
+      background: @app-background-color;
       padding: 10px;
     }
   }
