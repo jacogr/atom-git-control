@@ -35,10 +35,17 @@ class GitControlView extends View
 
       @div class: 'content', =>
         @div class: 'sidebar', =>
-          @div class: 'heading', 'Local'
+
+          @div class: 'heading', =>
+            @i class: 'icon branch'
+            @span 'Local'
           @div class: 'branches', outlet: 'viewLocalBranches'
-          @div class: 'heading', 'Remote'
+
+          @div class: 'heading', =>
+            @i class: 'icon branch'
+            @span 'Remote'
           @div class: 'branches', outlet: 'viewRemoteBranches'
+
         @div class: 'domain', =>
           @div class: 'files', outlet: 'viewFiles'
           @div class: 'diff', outlet: 'viewDiff'
