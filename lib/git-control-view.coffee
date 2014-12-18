@@ -1,65 +1,58 @@
-{View, $$} = require 'atom'
+{View, $, $$} = require 'atom'
 
 git = require './git'
+
+menuItems = [
+  { id: 'compare', menu: 'Compare', icon: 'compare', type: 'file'}
+  { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file'}
+  { id: 'clone', menu: 'Clone', icon: 'clone'}
+  { id: 'pull', menu: 'Pull', icon: 'pull'}
+  { id: 'push', menu: 'Push', icon: 'push'}
+  { id: 'merge', menu: 'Merge', icon: 'merge'}
+  { id: 'branch', menu: 'Branch', icon: 'branch'}
+  { id: 'tag', menu: 'Tag', icon: 'tag'}
+]
+
+count = 0
 
 module.exports =
 class GitControlView extends View
   @content: ->
     @div class: 'git-control', =>
-
-      @div class: 'menu', outlet: 'menu', =>
-        @div class: 'item', id: 'menu-compare', click: 'clickCompare', =>
-          @div class: 'icon large compare'
-          @div 'Compare'
-        @div class: 'item inactive', id: 'menu-commit', click: 'clickCommit', =>
-          @div class: 'icon large commit'
-          @div 'Commit'
-        @div class: 'item inactive', id: 'menu-clone', =>
-          @div class: 'icon large clone'
-          @div 'Clone'
-        @div class: 'item inactive', id: 'menu-pull', =>
-          @div class: 'icon large pull'
-          @div 'Pull'
-        @div class: 'item inactive', id: 'menu-push', =>
-          @div class: 'icon large push'
-          @div 'Push'
-        @div class: 'item inactive', id: 'menu-merge', =>
-          @div class: 'icon large merge'
-          @div 'Merge'
-        @div class: 'item inactive', id: 'menu-branch', =>
-          @div class: 'icon large branch'
-          @div 'Branch'
-        @div class: 'item inactive', id: 'menu-tag', =>
-          @div class: 'icon large tag'
-          @div 'Tag'
-
+      @div class: 'menu', outlet: 'menuView'
       @div class: 'content', =>
         @div class: 'sidebar', =>
 
           @div class: 'heading', =>
             @i class: 'icon forked'
             @span 'Workspace'
-          @div class: 'files', outlet: 'viewFiles'
+          @div class: 'files', outlet: 'filesView'
 
           @div class: 'heading', =>
             @i class: 'icon branch'
             @span 'Local'
-          @div class: 'branches', outlet: 'viewLocalBranches'
+          @div class: 'branches', outlet: 'localBranchView'
 
           @div class: 'heading', =>
             @i class: 'icon branch'
             @span 'Remote'
-          @div class: 'branches', outlet: 'viewRemoteBranches'
+          @div class: 'branches', outlet: 'remoteBranchView'
 
         @div class: 'domain', =>
-          @div class: 'diff', outlet: 'viewDiff'
+          @div class: 'diff', outlet: 'diffView'
 
   serialize: ->
 
   initialize: ->
     console.log 'GitControlView: initialize'
+
     @active = true
+    @files = {}
+    @filesSelected = []
+
+    @createMenu()
     @loadBranches()
+
     return
 
   destroy: ->
@@ -69,6 +62,24 @@ class GitControlView extends View
 
   getTitle: ->
     return 'git:control'
+
+  addMenuItem: (item) ->
+    id = "menu#{item.id}"
+
+    @menuView.append $$ ->
+      @div class: "item inactive type-#{item.type}", id: id, =>
+        @div class: "icon large #{item.icon}"
+        @div item.menu
+
+    @menuView.find(".item##{id}").toArray().forEach (item) =>
+      $(item).on 'click', => @["#{id}Click"]()
+      return
+    return
+
+  createMenu: ->
+    for item in menuItems
+      @addMenuItem(item)
+    return
 
   loadBranches: ->
     append = (location) -> (branches) ->
@@ -80,37 +91,68 @@ class GitControlView extends View
       return
 
     git.remoteBranches()
-      .then append(@viewRemoteBranches)
+      .then append(@remoteBranchView)
       .catch console.error
 
     git.localBranches()
-      .then append(@viewLocalBranches)
+      .then append(@localBranchView)
       .catch console.error
 
+    return
+
+  selectFile: (id) ->
+    @filesSelected = []
+
+    @filesView.find(".file input").toArray().forEach (input) =>
+      input = $(input)
+      if !!input.prop('checked')
+        @filesSelected.push @files[input.attr('id')]
+      return
+
+    menuItems = @menuView.find('.item.type-file')
+    if @filesSelected.length
+      menuItems.removeClass('inactive')
+    else
+      menuItems.addClass('inactive')
+
+    return
+
+  addFile: (file) ->
+    id = "file#{Date.now()}-#{++count}"
+
+    @files[id] = file
+
+    @filesView.append $$ ->
+      @div class: "file #{file.type}", =>
+        @input type: 'checkbox', id: id
+        @i class: "icon file-#{file.type}"
+        @span file.name
+
+    @filesView.find(".file input##{id}").toArray().forEach (input) =>
+      $(input).on 'change', => @selectFile(id)
+      return
     return
 
   showStatus: ->
     git.status()
       .then (files) =>
-        @viewFiles.find('.file').remove()
+        @filesView.find('.file').remove()
         for file in files
-          @viewFiles.append $$ ->
-            @div class: "file #{file.type}", =>
-              @input type: 'checkbox'
-              @i class: "icon file-#{file.type}"
-              @span file.name
+          @addFile(file)
         return
       .catch console.error
 
-  clickCompare: ->
+  menucompareClick: ->
+    return unless @filesSelected.length
+
     fmtNum = (num) ->
       return "     #{num or ''} ".slice(-6)
 
     git.diff()
       .then (diffs) =>
-        @viewDiff.find('.line').remove()
+        @diffView.find('.line').remove()
         for diff in diffs
-          @viewDiff.append $$ ->
+          @diffView.append $$ ->
             @div class: 'line heading', =>
               #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
               @pre "#{diff['+++']}"
@@ -127,7 +169,7 @@ class GitControlView extends View
               [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
               noa = parseInt(linea, 10)
               nob = parseInt(lineb, 10)
-              @viewDiff.append $$ ->
+              @diffView.append $$ ->
                 @div class: 'line subtle', =>
                   #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
                   @pre line
@@ -147,7 +189,7 @@ class GitControlView extends View
                 noa++
                 nob++
 
-              @viewDiff.append $$ ->
+              @diffView.append $$ ->
                 @div class: "line #{klass}", =>
                   @pre class: 'lineno', lineno
                   @pre line
@@ -155,4 +197,5 @@ class GitControlView extends View
         return
       .catch console.error
 
-  clickCommit: (event, element) ->
+  menucommitClick: (event, element) ->
+    return unless @filesSelected.length
