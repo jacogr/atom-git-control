@@ -103,24 +103,48 @@ class GitControlView extends View
       .catch console.error
 
   clickCompare: ->
+    fmtNum = (num) ->
+      return "     #{num or ''} ".slice(-6)
+
     git.diff()
       .then (diffs) =>
         @viewDiff.find('pre.line').remove()
         for diff in diffs
+          noa = 0
+          nob = 0
+
           for line in diff.lines
             if /^@@ /.test(line)
               # @@ -100,11 +100,13 @@
               [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
+              noa = parseInt(linea, 10)
+              nob = parseInt(lineb, 10)
               @viewDiff.append $$ ->
-                @pre class: 'line subtle', "@@ -#{linea} +#{lineb} @@"
+                @div class: 'line subtle', =>
+                  @pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
+                  @pre "@@ -#{linea} +#{lineb} @@"
               console.log linea, lineb
             else
-              klass = switch
-                when /^-/.test(line) then 'red'
-                when /^\+/.test(line) then 'green'
-                else ''
+              klass = ''
+              lineno = "#{fmtNum noa}#{fmtNum nob}"
+
+              if /^-/.test(line)
+                klass = 'red'
+                lineno = "#{fmtNum noa}#{fmtNum 0}"
+                noa++
+              else if /^\+/.test(line)
+                klass = 'green'
+                lineno = "#{fmtNum 0}#{fmtNum nob}"
+                nob++
+              else
+                noa++
+                nob++
+
               @viewDiff.append $$ ->
-                @pre class: "line #{klass}", line
+                @div class: "line #{klass}", =>
+                  @pre class: 'lineno', lineno
+                  @pre line
+
         return
       .catch console.error
 
