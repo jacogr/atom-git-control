@@ -39,7 +39,9 @@ class GitControlView extends View
           @div class: 'branches', outlet: 'localBranches'
           @div class: 'heading', 'Remote'
           @div class: 'branches', outlet: 'remoteBranches'
-        @div class: 'domain', outlet: 'content'
+        @div class: 'domain', =>
+          @div class: 'files', outlet: 'localFiles'
+          @div class: 'diff', outlet: 'diff'
 
   serialize: ->
 
@@ -77,20 +79,24 @@ class GitControlView extends View
 
   showStatus: ->
     git.status()
-      .then (status) ->
-        console.log status
+      .then (files) =>
+        @localFiles.find('.file').remove()
+        for file in files
+          @localFiles.append "<div class='line'>#{file.name}</div>"
+        return
       .catch console.error
 
   clickCompare: ->
     git.diff()
       .then (diffs) =>
+        @diff.find('pre.line').remove()
         for diff in diffs
           for line in diff.lines
             klass = switch
               when /^-/.test(line) then 'red'
               when /^\+/.test(line) then 'green'
               else ''
-            @content.append "<pre class='#{klass}'>#{line}</pre>"
+            @diff.append "<pre class='line #{klass}'>#{line}</pre>"
         return
       .catch console.error
 

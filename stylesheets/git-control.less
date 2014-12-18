@@ -80,21 +80,39 @@
       width: 75%;
       height: 100%;
       float: left;
-      overflow-y: scroll;
       background: @app-background-color;
-      padding: 10px;
 
-      pre {
-        padding: 0;
-        font-size: 11px;
-        background: @app-background-color;
+      .files {
+        width: 33.33%;
+        height: 100%;
+        float: left;
+        overflow-y: scroll;
+        padding: 10px;
+        border-right: 1px solid @base-border-color;
 
-        &.red {
-          color: @text-color-error;
+        .file {
         }
+      }
 
-        &.green {
-          color: @text-color-success;
+      .diff {
+        width: 66.66%;
+        height: 100%;
+        float: left;
+        overflow-y: scroll;
+        padding: 10px;
+
+        pre.line {
+          padding: 0;
+          font-size: 11px;
+          background: @app-background-color;
+
+          &.red {
+            color: @text-color-error;
+          }
+
+          &.green {
+            color: @text-color-success;
+          }
         }
       }
     }
