@@ -47,6 +47,7 @@ class GitControlView extends View
     console.log 'GitControlView: initialize'
 
     @active = true
+    @branchSelected = null
     @files = {}
     @filesSelected = []
 
@@ -82,9 +83,14 @@ class GitControlView extends View
     return
 
   loadBranches: ->
-    append = (location) -> (branches) ->
+    append = (location) => (branches) =>
       location.find('.branch').remove()
       for branch in branches
+        klass = ''
+        if branch.active
+          klass = 'active'
+          @selectedBranch = branch
+
         klass = if branch.active then 'active' else ''
         location.append $$ ->
           @div class: "branch #{klass}", branch.name
@@ -154,11 +160,7 @@ class GitControlView extends View
         for diff in diffs
           @diffView.append $$ ->
             @div class: 'line heading', =>
-              #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
               @pre "#{diff['+++']}"
-            #@div class: 'line green', =>
-              #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
-              #@pre "#{diff['+++']}"
 
           noa = 0
           nob = 0
@@ -171,7 +173,6 @@ class GitControlView extends View
               nob = parseInt(lineb, 10)
               @diffView.append $$ ->
                 @div class: 'line subtle', =>
-                  #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
                   @pre line
             else
               klass = ''
