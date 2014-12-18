@@ -2,6 +2,14 @@
 
 git = require './git'
 
+escapeHtml = (unsafe) ->
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 module.exports =
 class GitControlView extends View
   @content: ->
@@ -96,7 +104,7 @@ class GitControlView extends View
               when /^-/.test(line) then 'red'
               when /^\+/.test(line) then 'green'
               else ''
-            @diff.append "<pre class='line #{klass}'>#{line}</pre>"
+            @diff.append "<pre class='line #{klass}'>#{escapeHtml line}</pre>"
         return
       .catch console.error
 
