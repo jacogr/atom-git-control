@@ -1,14 +1,6 @@
-{View} = require 'atom'
+{View, $$} = require 'atom'
 
 git = require './git'
-
-escapeHtml = (unsafe) ->
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 
 module.exports =
 class GitControlView extends View
@@ -44,12 +36,12 @@ class GitControlView extends View
       @div class: 'content', =>
         @div class: 'sidebar', =>
           @div class: 'heading', 'Local'
-          @div class: 'branches', outlet: 'localBranches'
+          @div class: 'branches', outlet: 'viewLocalBranches'
           @div class: 'heading', 'Remote'
-          @div class: 'branches', outlet: 'remoteBranches'
+          @div class: 'branches', outlet: 'viewRemoteBranches'
         @div class: 'domain', =>
-          @div class: 'files', outlet: 'localFiles'
-          @div class: 'diff', outlet: 'diff'
+          @div class: 'files', outlet: 'viewFiles'
+          @div class: 'diff', outlet: 'viewDiff'
 
   serialize: ->
 
@@ -71,16 +63,17 @@ class GitControlView extends View
     append = (location) -> (branches) ->
       location.find('.branch').remove()
       for branch in branches
-        klass = "branch#{if branch.active then ' active' else ''}"
-        location.append "<div class='#{klass}'>#{branch.name}</div>"
+        klass = if branch.active then 'active' else ''
+        location.append $$ ->
+          @div class: "branch #{klass}", branch.name
       return
 
     git.remoteBranches()
-      .then append(@remoteBranches)
+      .then append(@viewRemoteBranches)
       .catch console.error
 
     git.localBranches()
-      .then append(@localBranches)
+      .then append(@viewLocalBranches)
       .catch console.error
 
     return
@@ -88,28 +81,32 @@ class GitControlView extends View
   showStatus: ->
     git.status()
       .then (files) =>
-        @localFiles.find('.file').remove()
+        @viewFiles.find('.file').remove()
         for file in files
-          @localFiles.append "<div class='file'>#{file.name}</div>"
+          @viewFiles.append $$ ->
+            @div class: 'file', file.name
         return
       .catch console.error
 
   clickCompare: ->
     git.diff()
       .then (diffs) =>
-        @diff.find('pre.line').remove()
+        @viewDiff.find('pre.line').remove()
         for diff in diffs
           for line in diff.lines
             if /^@@ /.test(line)
               # @@ -100,11 +100,13 @@
               [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
+              @viewDiff.append $$ ->
+                @pre class: 'line subtle', "@@ -#{linea} +#{lineb} @@"
               console.log linea, lineb
             else
               klass = switch
                 when /^-/.test(line) then 'red'
                 when /^\+/.test(line) then 'green'
                 else ''
-              @diff.append "<pre class='line #{klass}'>#{escapeHtml line}</pre>"
+              @viewDiff.append $$ ->
+                @pre class: "line #{klass}", line
         return
       .catch console.error
 
