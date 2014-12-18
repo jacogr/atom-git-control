@@ -9,28 +9,28 @@ class GitControlView extends View
 
       @div class: 'menu', outlet: 'menu', =>
         @div class: 'item', id: 'menu-compare', click: 'clickCompare', =>
-          @div class: 'icon compare'
+          @div class: 'icon large compare'
           @div 'Compare'
         @div class: 'item inactive', id: 'menu-commit', click: 'clickCommit', =>
-          @div class: 'icon commit'
+          @div class: 'icon large commit'
           @div 'Commit'
         @div class: 'item inactive', id: 'menu-clone', =>
-          @div class: 'icon clone'
+          @div class: 'icon large clone'
           @div 'Clone'
         @div class: 'item inactive', id: 'menu-pull', =>
-          @div class: 'icon pull'
+          @div class: 'icon large pull'
           @div 'Pull'
         @div class: 'item inactive', id: 'menu-push', =>
-          @div class: 'icon push'
+          @div class: 'icon large push'
           @div 'Push'
         @div class: 'item inactive', id: 'menu-merge', =>
-          @div class: 'icon merge'
+          @div class: 'icon large merge'
           @div 'Merge'
         @div class: 'item inactive', id: 'menu-branch', =>
-          @div class: 'icon branch'
+          @div class: 'icon large branch'
           @div 'Branch'
         @div class: 'item inactive', id: 'menu-tag', =>
-          @div class: 'icon tag'
+          @div class: 'icon large tag'
           @div 'Tag'
 
       @div class: 'content', =>
@@ -84,7 +84,10 @@ class GitControlView extends View
         @viewFiles.find('.file').remove()
         for file in files
           @viewFiles.append $$ ->
-            @div class: 'file', file.name
+            @div class: "file #{file.type}", =>
+              @i class: "icon file-#{file.type}"
+              @input type: 'checkbox'
+              @span file.name
         return
       .catch console.error
 

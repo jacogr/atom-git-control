@@ -91,6 +91,17 @@
         border-right: 1px solid @base-border-color;
 
         .file {
+          input[type='checkbox'] {
+            margin-right: 5px;
+          }
+
+          &.modified {
+            color: @text-color-warning;
+          }
+          
+          &.new {
+            color: @text-color-success;
+          }
         }
       }
 
@@ -109,7 +120,7 @@
           &.subtle {
             color: @text-color-subtle;
           }
-          
+
           &.red {
             color: @text-color-error;
           }
