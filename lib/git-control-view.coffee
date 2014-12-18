@@ -37,6 +37,11 @@ class GitControlView extends View
         @div class: 'sidebar', =>
 
           @div class: 'heading', =>
+            @i class: 'icon forked'
+            @span 'Workspace'
+          @div class: 'files', outlet: 'viewFiles'
+
+          @div class: 'heading', =>
             @i class: 'icon branch'
             @span 'Local'
           @div class: 'branches', outlet: 'viewLocalBranches'
@@ -47,7 +52,6 @@ class GitControlView extends View
           @div class: 'branches', outlet: 'viewRemoteBranches'
 
         @div class: 'domain', =>
-          @div class: 'files', outlet: 'viewFiles'
           @div class: 'diff', outlet: 'viewDiff'
 
   serialize: ->
@@ -92,8 +96,8 @@ class GitControlView extends View
         for file in files
           @viewFiles.append $$ ->
             @div class: "file #{file.type}", =>
-              @i class: "icon file-#{file.type}"
               @input type: 'checkbox'
+              @i class: "icon file-#{file.type}"
               @span file.name
         return
       .catch console.error
