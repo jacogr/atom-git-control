@@ -90,7 +90,7 @@ class GitControlView extends View
       .then (files) =>
         @localFiles.find('.file').remove()
         for file in files
-          @localFiles.append "<div class='line'>#{file.name}</div>"
+          @localFiles.append "<div class='file'>#{file.name}</div>"
         return
       .catch console.error
 
@@ -100,11 +100,16 @@ class GitControlView extends View
         @diff.find('pre.line').remove()
         for diff in diffs
           for line in diff.lines
-            klass = switch
-              when /^-/.test(line) then 'red'
-              when /^\+/.test(line) then 'green'
-              else ''
-            @diff.append "<pre class='line #{klass}'>#{escapeHtml line}</pre>"
+            if /^@@ /.test(line)
+              # @@ -100,11 +100,13 @@
+              [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
+              console.log linea, lineb
+            else
+              klass = switch
+                when /^-/.test(line) then 'red'
+                when /^\+/.test(line) then 'green'
+                else ''
+              @diff.append "<pre class='line #{klass}'>#{escapeHtml line}</pre>"
         return
       .catch console.error
 
