@@ -111,12 +111,12 @@ class GitControlView extends View
         @viewDiff.find('.line').remove()
         for diff in diffs
           @viewDiff.append $$ ->
-            @div class: 'line red heading', =>
-              #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
-              @pre "#{diff['---']}"
-            @div class: 'line green', =>
+            @div class: 'line heading', =>
               #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
               @pre "#{diff['+++']}"
+            #@div class: 'line green', =>
+              #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
+              #@pre "#{diff['+++']}"
 
           noa = 0
           nob = 0
@@ -128,10 +128,9 @@ class GitControlView extends View
               noa = parseInt(linea, 10)
               nob = parseInt(lineb, 10)
               @viewDiff.append $$ ->
-                @div class: 'line', =>
+                @div class: 'line subtle', =>
                   #@pre class: 'lineno', "#{fmtNum 0}#{fmtNum 0}"
-                  @pre "@@ -#{linea} +#{lineb} @@"
-              console.log linea, lineb
+                  @pre line
             else
               klass = ''
               lineno = "#{fmtNum noa}#{fmtNum nob}"
