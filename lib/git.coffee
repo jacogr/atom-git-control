@@ -1,15 +1,23 @@
 git = require 'git-promise'
 q = require 'q'
 
-cwd = atom.project.getPath()
+repo = undefined
+cwd = undefined
+project = atom.project
 
-parseBranches = (data) -> q.fcall ->
-  branches = []
-  for branch in data.split('\n') when branch.length
-    active = branch.indexOf('*') isnt -1
-    branches.push
-      name: branch.replace('*', '').trim()
-      active: active
+if project
+  repo = project.getRepo()
+  cwd = repo.getWorkingDirectory()
+
+getBranches = -> q.fcall ->
+  branches = local: [], remote: [], tags: []
+  refs = repo.getReferences()
+
+  for h in refs.heads
+    branches.local.push h.replace('refs/heads/', '')
+
+  for h in refs.remotes
+    branches.remote.push h.replace('refs/remotes/', '')
 
   return branches
 
@@ -39,7 +47,6 @@ parseDiff = (data) -> q.fcall ->
   return diffs
 
 parseStatus = (data) -> q.fcall ->
-  console.log data
   files = []
   for line in data.split('\n') when line.length
     [type, name] = line.trim().split(' ')
@@ -63,11 +70,19 @@ callGit = (cmd, parser) ->
     .then parser
 
 module.exports =
-  remoteBranches: ->
-    return callGit 'branch -r', parseBranches
+  isInitialised: ->
+    return repo
 
-  localBranches: ->
-    return callGit 'branch', parseBranches
+  count: (branch) ->
+    return repo.getAheadBehindCount(branch)
+
+  getLocalBranch: ->
+    return repo.getShortHead()
+
+  getRemoteBranch: ->
+    return repo.getUpstreamBranch()
+
+  getBranches: getBranches
 
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff
