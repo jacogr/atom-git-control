@@ -5,6 +5,7 @@ git = require './git'
 menuItems = [
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'file'}
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file'}
+  { id: 'rsest', menu: 'Reset', icon: 'sync', type: 'file'}
   { id: 'clone', menu: 'Clone', icon: 'clone'}
   { id: 'pull', menu: 'Pull', icon: 'pull'}
   { id: 'push', menu: 'Push', icon: 'push'}
