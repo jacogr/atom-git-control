@@ -12,6 +12,8 @@ if project
   repo = project.getRepo()
   cwd = repo.getWorkingDirectory()
 
+noop = -> q.fcall -> true
+
 getBranches = -> q.fcall ->
   branches = local: [], remote: [], tags: []
   refs = repo.getReferences()
@@ -97,8 +99,12 @@ module.exports =
 
   getBranches: getBranches
 
-  commit: (message, files) ->
-    return callGit "commit -m '#{message}' -- #{files}", parseDefault
+  add: (files) ->
+    return noop() unless files.length
+    return callGit "add -- #{files.join(' ')}", parseDefault
+
+  commit: (files, message) ->
+    return callGit "commit -m '#{message or Date.now()}' -- #{files.join(' ')}", parseDefault
 
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff, true
@@ -116,7 +122,11 @@ module.exports =
     return callGit "log origin/#{branch}..#{branch}", parseDefault
 
   reset: (files) ->
-    return callGit "checkout -- #{files}", parseDefault
+    return callGit "checkout -- #{files.join(' ')}", parseDefault
+
+  remove: (files) ->
+    return noop() unless files.length
+    return callGit "rm -- #{files.join(' ')}", parseDefault
 
   status: ->
     return callGit 'status --porcelain', parseStatus
