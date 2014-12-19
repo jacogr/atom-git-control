@@ -22,6 +22,7 @@ class GitControlView extends View
   @content: ->
     @div class: 'git-control', =>
       @div class: 'menu', outlet: 'menuView'
+
       @div class: 'content', =>
         @div class: 'sidebar', =>
 
@@ -42,7 +43,8 @@ class GitControlView extends View
 
         @div class: 'domain', =>
           @div class: 'diff', outlet: 'diffView'
-          @div class: 'logger', outlet: 'logView'
+
+      @div class: 'logger', outlet: 'logView'
 
   serialize: ->
 

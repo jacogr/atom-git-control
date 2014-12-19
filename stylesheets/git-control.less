@@ -36,8 +36,29 @@
     }
   }
 
+  .logger {
+    width: 100%;
+    height: 34%;
+    overflow-y: scroll;
+    border-top: 1px solid @base-border-color;
+    padding: 10px 10px 70px 10px;
+    background: @app-background-color;
+
+    pre {
+      padding: 0;
+      font-size: 11px;
+      color: inherit;
+      background: @app-background-color;
+      color: @text-color-subtle;
+
+      &.error {
+        color: @text-color-error;
+      }
+    }
+  }
+
   .content {
-    height: 100%;
+    height: 66%;
     width: 100%;
 
     .sidebar {
@@ -125,29 +146,9 @@
       float: left;
       background: @app-background-color;
 
-      .logger {
-        width: 100%;
-        height: 34%;
-        overflow-y: scroll;
-        border-top: 1px solid @base-border-color;
-        padding: 10px 10px 70px 10px;
-
-        pre {
-          padding: 0;
-          font-size: 11px;
-          color: inherit;
-          background: @app-background-color;
-          color: @text-color-subtle;
-
-          &.error {
-            color: @text-color-error;
-          }
-        }
-      }
-
       .diff {
         width: 100%;
-        height: 66%;
+        height: 100%;
         overflow-y: scroll;
         padding: 10px 10px 80px 10px;
 
