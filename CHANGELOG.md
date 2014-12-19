@@ -3,3 +3,4 @@
 - Initial version
 - Shows information of local vs remote branches (current active)
 - Allows reset of files to previous state
+- Push works - activated when there are actual local changes available
