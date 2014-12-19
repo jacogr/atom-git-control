@@ -27,10 +27,13 @@ module.exports = GitControl =
     pane = atom.workspace.getActivePane()
     item = pane.addItem view, 0
     pane.activateItem item
+
     return
 
   updateViews: ->
-    for view in views when view.active
+    activeView = atom.workspace.getActivePane().getActiveItem()
+    for view in views when view is activeView
       view.update()
+    return
 
   serialize: ->
