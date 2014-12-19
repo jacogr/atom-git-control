@@ -74,7 +74,7 @@ callGit = (cmd, parser) ->
     .then (data) ->
       logcb data
       return parser(data)
-    .catch (e) =>
+    .catch (e) ->
       logcb e, true
       return
 
@@ -106,6 +106,12 @@ module.exports =
   fetch: ->
     return callGit "fetch", parseDefault
 
+  pull: ->
+    return callGit "pull", parseDefault
+
+  push: ->
+    return callGit "push", parseDefault
+    
   log: (branch) ->
     return callGit "log origin/#{branch}..#{branch}", parseDefault
 

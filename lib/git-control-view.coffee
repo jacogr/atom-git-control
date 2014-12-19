@@ -115,13 +115,16 @@ class GitControlView extends View
       location.find('.branch').remove()
       for branch in branches
         current = branch is @selectedBranch
+        klass = if current then 'active' else ''
         count = klass: 'hidden'
+
         if local and current
           count = git.count(branch)
           count.total = count.ahead + count.behind
           count.klass = 'hidden' unless count.total
 
-        klass = if current then 'active' else ''
+          @activateMenu('upstream', count.behind)
+          @activateMenu('downstream', count.ahead)
 
         location.append $$ ->
           @div class: "branch #{klass}", =>
@@ -141,20 +144,23 @@ class GitControlView extends View
 
     return
 
-  selectFile: ->
-    @filesSelected = []
-
-    @filesView.find(".file input").toArray().forEach (input) =>
-      input = $(input)
-      if !!input.prop('checked')
-        @filesSelected.push @files[input.attr('id')]
-      return
-
-    menuItems = @menuView.find('.item.type-file')
-    if @filesSelected.length
+  activateMenu: (type, active) ->
+    menuItems = @menuView.find(".item.type-#{type}")
+    if active
       menuItems.removeClass('inactive')
     else
       menuItems.addClass('inactive')
+    return
+
+  selectFile: ->
+    @filesSelected = []
+
+    for input in @filesView.find(".file input").toArray()
+      input = $(input)
+      if !!input.prop('checked')
+        @filesSelected.push @files[input.attr('id')]
+
+    @activateMenu('file', @filesSelected.length)
 
     return
 
@@ -260,6 +266,18 @@ class GitControlView extends View
 
   fetchMenuClick: ->
     git.fetch().then =>
+      @update(true)
+      return
+    return
+
+  pullMenuClick: ->
+    git.pull().then =>
+      @update(true)
+      return
+    return
+
+  pushMenuClick: ->
+    git.push().then =>
       @update(true)
       return
     return
