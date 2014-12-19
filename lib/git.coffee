@@ -61,13 +61,8 @@ parseStatus = (data) -> q.fcall ->
 
   return files
 
-parseLog = (data) -> q.fcall ->
-  console.log data
-  return []
-
-parseReset = (data) -> q.fcall ->
-  console.log data
-  return []
+parseDefault = (data) -> q.fcall ->
+  return true
 
 callGit = (cmd, parser) ->
   console.log "git #{cmd}"
@@ -91,14 +86,17 @@ module.exports =
 
   getBranches: getBranches
 
+  commit: (message, files) ->
+    return callGit "commit -m '#{message}' -- #{files}", parseDefault
+
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff
 
   log: (branch) ->
-    return callGit "log origin/#{branch}..#{branch}", parseLog
+    return callGit "log origin/#{branch}..#{branch}", parseDefault
 
   reset: (files) ->
-    return callGit "checkout -- #{files}", parseReset
+    return callGit "checkout -- #{files}", parseDefault
 
   status: ->
     return callGit 'status --porcelain', parseStatus
