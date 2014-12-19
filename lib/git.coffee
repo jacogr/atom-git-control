@@ -107,11 +107,11 @@ module.exports =
     return callGit "fetch", parseDefault
 
   pull: ->
-    return callGit "pull", parseDefault
+    return callGit "pull --porcelain", parseDefault
 
   push: ->
-    return callGit "push", parseDefault
-    
+    return callGit "push --porcelain", parseDefault
+
   log: (branch) ->
     return callGit "log origin/#{branch}..#{branch}", parseDefault
 
