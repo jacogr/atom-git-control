@@ -166,8 +166,12 @@ class GitControlView extends View
     git.status()
       .then (files) =>
         @filesView.find('.file').remove()
-        for file in files
-          @addFile(file)
+        if files.length
+          for file in files
+            @addFile(file)
+        else
+          @filesView.append $$ ->
+            @div class: 'file deleted', 'No local working copy changes detected'
         return
       .catch console.error
     return
