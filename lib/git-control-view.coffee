@@ -194,11 +194,12 @@ class GitControlView extends View
             input.prop('checked', true)
             @filesSelected.push @files[input.attr('id')]
 
-        @selectFile()
-
       else
         @filesView.append $$ ->
           @div class: 'file deleted', 'No local working copy changes detected'
+
+      @selectFile()
+
       return
     return
 
