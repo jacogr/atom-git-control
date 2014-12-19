@@ -88,34 +88,47 @@ class GitControlView extends View
     return
 
   loadLog: ->
+    console.log 'git.count', git.count(@selectedBranch)
+    console.log 'git.getLocalBranch', git.getLocalBranch()
+    console.log 'git.getRemoteBranch', git.getRemoteBranch()
+
     git.log(@selectedBranch)
       .then (logs) ->
-        console.log logs
+        console.log 'git.log', logs
         return
       .catch console.error
     return
 
   loadBranches: ->
-    append = (location) => (branches) =>
+    @selectedBranch = git.getLocalBranch()
+
+    append = (location, branches, local) =>
       location.find('.branch').remove()
       for branch in branches
-        klass = ''
-        if branch.active
-          klass = 'active'
-          @selectedBranch = branch
-          @loadLog()
+        count = klass: 'hidden'
+        if local
+          console.log branch, count = git.count(branch)
+          count.total = count.ahead # + count.behind
+          count.klass = 'hidden' unless count.total
 
-        klass = if branch.active then 'active' else ''
+        klass = if branch is @selectedBranch then 'active' else ''
+
         location.append $$ ->
-          @div class: "branch #{klass}", branch.name
+          @div class: "branch #{klass}", =>
+            @span branch
+            @div class: "count #{count.klass}", =>
+              @span count.ahead
+              @i class: 'icon cloud-upload'
+              #@span count.behind
+              #@i class: 'icon cloud-download'
+
       return
 
-    git.remoteBranches()
-      .then append(@remoteBranchView)
-      .catch console.error
-
-    git.localBranches()
-      .then append(@localBranchView)
+    git.getBranches()
+      .then (branches) =>
+        console.log 'branches', branches
+        append(@remoteBranchView, branches.remote)
+        append(@localBranchView, branches.local, true)
       .catch console.error
 
     return
