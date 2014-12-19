@@ -88,10 +88,6 @@ class GitControlView extends View
     return
 
   loadLog: ->
-    console.log 'git.count', git.count(@selectedBranch)
-    console.log 'git.getLocalBranch', git.getLocalBranch()
-    console.log 'git.getRemoteBranch', git.getRemoteBranch()
-
     git.log(@selectedBranch)
       .then (logs) ->
         console.log 'git.log', logs
@@ -127,7 +123,6 @@ class GitControlView extends View
 
     git.getBranches()
       .then (branches) =>
-        console.log 'branches', branches
         append(@remoteBranchView, branches.remote)
         append(@localBranchView, branches.local, true)
       .catch console.error
