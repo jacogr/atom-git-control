@@ -141,7 +141,7 @@ class GitControlView extends View
 
     return
 
-  selectFile: (id) ->
+  selectFile: ->
     @filesSelected = []
 
     @filesView.find(".file input").toArray().forEach (input) =>
@@ -165,21 +165,37 @@ class GitControlView extends View
 
     @filesView.append $$ ->
       @div class: "file #{file.type}", =>
-        @input type: 'checkbox', id: id
+        @input type: 'checkbox', id: id, 'data-name': file.name
         @i class: "icon file-#{file.type}"
         @span file.name
 
-    @filesView.find(".file input##{id}").toArray().forEach (input) =>
+    for input in @filesView.find(".file input##{id}").toArray()
       $(input).on 'change', => @selectFile(id)
-      return
+
     return
 
   showStatus: ->
+    oldSelected = @filesSelected
+    @filesSelected = []
+
     git.status().then (files) =>
       @filesView.find('.file').remove()
+      @files = []
+
       if files.length
         for file in files
           @addFile(file)
+
+        for input in @filesView.find(".file input").toArray()
+          input = $(input)
+          name = input.attr('data-name')
+
+          for sel in oldSelected when sel.name is name
+            input.prop('checked', true)
+            @filesSelected.push @files[input.attr('id')]
+
+        @selectFile()
+
       else
         @filesView.append $$ ->
           @div class: 'file deleted', 'No local working copy changes detected'
