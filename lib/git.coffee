@@ -1,6 +1,9 @@
 git = require 'git-promise'
 q = require 'q'
 
+logcb = (log, error) ->
+  console[if error then 'error' else 'log'] log
+
 repo = undefined
 cwd = undefined
 project = atom.project
@@ -65,15 +68,23 @@ parseDefault = (data) -> q.fcall ->
   return true
 
 callGit = (cmd, parser) ->
-  console.log "git #{cmd}"
-  return git cmd, cwd: cwd
+  logcb "> git #{cmd}"
+
+  return git(cmd, cwd: cwd)
     .then (data) ->
-      console.log data
+      logcb data
       return parser(data)
+    .catch (e) =>
+      logcb e, true
+      return
 
 module.exports =
   isInitialised: ->
     return repo
+
+  setLogger: (cb) ->
+    logcb = cb
+    return
 
   count: (branch) ->
     return repo.getAheadBehindCount(branch)
@@ -91,6 +102,9 @@ module.exports =
 
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff
+
+  fetch: ->
+    return callGit "fetch", parseDefault
 
   log: (branch) ->
     return callGit "log origin/#{branch}..#{branch}", parseDefault

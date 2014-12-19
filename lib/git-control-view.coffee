@@ -42,11 +42,14 @@ class GitControlView extends View
 
         @div class: 'domain', =>
           @div class: 'diff', outlet: 'diffView'
+          @div class: 'logger', outlet: 'logView'
 
   serialize: ->
 
   initialize: ->
     console.log 'GitControlView: initialize'
+
+    git.setLogger (log, iserror) => @log(log, iserror)
 
     @active = true
     @branchSelected = null
@@ -65,23 +68,32 @@ class GitControlView extends View
   getTitle: ->
     return 'git:control'
 
-  update: ->
+  update: (nofetch) ->
     @loadBranches()
-    @showStatus()
-    @fetchMenuClick()
+
+    unless nofetch
+      @fetchMenuClick()
+    else
+      @showStatus()
+
+    return
+
+  log: (log, iserror) ->
+    @logView.append "<pre class='#{if iserror then 'error' else ''}'>#{log}</pre>"
+    @logView.scrollToBottom()
     return
 
   addMenuItem: (item) ->
-    id = "menu#{item.id}"
+    id = item.id
     active = if item.type is 'active' then '' else 'inactive'
 
     @menuView.append $$ ->
-      @div class: "item #{active} type-#{item.type}", id: id, =>
+      @div class: "item #{active} type-#{item.type}", id: "menu#{id}", =>
         @div class: "icon large #{item.icon}"
         @div item.menu
 
-    @menuView.find(".item##{id}").toArray().forEach (item) =>
-      $(item).on 'click', => @["#{item.id}MenuClick"]()
+    @menuView.find(".item#menu#{id}").toArray().forEach (item) =>
+      $(item).on 'click', => @["#{id}MenuClick"]()
       return
     return
 
@@ -91,11 +103,9 @@ class GitControlView extends View
     return
 
   loadLog: ->
-    git.log(@selectedBranch)
-      .then (logs) ->
-        console.log 'git.log', logs
-        return
-      .catch console.error
+    git.log(@selectedBranch).then (logs) ->
+      console.log 'git.log', logs
+      return
     return
 
   loadBranches: ->
@@ -124,11 +134,10 @@ class GitControlView extends View
 
       return
 
-    git.getBranches()
-      .then (branches) =>
-        append(@remoteBranchView, branches.remote)
-        append(@localBranchView, branches.local, true)
-      .catch console.error
+    git.getBranches().then (branches) =>
+      append(@remoteBranchView, branches.remote)
+      append(@localBranchView, branches.local, true)
+      return
 
     return
 
@@ -166,17 +175,15 @@ class GitControlView extends View
     return
 
   showStatus: ->
-    git.status()
-      .then (files) =>
-        @filesView.find('.file').remove()
-        if files.length
-          for file in files
-            @addFile(file)
-        else
-          @filesView.append $$ ->
-            @div class: 'file deleted', 'No local working copy changes detected'
-        return
-      .catch console.error
+    git.status().then (files) =>
+      @filesView.find('.file').remove()
+      if files.length
+        for file in files
+          @addFile(file)
+      else
+        @filesView.append $$ ->
+          @div class: 'file deleted', 'No local working copy changes detected'
+      return
     return
 
   compareMenuClick: ->
@@ -185,57 +192,60 @@ class GitControlView extends View
     fmtNum = (num) ->
       return "     #{num or ''} ".slice(-6)
 
-    git.diff()
-      .then (diffs) =>
-        @diffView.find('.line').remove()
-        for diff in diffs
-          if (file = diff['+++']) is '+++ /dev/null'
-            file = diff['---']
-          @diffView.append $$ ->
-            @div class: 'line heading', =>
-              @pre "#{file}"
+    git.diff().then (diffs) =>
+      @diffView.find('.line').remove()
+      for diff in diffs
+        if (file = diff['+++']) is '+++ /dev/null'
+          file = diff['---']
 
-          noa = 0
-          nob = 0
+        @diffView.append $$ ->
+          @div class: 'line heading', =>
+            @pre "#{file}"
 
-          for line in diff.lines
-            if /^@@ /.test(line)
-              # @@ -100,11 +100,13 @@
-              [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
-              noa = parseInt(linea, 10)
-              nob = parseInt(lineb, 10)
-              @diffView.append $$ ->
-                @div class: 'line subtle', =>
-                  @pre line
+        noa = 0
+        nob = 0
+
+        for line in diff.lines
+          if /^@@ /.test(line)
+            # @@ -100,11 +100,13 @@
+            [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
+            noa = parseInt(linea, 10)
+            nob = parseInt(lineb, 10)
+            @diffView.append $$ ->
+              @div class: 'line subtle', =>
+                @pre line
+          else
+            klass = ''
+            lineno = "#{fmtNum noa}#{fmtNum nob}"
+
+            if /^-/.test(line)
+              klass = 'red'
+              lineno = "#{fmtNum noa}#{fmtNum 0}"
+              noa++
+            else if /^\+/.test(line)
+              klass = 'green'
+              lineno = "#{fmtNum 0}#{fmtNum nob}"
+              nob++
             else
-              klass = ''
-              lineno = "#{fmtNum noa}#{fmtNum nob}"
+              noa++
+              nob++
 
-              if /^-/.test(line)
-                klass = 'red'
-                lineno = "#{fmtNum noa}#{fmtNum 0}"
-                noa++
-              else if /^\+/.test(line)
-                klass = 'green'
-                lineno = "#{fmtNum 0}#{fmtNum nob}"
-                nob++
-              else
-                noa++
-                nob++
+            @diffView.append $$ ->
+              @div class: "line #{klass}", =>
+                @pre class: 'lineno', lineno
+                @pre line
 
-              @diffView.append $$ ->
-                @div class: "line #{klass}", =>
-                  @pre class: 'lineno', lineno
-                  @pre line
-
-        return
-      .catch console.error
+      return
     return
 
   commitMenuClick: ->
     return unless @filesSelected.length
 
   fetchMenuClick: ->
+    git.fetch().then =>
+      @update(true)
+      return
+    return
 
   resetMenuClick: ->
     return unless @filesSelected.length
@@ -244,8 +254,8 @@ class GitControlView extends View
     for f in @filesSelected
       files.push f.name
 
-    git.reset(files.join(' '))
-      .then => @update()
-      .catch console.error
+    git.reset(files.join(' ')).then =>
+      @update()
+      return
 
     return
