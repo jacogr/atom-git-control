@@ -7,8 +7,9 @@ menuItems = [
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file'}
   { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
   #{ id: 'clone', menu: 'Clone', icon: 'clone'}
-  { id: 'pull', menu: 'Pull', icon: 'pull'}
-  { id: 'push', menu: 'Push', icon: 'push'}
+  { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'active'}
+  { id: 'pull', menu: 'Pull', icon: 'pull', type: 'upstream'}
+  { id: 'push', menu: 'Push', icon: 'push', type: 'downstream'}
   { id: 'merge', menu: 'Merge', icon: 'merge'}
   { id: 'branch', menu: 'Branch', icon: 'branch'}
   { id: 'tag', menu: 'Tag', icon: 'tag'}
@@ -67,18 +68,20 @@ class GitControlView extends View
   update: ->
     @loadBranches()
     @showStatus()
+    @fetchMenuClick()
     return
 
   addMenuItem: (item) ->
     id = "menu#{item.id}"
+    active = if item.type is 'active' then '' else 'inactive'
 
     @menuView.append $$ ->
-      @div class: "item inactive type-#{item.type}", id: id, =>
+      @div class: "item #{active} type-#{item.type}", id: id, =>
         @div class: "icon large #{item.icon}"
         @div item.menu
 
     @menuView.find(".item##{id}").toArray().forEach (item) =>
-      $(item).on 'click', => @["#{id}Click"]()
+      $(item).on 'click', => @["#{item.id}MenuClick"]()
       return
     return
 
@@ -176,7 +179,7 @@ class GitControlView extends View
       .catch console.error
     return
 
-  menucompareClick: ->
+  compareMenuClick: ->
     return unless @filesSelected.length
 
     fmtNum = (num) ->
@@ -229,10 +232,12 @@ class GitControlView extends View
       .catch console.error
     return
 
-  menucommitClick: ->
+  commitMenuClick: ->
     return unless @filesSelected.length
 
-  menuresetClick: ->
+  fetchMenuClick: ->
+
+  resetMenuClick: ->
     return unless @filesSelected.length
 
     files = []
