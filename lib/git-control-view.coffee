@@ -158,9 +158,11 @@ class GitControlView extends View
       .then (diffs) =>
         @diffView.find('.line').remove()
         for diff in diffs
+          if (file = diff['+++']) is '+++ /dev/null'
+            file = diff['---']
           @diffView.append $$ ->
             @div class: 'line heading', =>
-              @pre "#{diff['+++']}"
+              @pre "#{file}"
 
           noa = 0
           nob = 0

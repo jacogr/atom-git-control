@@ -28,9 +28,9 @@ parseDiff = (data) -> q.fcall ->
       when /^index /.test(line)
         diff['index'] = line.replace(/^index /, '')
       when /^--- /.test(line)
-        diff['---'] = line.replace(/^--- a\//, '')
+        diff['---'] = line.replace(/^--- [a|b]\//, '')
       when /^\+\+\+ /.test(line)
-        diff['+++'] = line.replace(/^\+\+\+ b\//, '')
+        diff['+++'] = line.replace(/^\+\+\+ [a|b]\//, '')
       else
         diff['lines'].push line
         diff['added']++ if /^\+/.test(line)
@@ -39,6 +39,7 @@ parseDiff = (data) -> q.fcall ->
   return diffs
 
 parseStatus = (data) -> q.fcall ->
+  console.log data
   files = []
   for line in data.split('\n') when line.length
     [type, name] = line.trim().split(' ')
@@ -46,6 +47,7 @@ parseStatus = (data) -> q.fcall ->
       name: name
       type: switch type
         when 'A' then 'added'
+        when 'D' then 'deleted'
         when 'M' then 'modified'
         when '??' then 'new'
         else 'unknown'
