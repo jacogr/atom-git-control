@@ -89,6 +89,7 @@
           padding: 5px;
           border-radius: 4px;
           cursor: pointer;
+          position: relative;
 
           &.active {
             background: @button-background-color;
@@ -97,6 +98,22 @@
 
           &:hover {
             color: @text-color-highlight;
+          }
+
+          .count {
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: inline-block;
+            color: @text-color;
+
+            &.hidden {
+              display: none;
+            }
+
+            i.icon {
+              margin-left: 2px;
+            }
           }
         }
       }
