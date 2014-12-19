@@ -31,6 +31,6 @@ module.exports = GitControl =
 
   updateViews: ->
     for view in views when view.active
-      view.loadDetails()
+      view.update()
 
   serialize: ->

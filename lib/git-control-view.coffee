@@ -64,6 +64,11 @@ class GitControlView extends View
   getTitle: ->
     return 'git:control'
 
+  update: ->
+    @loadBranches()
+    @showStatus()
+    return
+
   addMenuItem: (item) ->
     id = "menu#{item.id}"
 
@@ -80,11 +85,6 @@ class GitControlView extends View
   createMenu: ->
     for item in menuItems
       @addMenuItem(item)
-    return
-
-  loadDetails: ->
-    @loadBranches()
-    @showStatus()
     return
 
   loadLog: ->
