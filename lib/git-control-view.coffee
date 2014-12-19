@@ -5,7 +5,7 @@ git = require './git'
 menuItems = [
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'file'}
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file'}
-  { id: 'rsest', menu: 'Reset', icon: 'sync', type: 'file'}
+  { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
   #{ id: 'clone', menu: 'Clone', icon: 'clone'}
   { id: 'pull', menu: 'Pull', icon: 'pull'}
   { id: 'push', menu: 'Push', icon: 'push'}
@@ -230,5 +230,18 @@ class GitControlView extends View
       .catch console.error
     return
 
-  menucommitClick: (event, element) ->
+  menucommitClick: ->
     return unless @filesSelected.length
+
+  menuresetClick: ->
+    return unless @filesSelected.length
+
+    files = []
+    for f in @filesSelected
+      files.push f.name
+
+    git.reset(files.join(' '))
+      .then => @update()
+      .catch console.error
+
+    return

@@ -65,9 +65,16 @@ parseLog = (data) -> q.fcall ->
   console.log data
   return []
 
+parseReset = (data) -> q.fcall ->
+  console.log data
+  return []
+
 callGit = (cmd, parser) ->
+  console.log "git #{cmd}"
   return git cmd, cwd: cwd
-    .then parser
+    .then (data) ->
+      console.log data
+      return parser(data)
 
 module.exports =
   isInitialised: ->
@@ -88,7 +95,10 @@ module.exports =
     return callGit "--no-pager diff #{file or ''}", parseDiff
 
   log: (branch) ->
-    return callGit "git log origin/#{branch}..#{branch}", parseLog
+    return callGit "log origin/#{branch}..#{branch}", parseLog
+
+  reset: (files) ->
+    return callGit "checkout -- #{files}", parseReset
 
   status: ->
     return callGit 'status --porcelain', parseStatus
