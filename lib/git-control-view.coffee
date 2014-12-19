@@ -263,8 +263,28 @@ class GitControlView extends View
       return
     return
 
+  doCommit: (files) ->
+
   commitMenuClick: ->
     return unless @filesSelected.length
+
+    files =
+      all: []
+      add: []
+      rem: []
+
+    for file in @filesSelected
+      files.all.push file.name
+      switch file.type
+        when 'new' then files.add.push file.name
+        when 'deleted' then files.rem.push file.name
+
+    git.add(files.add)
+      .then -> git.remove(files.rem)
+      .then -> git.commit(files.all, null)
+      .then => @update()
+
+    return
 
   fetchMenuClick: ->
     git.fetch().then =>
@@ -291,7 +311,7 @@ class GitControlView extends View
     for f in @filesSelected
       files.push f.name
 
-    git.reset(files.join(' ')).then =>
+    git.reset(files).then =>
       @update()
       return
 
