@@ -67,12 +67,12 @@ parseStatus = (data) -> q.fcall ->
 parseDefault = (data) -> q.fcall ->
   return true
 
-callGit = (cmd, parser) ->
+callGit = (cmd, parser, nodatalog) ->
   logcb "> git #{cmd}"
 
   return git(cmd, cwd: cwd)
     .then (data) ->
-      logcb data
+      logcb data unless nodatalog
       return parser(data)
     .catch (e) ->
       logcb e, true
@@ -101,7 +101,7 @@ module.exports =
     return callGit "commit -m '#{message}' -- #{files}", parseDefault
 
   diff: (file) ->
-    return callGit "--no-pager diff #{file or ''}", parseDiff
+    return callGit "--no-pager diff #{file or ''}", parseDiff, true
 
   fetch: ->
     return callGit "fetch", parseDefault
@@ -110,7 +110,7 @@ module.exports =
     return callGit "pull --porcelain", parseDefault
 
   push: ->
-    return callGit "push --porcelain", parseDefault
+    return callGit "-c push.default=simple push --porcelain", parseDefault
 
   log: (branch) ->
     return callGit "log origin/#{branch}..#{branch}", parseDefault
