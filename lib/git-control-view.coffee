@@ -53,7 +53,6 @@ class GitControlView extends View
     @filesSelected = []
 
     @createMenu()
-    @loadBranches()
 
     return
 
@@ -83,6 +82,19 @@ class GitControlView extends View
       @addMenuItem(item)
     return
 
+  loadDetails: ->
+    @loadBranches()
+    @showStatus()
+    return
+
+  loadLog: ->
+    git.log(@selectedBranch)
+      .then (logs) ->
+        console.log logs
+        return
+      .catch console.error
+    return
+
   loadBranches: ->
     append = (location) => (branches) =>
       location.find('.branch').remove()
@@ -91,6 +103,7 @@ class GitControlView extends View
         if branch.active
           klass = 'active'
           @selectedBranch = branch
+          @loadLog()
 
         klass = if branch.active then 'active' else ''
         location.append $$ ->
@@ -148,6 +161,7 @@ class GitControlView extends View
           @addFile(file)
         return
       .catch console.error
+    return
 
   menucompareClick: ->
     return unless @filesSelected.length
@@ -200,6 +214,7 @@ class GitControlView extends View
 
         return
       .catch console.error
+    return
 
   menucommitClick: (event, element) ->
     return unless @filesSelected.length

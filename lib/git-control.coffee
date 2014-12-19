@@ -11,7 +11,7 @@ module.exports = GitControl =
     console.log 'GitControl: activate'
 
     atom.workspaceView.command CMD_TOGGLE, => @newView()
-    atom.workspaceView.on EVT_SWITCH, => @showStatus()
+    atom.workspaceView.on EVT_SWITCH, => @updateViews()
     return
 
   deactivate: ->
@@ -29,8 +29,8 @@ module.exports = GitControl =
     pane.activateItem item
     return
 
-  showStatus: ->
+  updateViews: ->
     for view in views when view.active
-      view.showStatus()
+      view.loadDetails()
 
   serialize: ->

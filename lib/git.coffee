@@ -54,6 +54,10 @@ parseStatus = (data) -> q.fcall ->
 
   return files
 
+parseLog = (data) -> q.fcall ->
+  console.log data
+  return []
+
 callGit = (cmd, parser) ->
   return git cmd, cwd: cwd
     .then parser
@@ -67,6 +71,9 @@ module.exports =
 
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff
+
+  log: (branch) ->
+    return callGit "git log origin/#{branch}..#{branch}", parseLog
 
   status: ->
     return callGit 'status --porcelain', parseStatus
