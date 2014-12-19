@@ -105,13 +105,14 @@ class GitControlView extends View
     append = (location, branches, local) =>
       location.find('.branch').remove()
       for branch in branches
+        current = branch is @selectedBranch
         count = klass: 'hidden'
-        if local
-          console.log branch, count = git.count(branch)
-          count.total = count.ahead # + count.behind
+        if local and current
+          count = git.count(branch)
+          count.total = count.ahead + count.behind
           count.klass = 'hidden' unless count.total
 
-        klass = if branch is @selectedBranch then 'active' else ''
+        klass = if current then 'active' else ''
 
         location.append $$ ->
           @div class: "branch #{klass}", =>
@@ -119,8 +120,8 @@ class GitControlView extends View
             @div class: "count #{count.klass}", =>
               @span count.ahead
               @i class: 'icon cloud-upload'
-              #@span count.behind
-              #@i class: 'icon cloud-download'
+              @span count.behind
+              @i class: 'icon cloud-download'
 
       return
 
