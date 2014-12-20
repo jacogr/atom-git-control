@@ -180,13 +180,12 @@ class GitControlView extends View
     fnames = []
     for div in @filesView.find('.file').toArray()
       f = $(div)
-      name = f.attr('data-name')
-
-      if @files[name].selected
-        fnames.push name
-        f.addClass('active')
-      else
-        f.removeClass('active')
+      if name = f.attr('data-name')
+        if @files[name].selected
+          fnames.push name
+          f.addClass('active')
+        else
+          f.removeClass('active')
 
     for name, file of @files
       unless name in fnames
