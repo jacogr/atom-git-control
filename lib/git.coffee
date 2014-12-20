@@ -22,7 +22,7 @@ getBranches = -> q.fcall ->
     branches.local.push h.replace('refs/heads/', '')
 
   for h in refs.remotes
-    branches.remote.push h.replace('refs/remotes/', '')
+    branches.remote.push h.replace('refs/remotes/origin/', '')
 
   return branches
 
