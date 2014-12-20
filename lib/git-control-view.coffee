@@ -321,7 +321,10 @@ class GitControlView extends View
     git.add(files.add)
       .then -> git.remove(files.rem)
       .then -> git.commit(files.all, msg)
-      .then => @update()
+      .then =>
+        for name of files.all
+          @files[name].selected = false
+        @update()
 
     return
 
