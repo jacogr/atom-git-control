@@ -128,11 +128,11 @@ class GitControlView extends View
     return
 
   addBranch: (location, branch, local) ->
-    current = branch is @selectedBranch
+    current = local and branch is @selectedBranch
     klass = if current then 'active' else ''
     count = klass: 'hidden'
 
-    if local and current
+    if current
       count = git.count(branch)
       count.total = count.ahead + count.behind
       count.klass = 'hidden' unless count.total
