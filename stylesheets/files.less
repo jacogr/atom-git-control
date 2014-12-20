@@ -1,0 +1,36 @@
+@import "ui-variables";
+
+.git-control .files {
+  width: 100%;
+  margin-bottom: 15px;
+
+  .allfiles {
+    margin-bottom: 5px;
+    color: @text-color-highlight;
+    display: none;
+  }
+
+  &.none .allfiles {
+    display: none;
+  }
+
+  .file, .allfiles {
+    margin-left: @component-icon-size;
+
+    input[type='checkbox'] {
+      margin-right: 5px;
+    }
+
+    &.deleted {
+      color: @text-color-subtle;
+    }
+
+    &.modified {
+      color: @text-color-warning;
+    }
+
+    &.new {
+      color: @text-color-success;
+    }
+  }
+}

@@ -28,20 +28,27 @@ class GitControlView extends View
             @div class: 'heading', =>
               @i class: 'icon forked'
               @span 'Workspace'
+              @div class: 'action', click: 'selectAllFiles', =>
+                @span 'Select'
+                @i class: 'icon check'
             @div class: 'allfiles', =>
-              @input type: 'checkbox', click: 'selectAllFiles', outlet: 'allFilesCb'
-              @i class: 'icon check'
-              @span 'Select All'
+              @input type: 'checkbox', outlet: 'allFilesCb'
 
           @div class: 'branches', outlet: 'localBranchView', =>
             @div class: 'heading', =>
               @i class: 'icon branch'
               @span 'Local'
+              @div class: 'action', =>
+                @span 'Select'
+                @i class: 'icon chevron-down'
 
           @div class: 'branches', outlet: 'remoteBranchView', =>
             @div class: 'heading', =>
               @i class: 'icon branch'
               @span 'Remote'
+              @div class: 'action', =>
+                @span 'Select'
+                @i class: 'icon chevron-down'
 
         @div class: 'domain', =>
           @div class: 'diff', outlet: 'diffView'
@@ -119,7 +126,7 @@ class GitControlView extends View
     @selectedBranch = git.getLocalBranch()
 
     append = (location, branches, local) =>
-      location.find('.branch').remove()
+      location.find('>.branch').remove()
       for branch in branches
         current = branch is @selectedBranch
         klass = if current then 'active' else ''
@@ -160,9 +167,11 @@ class GitControlView extends View
     return
 
   selectAllFiles: ->
+    val = !!!@allFilesCb.prop('checked')
+    @allFilesCb.prop('checked', val)
+
     @filesSelected = []
 
-    val = !!@allFilesCb.prop('checked')
     for input in @filesView.find(".file input").toArray()
       cb = $(input)
       cb.prop('checked', val)

@@ -1,0 +1,39 @@
+@import "ui-variables";
+
+.git-control .branches {
+  width: 100%;
+  margin-bottom: 15px;
+
+  &>.branch {
+    margin-left: @component-icon-size;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+
+    &.active {
+      background: @button-background-color;
+      color: @text-color-highlight;
+    }
+
+    &:hover {
+      color: @text-color-highlight;
+    }
+
+    .count {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: inline-block;
+      color: @text-color;
+
+      &.hidden {
+        display: none;
+      }
+
+      i.icon {
+        margin-left: 2px;
+      }
+    }
+  }
+}
