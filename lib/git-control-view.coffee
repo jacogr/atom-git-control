@@ -15,8 +15,6 @@ menuItems = [
   { id: 'tag', menu: 'Tag', icon: 'tag'}
 ]
 
-count = 0
-
 module.exports =
 class GitControlView extends View
   @content: ->
@@ -60,6 +58,7 @@ class GitControlView extends View
     @active = true
     @branchSelected = null
     @files = {}
+    @count = 900000
     @filesSelected = []
 
     @createMenu()
@@ -160,17 +159,22 @@ class GitControlView extends View
     @filesSelected = []
 
     for input in @filesView.find(".file input").toArray()
-      input = $(input)
-      if !!input.prop('checked')
-        @filesSelected.push @files[input.attr('id')]
+      cb = $(input)
+      if !!cb.prop('checked')
+        @filesSelected.push @files[cb.attr('id')]
 
+    console.log 'selectFile', @filesSelected
     @activateMenu('file', @filesSelected.length)
 
     return
 
   addFile: (file) ->
-    id = "file#{Date.now()}-#{++count}"
+    id = undefined
+    for f in @files when file.name is f.name
+      id = f.id
 
+    id = "file#{@count++}" unless id
+    file.id = id
     @files[id] = file
 
     @filesView.append $$ ->
@@ -180,7 +184,7 @@ class GitControlView extends View
         @span file.name
 
     for input in @filesView.find(".file input##{id}").toArray()
-      $(input).on 'change', => @selectFile(id)
+      $(input).on 'change', => @selectFile()
 
     return
 
@@ -190,7 +194,6 @@ class GitControlView extends View
 
     git.status().then (files) =>
       @filesView.find('.file').remove()
-      @files = {}
 
       if files.length
         for file in files
