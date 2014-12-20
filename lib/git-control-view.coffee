@@ -143,7 +143,7 @@ class GitControlView extends View
 
         location.append $$ ->
           @div class: "branch #{klass}", =>
-            @i class: 'icon check'
+            @i class: 'icon chevron-right'
             @span branch
             @div class: "count #{count.klass}", =>
               @span count.ahead
