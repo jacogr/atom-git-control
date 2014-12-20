@@ -161,7 +161,6 @@ class GitControlView extends View
     return
 
   activateMenu: (type, active) ->
-    console.log 'activate', type, active
     menuItems = @menuView.find(".item.type-#{type}")
     if active
       menuItems.removeClass('inactive')
@@ -176,7 +175,6 @@ class GitControlView extends View
     return false
 
   showSelectedFiles: ->
-    console.log 'showSelected', @filesView.find('.file').toArray()
     fnames = []
     for div in @filesView.find('.file').toArray()
       f = $(div)
@@ -191,7 +189,6 @@ class GitControlView extends View
       unless name in fnames
         file.selected = false
 
-    console.log 'showSelected', fnames, @files
     @activateMenu('file', fnames.length)
 
     return
