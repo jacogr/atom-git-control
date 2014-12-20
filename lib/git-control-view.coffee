@@ -42,7 +42,11 @@ class GitControlView extends View
           @div class: 'branches', outlet: 'remoteBranchView'
 
         @div class: 'domain', =>
-          @div class: 'diff', outlet: 'diffView'
+          @div class: 'diff', outlet: 'diffView', =>
+          @div class: 'commit-msg', outlet: 'commitView', =>
+            @textarea outlet: 'commitMsg'
+            @button click: 'commitCancel', 'Cancel'
+            @button class: 'active', click: 'commitPost', 'Commit'
 
       @div class: 'logger', outlet: 'logView'
 
@@ -263,11 +267,23 @@ class GitControlView extends View
       return
     return
 
-  doCommit: (files) ->
-
   commitMenuClick: ->
+    console.log @filesSelected
     return unless @filesSelected.length
 
+    @commitView.addClass('active')
+    @commitMsg.val('')
+    return
+
+  commitCancel: ->
+    @commitView.removeClass('active')
+    return
+
+  commitPost: ->
+    @commitCancel()
+    return unless @filesSelected.length
+
+    msg = @commitMsg.val()
     files =
       all: []
       add: []
@@ -281,7 +297,7 @@ class GitControlView extends View
 
     git.add(files.add)
       .then -> git.remove(files.rem)
-      .then -> git.commit(files.all, null)
+      .then -> git.commit(files.all, msg)
       .then => @update()
 
     return
