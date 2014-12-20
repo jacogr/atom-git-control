@@ -192,7 +192,7 @@ class GitControlView extends View
 
     git.status().then (files) =>
       @filesView.find('.file').remove()
-      @files = []
+      @files = {}
 
       if files.length
         for file in files
