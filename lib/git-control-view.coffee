@@ -206,7 +206,7 @@ class GitControlView extends View
 
     @filesView.append $$ ->
       @div class: "file #{file.type}", 'data-name': file.name, =>
-        @input type: 'checkbox', class: 'invisible'
+        @i class: 'icon check active'
         @i class: "icon file-#{file.type}"
         @span file.name
 

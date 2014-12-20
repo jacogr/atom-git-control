@@ -16,17 +16,9 @@
 
   .file, .allfiles {
     margin: 2px 0 2px @component-icon-size;
-    padding: 3px 5px;
+    padding: 0 5px;
     border-radius: 4px;
     cursor: pointer;
-
-    &.active {
-      background: @button-background-color;
-    }
-
-    input[type='checkbox'] {
-      margin-right: 5px;
-    }
 
     &.deleted {
       color: @text-color-subtle;
@@ -38,6 +30,20 @@
 
     &.new {
       color: @text-color-success;
+    }
+
+    .icon.active {
+      color: @text-color-subtle;
+      opacity: 0.5;
+    }
+
+    &.active {
+      //background: @button-background-color;
+
+      .icon.active {
+        color: @text-color-highlight;
+        opacity: 1.0;
+      }
     }
   }
 }
