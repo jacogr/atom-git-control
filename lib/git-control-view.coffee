@@ -31,8 +31,7 @@ class GitControlView extends View
               @div class: 'action', click: 'selectAllFiles', =>
                 @span 'Select'
                 @i class: 'icon check'
-            @div class: 'allfiles', =>
-              @input type: 'checkbox', outlet: 'allFilesCb'
+                @input class: 'invisible', type: 'checkbox', outlet: 'allFilesCb'
 
           @div class: 'branches', outlet: 'localBranchView', =>
             @div class: 'heading', =>
