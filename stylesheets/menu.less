@@ -1,0 +1,29 @@
+@import "ui-variables";
+
+.git-control .menu {
+  border-bottom: 1px solid @base-border-color;
+  background: inherit;
+
+  .item {
+    display: inline-block;
+    margin: 5px 0 5px 5px;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      color: @text-color-highlight;
+    }
+
+    &.inactive, &.inactive:hover {
+      color: @text-color-subtle;
+      cursor: default;
+    }
+
+    div {
+      text-align: center;
+      width: 100%;
+      min-width: 60px;
+    }
+  }
+}

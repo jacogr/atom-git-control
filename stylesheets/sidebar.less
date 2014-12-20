@@ -1,0 +1,85 @@
+@import "ui-variables";
+
+.git-control .sidebar {
+  width: 30%;
+  height: 100%;
+  float: left;
+  border-right: 1px solid @base-border-color;
+  background: inherit;
+  padding: 10px 10px 80px 10px;
+  overflow-y: scroll;
+
+  .heading {
+    font-weight: bold;
+    color: @text-color-highlight;
+    margin-bottom: 5px;
+  }
+
+  .files {
+    width: 100%;
+    margin-bottom: 15px;
+
+    .allfiles {
+      margin-bottom: 5px;
+      color: @text-color-highlight;
+    }
+
+    .file, .allfiles {
+      margin-left: @component-icon-size;
+
+      input[type='checkbox'] {
+        margin-right: 5px;
+      }
+
+      &.deleted {
+        color: @text-color-subtle;
+      }
+
+      &.modified {
+        color: @text-color-warning;
+      }
+
+      &.new {
+        color: @text-color-success;
+      }
+    }
+  }
+
+  .branches {
+    width: 100%;
+    margin-bottom: 15px;
+
+    .branch {
+      margin-left: @component-icon-size;
+      padding: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+
+      &.active {
+        background: @button-background-color;
+        color: @text-color-highlight;
+      }
+
+      &:hover {
+        color: @text-color-highlight;
+      }
+
+      .count {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: inline-block;
+        color: @text-color;
+
+        &.hidden {
+          display: none;
+        }
+
+        i.icon {
+          margin-left: 2px;
+        }
+      }
+    }
+  }
+}

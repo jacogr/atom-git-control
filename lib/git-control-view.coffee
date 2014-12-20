@@ -15,8 +15,6 @@ menuItems = [
   { id: 'tag', menu: 'Tag', icon: 'tag'}
 ]
 
-count = 0
-
 module.exports =
 class GitControlView extends View
   @content: ->
@@ -29,7 +27,11 @@ class GitControlView extends View
           @div class: 'heading', =>
             @i class: 'icon forked'
             @span 'Workspace'
-          @div class: 'files', outlet: 'filesView'
+          @div class: 'files', outlet: 'filesView', =>
+            @div class: "allfiles", =>
+              @input type: 'checkbox', click: 'selectAllFiles', outlet: 'allFilesCb'
+              @i class: 'icon check'
+              @span 'Select All'
 
           @div class: 'heading', =>
             @i class: 'icon branch'
@@ -42,7 +44,11 @@ class GitControlView extends View
           @div class: 'branches', outlet: 'remoteBranchView'
 
         @div class: 'domain', =>
-          @div class: 'diff', outlet: 'diffView'
+          @div class: 'diff', outlet: 'diffView', =>
+          @div class: 'commit-msg', outlet: 'commitView', =>
+            @textarea outlet: 'commitMsg'
+            @button click: 'commitCancel', 'Cancel'
+            @button class: 'active', click: 'commitPost', 'Commit'
 
       @div class: 'logger', outlet: 'logView'
 
@@ -56,6 +62,7 @@ class GitControlView extends View
     @active = true
     @branchSelected = null
     @files = {}
+    @count = 900000
     @filesSelected = []
 
     @createMenu()
@@ -72,11 +79,9 @@ class GitControlView extends View
 
   update: (nofetch) ->
     @loadBranches()
+    @showStatus()
 
-    unless nofetch
-      @fetchMenuClick()
-    else
-      @showStatus()
+    @fetchMenuClick() unless nofetch
 
     return
 
@@ -154,21 +159,39 @@ class GitControlView extends View
       menuItems.addClass('inactive')
     return
 
-  selectFile: ->
+  selectAllFiles: ->
     @filesSelected = []
 
+    val = !!@allFilesCb.prop('checked')
     for input in @filesView.find(".file input").toArray()
-      input = $(input)
-      if !!input.prop('checked')
-        @filesSelected.push @files[input.attr('id')]
+      cb = $(input)
+      cb.prop('checked', val)
+      if val
+        @filesSelected.push @files[cb.attr('id')]
+
+    @activateMenu('file', @filesSelected.length)
+    return
+
+  selectFile: ->
+    @filesSelected = []
+    @allFilesCb.prop('checked', false)
+
+    for input in @filesView.find(".file input").toArray()
+      cb = $(input)
+      if !!cb.prop('checked')
+        @filesSelected.push @files[cb.attr('id')]
 
     @activateMenu('file', @filesSelected.length)
 
     return
 
   addFile: (file) ->
-    id = "file#{Date.now()}-#{++count}"
+    id = undefined
+    for f in @files when file.name is f.name
+      id = f.id
 
+    id = "file#{@count++}" unless id
+    file.id = id
     @files[id] = file
 
     @filesView.append $$ ->
@@ -178,7 +201,7 @@ class GitControlView extends View
         @span file.name
 
     for input in @filesView.find(".file input##{id}").toArray()
-      $(input).on 'change', => @selectFile(id)
+      $(input).on 'change', => @selectFile()
 
     return
 
@@ -188,7 +211,6 @@ class GitControlView extends View
 
     git.status().then (files) =>
       @filesView.find('.file').remove()
-      @files = []
 
       if files.length
         for file in files
@@ -263,11 +285,22 @@ class GitControlView extends View
       return
     return
 
-  doCommit: (files) ->
-
   commitMenuClick: ->
     return unless @filesSelected.length
 
+    @commitView.addClass('active')
+    @commitMsg.val('')
+    return
+
+  commitCancel: ->
+    @commitView.removeClass('active')
+    return
+
+  commitPost: ->
+    @commitCancel()
+    return unless @filesSelected.length
+
+    msg = @commitMsg.val()
     files =
       all: []
       add: []
@@ -281,7 +314,7 @@ class GitControlView extends View
 
     git.add(files.add)
       .then -> git.remove(files.rem)
-      .then -> git.commit(files.all, null)
+      .then -> git.commit(files.all, msg)
       .then => @update()
 
     return
