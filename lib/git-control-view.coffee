@@ -163,7 +163,6 @@ class GitControlView extends View
       if !!cb.prop('checked')
         @filesSelected.push @files[cb.attr('id')]
 
-    console.log 'selectFile', @filesSelected
     @activateMenu('file', @filesSelected.length)
 
     return
@@ -269,7 +268,6 @@ class GitControlView extends View
     return
 
   commitMenuClick: ->
-    console.log @filesSelected
     return unless @filesSelected.length
 
     @commitView.addClass('active')
