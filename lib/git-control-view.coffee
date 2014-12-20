@@ -156,9 +156,9 @@ class GitControlView extends View
               @span count.behind
               @i class: 'icon cloud-download'
 
-        if local and not current
-          for div in location.find(".branch[data-name='#{branch}']").toArray()
-            $(div).on 'dblclick', => @checkoutBranch(branch)
+        #if local
+        for div in location.find(".branch[data-name='#{branch}']").toArray()
+          $(div).on 'dblclick', => @checkoutBranch(branch)
 
       return
 
