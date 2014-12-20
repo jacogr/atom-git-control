@@ -123,11 +123,16 @@ class GitControlView extends View
       return
     return
 
+  checkoutBranch: (branch) ->
+    git.checkout(branch).then => @update()
+    return
+
   loadBranches: ->
     @selectedBranch = git.getLocalBranch()
 
     append = (location, branches, local) =>
       location.find('>.branch').remove()
+
       for branch in branches
         current = branch is @selectedBranch
         klass = if current then 'active' else ''
@@ -142,14 +147,18 @@ class GitControlView extends View
           @activateMenu('downstream', count.ahead)
 
         location.append $$ ->
-          @div class: "branch #{klass}", =>
-            @i class: 'icon check'
+          @div class: "branch #{klass}", 'data-name': branch, =>
+            @i class: 'icon chevron-right'
             @span branch
             @div class: "count #{count.klass}", =>
               @span count.ahead
               @i class: 'icon cloud-upload'
               @span count.behind
               @i class: 'icon cloud-download'
+
+        #if local
+        for div in location.find(".branch[data-name='#{branch}']").toArray()
+          $(div).on 'dblclick', => @checkoutBranch(branch)
 
       return
 
@@ -175,16 +184,22 @@ class GitControlView extends View
     return false
 
   showSelectedFiles: ->
-    count = 0
+    fnames = []
     for div in @filesView.find('.file').toArray()
       f = $(div)
-      if @files[f.attr('data-name')].selected
-        f.addClass('active')
-        count++
-      else
-        f.removeClass('active')
+      if name = f.attr('data-name')
+        if @files[name].selected
+          fnames.push name
+          f.addClass('active')
+        else
+          f.removeClass('active')
 
-    @activateMenu('file', count)
+    for name, file of @files
+      unless name in fnames
+        file.selected = false
+
+    @activateMenu('file', fnames.length)
+
     return
 
   selectAllFiles: ->
@@ -222,18 +237,24 @@ class GitControlView extends View
 
   showStatus: ->
     git.status().then (files) =>
+      fnames = []
       @filesView.find('.file').remove()
 
       if files.length
         @filesView.removeClass('none')
 
         for file in files
+          fnames.push file.name
           @addFile(file)
 
       else
         @filesView.addClass('none')
         @filesView.append $$ ->
           @div class: 'file deleted', 'No local working copy changes detected'
+
+      for name, file of @files
+        unless name in fnames
+          file.selected = false
 
       @showSelectedFiles()
       return
@@ -318,11 +339,13 @@ class GitControlView extends View
         when 'new' then files.add.push name
         when 'deleted' then files.rem.push name
 
+    for name in files.all
+      @files[name].selected = false
+
     git.add(files.add)
       .then -> git.remove(files.rem)
       .then -> git.commit(files.all, msg)
       .then => @update()
-
     return
 
   fetchMenuClick: ->
