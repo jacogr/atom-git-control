@@ -225,12 +225,17 @@ class GitControlView extends View
       @filesView.find('.file').remove()
 
       if files.length
+        for name, file of @files
+          file.selected = false unless name in files
+          
         @filesView.removeClass('none')
 
         for file in files
           @addFile(file)
-
       else
+        for name, file of @files
+          file.selected = false
+
         @filesView.addClass('none')
         @filesView.append $$ ->
           @div class: 'file deleted', 'No local working copy changes detected'
