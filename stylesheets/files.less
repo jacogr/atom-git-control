@@ -15,7 +15,14 @@
   }
 
   .file, .allfiles {
-    margin-left: @component-icon-size;
+    margin: 2px 0 2px @component-icon-size;
+    padding: 3px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &.active {
+      background: @button-background-color;
+    }
 
     input[type='checkbox'] {
       margin-right: 5px;
