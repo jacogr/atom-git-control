@@ -1,0 +1,35 @@
+@import "ui-variables";
+
+.git-control .diff {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 10px 10px 80px 10px;
+  background: inherit;
+
+  .line {
+    &.subtle {
+      color: @text-color-subtle;
+    }
+
+    &.red {
+      color: @text-color-error;
+    }
+
+    &.green {
+      color: @text-color-success;
+    }
+
+    &+.line.heading {
+      margin-top: 15px;
+    }
+
+    pre {
+      display: inline-block;
+
+      &.lineno {
+        color: @text-color-subtle;
+      }
+    }
+  }
+}

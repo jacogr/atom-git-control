@@ -1,188 +1,24 @@
-// The ui-variables file is provided by base themes provided by Atom.
-//
-// See https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
-// for a full listing of what's available.
+// https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
 @import "ui-variables";
-@import "icons";
 
 .git-control {
   color: @text-color;
+  background: @app-background-color;
 
-  .menu {
-    border-bottom: 1px solid @base-border-color;
-    background: @app-background-color;
-
-    .item {
-      display: inline-block;
-      margin: 5px 0 5px 5px;
-      padding: 5px;
-      cursor: pointer;
-      border-radius: 4px;
-
-      &:hover {
-        color: @text-color-highlight;
-      }
-
-      &.inactive, &.inactive:hover {
-        color: @text-color-subtle;
-        cursor: default;
-      }
-
-      div {
-        text-align: center;
-        width: 100%;
-        min-width: 60px;
-      }
-    }
-  }
-
-  .logger {
-    width: 100%;
-    height: 34%;
-    overflow-y: scroll;
-    border-top: 1px solid @base-border-color;
-    padding: 10px 10px 70px 10px;
-    background: @app-background-color;
-
-    pre {
-      padding: 0;
-      font-size: 11px;
-      color: inherit;
-      background: @app-background-color;
-      color: @text-color-subtle;
-
-      &.error {
-        color: @text-color-error;
-      }
-    }
-  }
-
-  .content {
-    height: 66%;
-    width: 100%;
-
-    .sidebar {
-      width: 30%;
-      height: 100%;
-      float: left;
-      border-right: 1px solid @base-border-color;
-      background: @app-background-color;
-      padding: 10px 10px 80px 10px;
-      overflow-y: scroll;
-
-      .heading {
-        font-weight: bold;
-        color: @text-color-highlight;
-        margin-bottom: 5px;
-      }
-
-      .files {
-        width: 100%;
-        margin-bottom: 15px;
-
-        .file {
-          margin-left: @component-icon-size;
-
-          input[type='checkbox'] {
-            margin-right: 5px;
-          }
-
-          &.deleted {
-            color: @text-color-subtle;
-          }
-
-          &.modified {
-            color: @text-color-warning;
-          }
-
-          &.new {
-            color: @text-color-success;
-          }
-        }
-      }
-
-      .branches {
-        width: 100%;
-        margin-bottom: 15px;
-
-        .branch {
-          margin-left: @component-icon-size;
-          padding: 5px;
-          border-radius: 4px;
-          cursor: pointer;
-          position: relative;
-
-          &.active {
-            background: @button-background-color;
-            color: @text-color-highlight;
-          }
-
-          &:hover {
-            color: @text-color-highlight;
-          }
-
-          .count {
-            position: absolute;
-            right: 0;
-            top: 0;
-            display: inline-block;
-            color: @text-color;
-
-            &.hidden {
-              display: none;
-            }
-
-            i.icon {
-              margin-left: 2px;
-            }
-          }
-        }
-      }
-    }
-
-    .domain {
-      width: 70%;
-      height: 100%;
-      float: left;
-      background: @app-background-color;
-
-      .diff {
-        width: 100%;
-        height: 100%;
-        overflow-y: scroll;
-        padding: 10px 10px 80px 10px;
-
-        .line {
-          &.subtle {
-            color: @text-color-subtle;
-          }
-
-          &.red {
-            color: @text-color-error;
-          }
-
-          &.green {
-            color: @text-color-success;
-          }
-
-          &+.line.heading {
-            margin-top: 15px;
-          }
-
-          pre {
-            padding: 0;
-            font-size: 11px;
-            background: @app-background-color;
-            display: inline-block;
-            color: inherit;
-
-            &.lineno {
-              //background: @background-color-highlight;
-              color: @text-color-subtle;
-            }
-          }
-        }
-      }
-    }
+  pre {
+    padding: 0;
+    font-size: 11px;
+    background: inherit;
+    color: inherit;
+    background: inherit;
   }
 }
+
+@import "commit";
+@import "content";
+@import "diff";
+@import "domain";
+@import "icons";
+@import "logger";
+@import "menu";
+@import "sidebar";
