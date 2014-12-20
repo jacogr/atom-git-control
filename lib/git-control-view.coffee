@@ -53,8 +53,12 @@ class GitControlView extends View
           @div class: 'diff', outlet: 'diffView'
           @div class: 'commit-msg', outlet: 'commitView', =>
             @textarea class: 'native-key-bindings', outlet: 'commitMsg'
-            @button click: 'commitCancel', 'Cancel'
-            @button class: 'active', click: 'commitPost', 'Commit'
+            @button click: 'commitCancel', =>
+              @i class: 'icon x'
+              @span 'Cancel'
+            @button class: 'active', click: 'commitPost', =>
+              @i class: 'icon commit'
+              @span 'Commit'
 
       @div class: 'logger', outlet: 'logView'
 
