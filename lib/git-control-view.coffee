@@ -175,16 +175,23 @@ class GitControlView extends View
     return false
 
   showSelectedFiles: ->
-    count = 0
+    fnames = []
     for div in @filesView.find('.file').toArray()
       f = $(div)
-      if @files[f.attr('data-name')].selected
+      name = f.attr('data-name')
+
+      if @files[name].selected
+        fnames.push name
         f.addClass('active')
-        count++
       else
         f.removeClass('active')
 
-    @activateMenu('file', count)
+    for name, file of @files
+      unless name in fnames
+        file.selected = false
+
+    @activateMenu('file', fnames.length)
+
     return
 
   selectAllFiles: ->
@@ -222,23 +229,24 @@ class GitControlView extends View
 
   showStatus: ->
     git.status().then (files) =>
+      fnames = []
       @filesView.find('.file').remove()
 
       if files.length
-        for name, file of @files
-          file.selected = false unless name in files
-          
         @filesView.removeClass('none')
 
         for file in files
+          fnames.push file.name
           @addFile(file)
-      else
-        for name, file of @files
-          file.selected = false
 
+      else
         @filesView.addClass('none')
         @filesView.append $$ ->
           @div class: 'file deleted', 'No local working copy changes detected'
+
+      for name, file of @files
+        unless name in fnames
+          file.selected = false
 
       @showSelectedFiles()
       return
