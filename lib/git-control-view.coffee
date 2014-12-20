@@ -151,7 +151,7 @@ class GitControlView extends View
           @i class: 'icon cloud-download'
 
     for div in location.find(".branch[data-name='#{branch}']").toArray()
-      $(div).on 'dblclick', => @checkoutBranch(branch, !local)
+      $(div).on 'click', => @checkoutBranch(branch, !local)
 
     return
 
