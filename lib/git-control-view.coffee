@@ -27,7 +27,11 @@ class GitControlView extends View
           @div class: 'heading', =>
             @i class: 'icon forked'
             @span 'Workspace'
-          @div class: 'files', outlet: 'filesView'
+          @div class: 'files', outlet: 'filesView', =>
+            @div class: "allfiles", =>
+              @input type: 'checkbox', click: 'selectAllFiles', outlet: 'allFilesCb'
+              @i class: 'icon check'
+              @span 'Select All'
 
           @div class: 'heading', =>
             @i class: 'icon branch'
@@ -153,6 +157,19 @@ class GitControlView extends View
       menuItems.removeClass('inactive')
     else
       menuItems.addClass('inactive')
+    return
+
+  selectAllFiles: ->
+    @filesSelected = []
+
+    val = !!@allFilesCb.prop('checked')
+    for input in @filesView.find(".file input").toArray()
+      cb = $(input)
+      cb.prop('checked', val)
+      if val
+        @filesSelected.push @files[cb.attr('id')]
+
+    @activateMenu('file', @filesSelected.length)
     return
 
   selectFile: ->
