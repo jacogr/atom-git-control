@@ -123,11 +123,16 @@ class GitControlView extends View
       return
     return
 
+  checkoutBranch: (branch) ->
+    git.checkout(branch).then => @update()
+    return
+
   loadBranches: ->
     @selectedBranch = git.getLocalBranch()
 
     append = (location, branches, local) =>
       location.find('>.branch').remove()
+
       for branch in branches
         current = branch is @selectedBranch
         klass = if current then 'active' else ''
@@ -142,7 +147,7 @@ class GitControlView extends View
           @activateMenu('downstream', count.ahead)
 
         location.append $$ ->
-          @div class: "branch #{klass}", =>
+          @div class: "branch #{klass}", 'data-name': branch, =>
             @i class: 'icon chevron-right'
             @span branch
             @div class: "count #{count.klass}", =>
@@ -150,6 +155,10 @@ class GitControlView extends View
               @i class: 'icon cloud-upload'
               @span count.behind
               @i class: 'icon cloud-download'
+
+        if local and not current
+          for div in location.find(".branch[data-name='#{branch}']").toArray()
+            $(div).on 'dblclick', => @checkoutBranch(branch)
 
       return
 
