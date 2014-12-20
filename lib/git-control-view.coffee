@@ -76,11 +76,9 @@ class GitControlView extends View
 
   update: (nofetch) ->
     @loadBranches()
+    @showStatus()
 
-    unless nofetch
-      @fetchMenuClick()
-    else
-      @showStatus()
+    @fetchMenuClick() unless nofetch
 
     return
 
