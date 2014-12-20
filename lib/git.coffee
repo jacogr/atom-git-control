@@ -113,7 +113,7 @@ module.exports =
     return callGit "fetch", parseDefault
 
   pull: ->
-    return callGit "pull --porcelain", parseDefault
+    return callGit "pull", parseDefault
 
   push: ->
     return callGit "-c push.default=simple push --porcelain", parseDefault
