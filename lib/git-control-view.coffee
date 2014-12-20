@@ -24,27 +24,27 @@ class GitControlView extends View
       @div class: 'content', =>
         @div class: 'sidebar', =>
 
-          @div class: 'heading', =>
-            @i class: 'icon forked'
-            @span 'Workspace'
           @div class: 'files', outlet: 'filesView', =>
-            @div class: "allfiles", =>
+            @div class: 'heading', =>
+              @i class: 'icon forked'
+              @span 'Workspace'
+            @div class: 'allfiles', =>
               @input type: 'checkbox', click: 'selectAllFiles', outlet: 'allFilesCb'
               @i class: 'icon check'
               @span 'Select All'
 
-          @div class: 'heading', =>
-            @i class: 'icon branch'
-            @span 'Local'
-          @div class: 'branches', outlet: 'localBranchView'
+          @div class: 'branches', outlet: 'localBranchView', =>
+            @div class: 'heading', =>
+              @i class: 'icon branch'
+              @span 'Local'
 
-          @div class: 'heading', =>
-            @i class: 'icon branch'
-            @span 'Remote'
-          @div class: 'branches', outlet: 'remoteBranchView'
+          @div class: 'branches', outlet: 'remoteBranchView', =>
+            @div class: 'heading', =>
+              @i class: 'icon branch'
+              @span 'Remote'
 
         @div class: 'domain', =>
-          @div class: 'diff', outlet: 'diffView', =>
+          @div class: 'diff', outlet: 'diffView'
           @div class: 'commit-msg', outlet: 'commitView', =>
             @textarea outlet: 'commitMsg'
             @button click: 'commitCancel', 'Cancel'
@@ -181,8 +181,6 @@ class GitControlView extends View
       if !!cb.prop('checked')
         @filesSelected.push @files[cb.attr('id')]
 
-    @activateMenu('file', @filesSelected.length)
-
     return
 
   addFile: (file) ->
@@ -213,6 +211,8 @@ class GitControlView extends View
       @filesView.find('.file').remove()
 
       if files.length
+        @filesView.removeClass('none')
+
         for file in files
           @addFile(file)
 
@@ -225,11 +225,11 @@ class GitControlView extends View
             @filesSelected.push @files[input.attr('id')]
 
       else
+        @filesView.addClass('none')
         @filesView.append $$ ->
           @div class: 'file deleted', 'No local working copy changes detected'
 
-      @selectFile()
-
+      @activateMenu('file', @filesSelected.length)
       return
     return
 
