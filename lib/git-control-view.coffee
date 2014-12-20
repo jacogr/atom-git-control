@@ -322,10 +322,10 @@ class GitControlView extends View
       .then -> git.remove(files.rem)
       .then -> git.commit(files.all, msg)
       .then =>
-        for name of files.all
+        for name in files.all
           @files[name].selected = false
         @update()
-
+        return
     return
 
   fetchMenuClick: ->
