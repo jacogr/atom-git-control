@@ -161,6 +161,7 @@ class GitControlView extends View
     return
 
   activateMenu: (type, active) ->
+    console.log @files
     menuItems = @menuView.find(".item.type-#{type}")
     if active
       menuItems.removeClass('inactive')
