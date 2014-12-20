@@ -174,6 +174,7 @@ class GitControlView extends View
 
   selectFile: ->
     @filesSelected = []
+    @allFilesCb.prop('checked', false)
 
     for input in @filesView.find(".file input").toArray()
       cb = $(input)
