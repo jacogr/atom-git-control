@@ -139,6 +139,7 @@ class GitControlView extends View
 
         location.append $$ ->
           @div class: "branch #{klass}", =>
+            @i class: 'icon check'
             @span branch
             @div class: "count #{count.klass}", =>
               @span count.ahead
@@ -206,7 +207,7 @@ class GitControlView extends View
 
     @filesView.append $$ ->
       @div class: "file #{file.type}", 'data-name': file.name, =>
-        @i class: 'icon check active'
+        @i class: 'icon check'
         @i class: "icon file-#{file.type}"
         @span file.name
 

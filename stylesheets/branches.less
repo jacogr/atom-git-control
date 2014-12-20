@@ -9,11 +9,22 @@
     padding: 3px 5px;
     border-radius: 4px;
     position: relative;
+    cursor: pointer;
+
+    .icon.check {
+      color: @text-color-subtle;
+      opacity: 0.5;
+    }
 
     &.active {
-      background: @button-background-color;
+      //background: @button-background-color;
       color: @text-color-highlight;
       //cursor: pointer;
+
+      .icon.check {
+        color: @text-color-highlight;
+        opacity: 1.0;
+      }
     }
 
     &:hover {
