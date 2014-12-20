@@ -161,7 +161,6 @@ class GitControlView extends View
     return
 
   activateMenu: (type, active) ->
-    console.log @files, type, active
     menuItems = @menuView.find(".item.type-#{type}")
     if active
       menuItems.removeClass('inactive')
@@ -332,14 +331,13 @@ class GitControlView extends View
         when 'new' then files.add.push name
         when 'deleted' then files.rem.push name
 
+    for name in files.all
+      @files[name].selected = false
+
     git.add(files.add)
       .then -> git.remove(files.rem)
       .then -> git.commit(files.all, msg)
-      .then =>
-        for name in files.all
-          @files[name].selected = false
-        @update()
-        return
+      .then => @update()
     return
 
   fetchMenuClick: ->
