@@ -123,8 +123,36 @@ class GitControlView extends View
       return
     return
 
-  checkoutBranch: (branch) ->
-    git.checkout(branch).then => @update()
+  checkoutBranch: (branch, remote) ->
+    git.checkout(branch, remote).then => @update()
+    return
+
+  addBranch: (location, branch, local) ->
+    current = branch is @selectedBranch
+    klass = if current then 'active' else ''
+    count = klass: 'hidden'
+
+    if local and current
+      count = git.count(branch)
+      count.total = count.ahead + count.behind
+      count.klass = 'hidden' unless count.total
+
+      @activateMenu('upstream', count.behind)
+      @activateMenu('downstream', count.ahead)
+
+    location.append $$ ->
+      @div class: "branch #{klass}", 'data-name': branch, =>
+        @i class: 'icon chevron-right'
+        @span branch
+        @div class: "count #{count.klass}", =>
+          @span count.ahead
+          @i class: 'icon cloud-upload'
+          @span count.behind
+          @i class: 'icon cloud-download'
+
+    for div in location.find(".branch[data-name='#{branch}']").toArray()
+      $(div).on 'dblclick', => @checkoutBranch(branch, !local)
+
     return
 
   loadBranches: ->
@@ -132,33 +160,8 @@ class GitControlView extends View
 
     append = (location, branches, local) =>
       location.find('>.branch').remove()
-
       for branch in branches
-        current = branch is @selectedBranch
-        klass = if current then 'active' else ''
-        count = klass: 'hidden'
-
-        if local and current
-          count = git.count(branch)
-          count.total = count.ahead + count.behind
-          count.klass = 'hidden' unless count.total
-
-          @activateMenu('upstream', count.behind)
-          @activateMenu('downstream', count.ahead)
-
-        location.append $$ ->
-          @div class: "branch #{klass}", 'data-name': branch, =>
-            @i class: 'icon chevron-right'
-            @span branch
-            @div class: "count #{count.klass}", =>
-              @span count.ahead
-              @i class: 'icon cloud-upload'
-              @span count.behind
-              @i class: 'icon cloud-download'
-
-        #if local
-        for div in location.find(".branch[data-name='#{branch}']").toArray()
-          $(div).on 'dblclick', => @checkoutBranch(branch)
+        @addBranch(location, branch, local)
 
       return
 
@@ -349,21 +352,15 @@ class GitControlView extends View
     return
 
   fetchMenuClick: ->
-    git.fetch().then =>
-      @update(true)
-      return
+    git.fetch().then => @update(true)
     return
 
   pullMenuClick: ->
-    git.pull().then =>
-      @update(true)
-      return
+    git.pull().then => @update(true)
     return
 
   pushMenuClick: ->
-    git.push().then =>
-      @update(true)
-      return
+    git.push().then => @update(true)
     return
 
   resetMenuClick: ->
@@ -373,8 +370,6 @@ class GitControlView extends View
     for f in @filesSelected
       files.push f.name
 
-    git.reset(files).then =>
-      @update()
-      return
+    git.reset(files).then => @update()
 
     return

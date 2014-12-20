@@ -106,8 +106,8 @@ module.exports =
   commit: (files, message) ->
     return callGit "commit -m '#{message or Date.now()}' -- #{files.join(' ')}", parseDefault
 
-  checkout: (branch) ->
-    return callGit "checkout #{branch}", parseDefault
+  checkout: (branch, remote) ->
+    return callGit "checkout #{if remote then '-b ' else ''}#{branch}", parseDefault
 
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff, true
