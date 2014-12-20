@@ -108,7 +108,7 @@ module.exports =
 
   checkout: (branch) ->
     return callGit "checkout #{branch}", parseDefault
-    
+
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff, true
 
@@ -116,7 +116,7 @@ module.exports =
     return callGit "fetch", parseDefault
 
   pull: ->
-    return callGit "pull --porcelain", parseDefault
+    return callGit "pull", parseDefault
 
   push: ->
     return callGit "-c push.default=simple push --porcelain", parseDefault
