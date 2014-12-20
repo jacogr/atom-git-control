@@ -24,31 +24,41 @@ class GitControlView extends View
       @div class: 'content', =>
         @div class: 'sidebar', =>
 
-          @div class: 'heading', =>
-            @i class: 'icon forked'
-            @span 'Workspace'
           @div class: 'files', outlet: 'filesView', =>
-            @div class: "allfiles", =>
-              @input type: 'checkbox', click: 'selectAllFiles', outlet: 'allFilesCb'
-              @i class: 'icon check'
-              @span 'Select All'
+            @div class: 'heading', =>
+              @i class: 'icon forked'
+              @span 'Workspace'
+              @div class: 'action', click: 'selectAllFiles', =>
+                @span 'Select'
+                @i class: 'icon check'
+                @input class: 'invisible', type: 'checkbox', outlet: 'allFilesCb'
 
-          @div class: 'heading', =>
-            @i class: 'icon branch'
-            @span 'Local'
-          @div class: 'branches', outlet: 'localBranchView'
+          @div class: 'branches', outlet: 'localBranchView', =>
+            @div class: 'heading', =>
+              @i class: 'icon branch'
+              @span 'Local'
+              @div class: 'action', =>
+                @span 'Select'
+                @i class: 'icon chevron-down'
 
-          @div class: 'heading', =>
-            @i class: 'icon branch'
-            @span 'Remote'
-          @div class: 'branches', outlet: 'remoteBranchView'
+          @div class: 'branches', outlet: 'remoteBranchView', =>
+            @div class: 'heading', =>
+              @i class: 'icon branch'
+              @span 'Remote'
+              @div class: 'action', =>
+                @span 'Select'
+                @i class: 'icon chevron-down'
 
         @div class: 'domain', =>
-          @div class: 'diff', outlet: 'diffView', =>
+          @div class: 'diff', outlet: 'diffView'
           @div class: 'commit-msg', outlet: 'commitView', =>
-            @textarea outlet: 'commitMsg'
-            @button click: 'commitCancel', 'Cancel'
-            @button class: 'active', click: 'commitPost', 'Commit'
+            @textarea class: 'native-key-bindings', outlet: 'commitMsg'
+            @button click: 'commitCancel', =>
+              @i class: 'icon x'
+              @span 'Cancel'
+            @button class: 'active', click: 'commitPost', =>
+              @i class: 'icon commit'
+              @span 'Commit'
 
       @div class: 'logger', outlet: 'logView'
 
@@ -62,8 +72,6 @@ class GitControlView extends View
     @active = true
     @branchSelected = null
     @files = {}
-    @count = 900000
-    @filesSelected = []
 
     @createMenu()
 
@@ -119,7 +127,7 @@ class GitControlView extends View
     @selectedBranch = git.getLocalBranch()
 
     append = (location, branches, local) =>
-      location.find('.branch').remove()
+      location.find('>.branch').remove()
       for branch in branches
         current = branch is @selectedBranch
         klass = if current then 'active' else ''
@@ -135,6 +143,7 @@ class GitControlView extends View
 
         location.append $$ ->
           @div class: "branch #{klass}", =>
+            @i class: 'icon check'
             @span branch
             @div class: "count #{count.klass}", =>
               @span count.ahead
@@ -159,82 +168,79 @@ class GitControlView extends View
       menuItems.addClass('inactive')
     return
 
-  selectAllFiles: ->
-    @filesSelected = []
+  hasSelectedFiles: ->
+    for name, file of @files when file.selected
+      return true
 
-    val = !!@allFilesCb.prop('checked')
-    for input in @filesView.find(".file input").toArray()
-      cb = $(input)
-      cb.prop('checked', val)
-      if val
-        @filesSelected.push @files[cb.attr('id')]
+    return false
 
-    @activateMenu('file', @filesSelected.length)
+  showSelectedFiles: ->
+    count = 0
+    for div in @filesView.find('.file').toArray()
+      f = $(div)
+      if @files[f.attr('data-name')].selected
+        f.addClass('active')
+        count++
+      else
+        f.removeClass('active')
+
+    @activateMenu('file', count)
     return
 
-  selectFile: ->
-    @filesSelected = []
+  selectAllFiles: ->
+    val = !!!@allFilesCb.prop('checked')
+    @allFilesCb.prop('checked', val)
+
+    for name, file of @files
+      file.selected = val
+
+    @showSelectedFiles()
+    return
+
+  selectFile: (name) ->
+    if name
+      @files[name].selected = !!!@files[name].selected
+
     @allFilesCb.prop('checked', false)
-
-    for input in @filesView.find(".file input").toArray()
-      cb = $(input)
-      if !!cb.prop('checked')
-        @filesSelected.push @files[cb.attr('id')]
-
-    @activateMenu('file', @filesSelected.length)
-
+    @showSelectedFiles()
     return
 
   addFile: (file) ->
-    id = undefined
-    for f in @files when file.name is f.name
-      id = f.id
-
-    id = "file#{@count++}" unless id
-    file.id = id
-    @files[id] = file
+    @files[file.name] or= name: file.name
+    @files[file.name].type = file.type
 
     @filesView.append $$ ->
-      @div class: "file #{file.type}", =>
-        @input type: 'checkbox', id: id, 'data-name': file.name
+      @div class: "file #{file.type}", 'data-name': file.name, =>
+        @i class: 'icon check'
         @i class: "icon file-#{file.type}"
         @span file.name
 
-    for input in @filesView.find(".file input##{id}").toArray()
-      $(input).on 'change', => @selectFile()
+    for div in @filesView.find(".file[data-name='#{file.name}']").toArray()
+      $(div).on 'click', => @selectFile(file.name)
 
     return
 
   showStatus: ->
-    oldSelected = @filesSelected
-    @filesSelected = []
-
     git.status().then (files) =>
       @filesView.find('.file').remove()
 
       if files.length
+        @filesView.removeClass('none')
+
         for file in files
           @addFile(file)
 
-        for input in @filesView.find(".file input").toArray()
-          input = $(input)
-          name = input.attr('data-name')
-
-          for sel in oldSelected when sel.name is name
-            input.prop('checked', true)
-            @filesSelected.push @files[input.attr('id')]
-
       else
+        @filesView.addClass('none')
         @filesView.append $$ ->
           @div class: 'file deleted', 'No local working copy changes detected'
 
-      @selectFile()
-
+      @showSelectedFiles()
       return
     return
 
   compareMenuClick: ->
-    return unless @filesSelected.length
+    return unless @hasSelectedFiles()
 
     fmtNum = (num) ->
       return "     #{num or ''} ".slice(-6)
@@ -286,7 +292,7 @@ class GitControlView extends View
     return
 
   commitMenuClick: ->
-    return unless @filesSelected.length
+    return unless @hasSelectedFiles()
 
     @commitView.addClass('active')
     @commitMsg.val('')
@@ -298,7 +304,7 @@ class GitControlView extends View
 
   commitPost: ->
     @commitCancel()
-    return unless @filesSelected.length
+    return unless @hasSelectedFiles()
 
     msg = @commitMsg.val()
     files =
@@ -306,11 +312,11 @@ class GitControlView extends View
       add: []
       rem: []
 
-    for file in @filesSelected
-      files.all.push file.name
+    for name, file of @files when file.selected
+      files.all.push name
       switch file.type
-        when 'new' then files.add.push file.name
-        when 'deleted' then files.rem.push file.name
+        when 'new' then files.add.push name
+        when 'deleted' then files.rem.push name
 
     git.add(files.add)
       .then -> git.remove(files.rem)
@@ -338,7 +344,7 @@ class GitControlView extends View
     return
 
   resetMenuClick: ->
-    return unless @filesSelected.length
+    return unless @hasSelectedFiles()
 
     files = []
     for f in @filesSelected

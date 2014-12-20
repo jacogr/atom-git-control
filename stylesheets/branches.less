@@ -1,0 +1,50 @@
+@import "ui-variables";
+
+.git-control .branches {
+  width: 100%;
+  margin-bottom: 15px;
+
+  &>.branch {
+    margin: 2px 0 2px @component-icon-size;
+    padding: 3px 5px;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+
+    .icon.check {
+      color: @text-color-subtle;
+      opacity: 0.5;
+    }
+
+    &.active {
+      //background: @button-background-color;
+      color: @text-color-highlight;
+      //cursor: pointer;
+
+      .icon.check {
+        color: @text-color-highlight;
+        opacity: 1.0;
+      }
+    }
+
+    &:hover {
+      //color: @text-color-highlight;
+    }
+
+    .count {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: inline-block;
+      color: @text-color;
+
+      &.hidden {
+        display: none;
+      }
+
+      i.icon {
+        margin-left: 2px;
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+@import "ui-variables";
+
+.git-control .files {
+  width: 100%;
+  margin-bottom: 15px;
+
+  .allfiles {
+    margin-bottom: 5px;
+    color: @text-color-highlight;
+    display: none;
+  }
+
+  &.none .allfiles {
+    display: none;
+  }
+
+  .file, .allfiles {
+    margin: 2px 0 2px @component-icon-size;
+    padding: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &.deleted {
+      color: @text-color-subtle;
+    }
+
+    &.modified {
+      color: @text-color-warning;
+    }
+
+    &.new {
+      color: @text-color-success;
+    }
+
+    .icon.check {
+      color: @text-color-subtle;
+      opacity: 0.5;
+    }
+
+    &.active {
+      //background: @button-background-color;
+
+      .icon.check {
+        color: @text-color-highlight;
+        opacity: 1.0;
+      }
+    }
+  }
+}
