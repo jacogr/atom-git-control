@@ -142,14 +142,14 @@ class GitControlView extends View
     location.append $$ ->
       @div class: "branch #{klass}", 'data-name': branch, =>
         @i class: 'icon chevron-right'
-        @span branch
+        @span class: 'clickable', branch
         @div class: "count #{count.klass}", =>
           @span count.ahead
           @i class: 'icon cloud-upload'
           @span count.behind
           @i class: 'icon cloud-download'
 
-    for div in location.find(".branch[data-name='#{branch}']").toArray()
+    for div in location.find(".branch[data-name='#{branch}'] .clickable").toArray()
       $(div).on 'click', => @checkoutBranch(branch, !local)
 
     return
@@ -230,9 +230,9 @@ class GitControlView extends View
       @div class: "file #{file.type}", 'data-name': file.name, =>
         @i class: 'icon check'
         @i class: "icon file-#{file.type}"
-        @span file.name
+        @span class: 'clickable', file.name
 
-    for div in @filesView.find(".file[data-name='#{file.name}']").toArray()
+    for div in @filesView.find(".file[data-name='#{file.name}'] .clickable").toArray()
       $(div).on 'click', => @selectFile(file.name)
 
     return
