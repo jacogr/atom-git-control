@@ -110,7 +110,10 @@ module.exports =
       return parseDefault(data)
 
   commit: (files, message) ->
-    return callGit "commit -m '#{message or Date.now()}' -- #{files.join(' ')}", (data) ->
+    message = message or Date.now()
+    message = message.replace(/'/g, "\\'").replace(/"/g, '\\"')
+    
+    return callGit "commit -m \"#{message}\" -- #{files.join(' ')}", (data) ->
       atomRefresh()
       return parseDefault(data)
 
