@@ -67,6 +67,7 @@ parseStatus = (data) -> q.fcall ->
   return files
 
 parseDefault = (data) -> q.fcall ->
+  repo.refreshIndex()
   return true
 
 callGit = (cmd, parser, nodatalog) ->
