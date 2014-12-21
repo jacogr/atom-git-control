@@ -14,6 +14,10 @@ if project
 
 noop = -> q.fcall -> true
 
+atomRefresh = ->
+  repo.refreshStatus() # not public/in docs
+  return
+
 getBranches = -> q.fcall ->
   branches = local: [], remote: [], tags: []
   refs = repo.getReferences()
@@ -67,7 +71,6 @@ parseStatus = (data) -> q.fcall ->
   return files
 
 parseDefault = (data) -> q.fcall ->
-  repo.refreshStatus() # not public/in docs
   return true
 
 callGit = (cmd, parser, nodatalog) ->
@@ -102,13 +105,19 @@ module.exports =
 
   add: (files) ->
     return noop() unless files.length
-    return callGit "add -- #{files.join(' ')}", parseDefault
+    return callGit "add -- #{files.join(' ')}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
 
   commit: (files, message) ->
-    return callGit "commit -m '#{message or Date.now()}' -- #{files.join(' ')}", parseDefault
+    return callGit "commit -m '#{message or Date.now()}' -- #{files.join(' ')}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
 
   checkout: (branch, remote) ->
-    return callGit "checkout #{if remote then '-b ' else ''}#{branch}", parseDefault
+    return callGit "checkout #{if remote then '-b ' else ''}#{branch}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
 
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff, true
@@ -117,20 +126,28 @@ module.exports =
     return callGit "fetch", parseDefault
 
   pull: ->
-    return callGit "pull", parseDefault
+    return callGit "pull", (data) ->
+      atomRefresh()
+      return parseDefault(data)
 
   push: ->
-    return callGit "-c push.default=simple push --porcelain", parseDefault
+    return callGit "-c push.default=simple push --porcelain", (data) ->
+      atomRefresh()
+      return parseDefault(data)
 
   log: (branch) ->
     return callGit "log origin/#{branch}..#{branch}", parseDefault
 
   reset: (files) ->
-    return callGit "checkout -- #{files.join(' ')}", parseDefault
+    return callGit "checkout -- #{files.join(' ')}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
 
   remove: (files) ->
     return noop() unless files.length
-    return callGit "rm -- #{files.join(' ')}", parseDefault
+    return callGit "rm -- #{files.join(' ')}", (data) ->
+      atomRefresh()
+      return parseDefault(true)
 
   status: ->
     return callGit 'status --porcelain', parseStatus
