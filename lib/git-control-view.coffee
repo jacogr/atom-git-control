@@ -88,7 +88,6 @@ class GitControlView extends View
   update: (nofetch) ->
     @loadBranches()
     @showStatus()
-
     @fetchMenuClick() unless nofetch
 
     return
@@ -352,7 +351,7 @@ class GitControlView extends View
     return
 
   fetchMenuClick: ->
-    git.fetch().then => @update(true)
+    git.fetch().then => @loadBranches()
     return
 
   pullMenuClick: ->
@@ -367,8 +366,8 @@ class GitControlView extends View
     return unless @hasSelectedFiles()
 
     files = []
-    for f in @filesSelected
-      files.push f.name
+    for name, f of @files when f.selected
+      files.push name
 
     git.reset(files).then => @update()
 
