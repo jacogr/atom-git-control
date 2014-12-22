@@ -37,17 +37,17 @@ class GitControlView extends View
             @div class: 'heading', =>
               @i class: 'icon branch'
               @span 'Local'
-              @div class: 'action', =>
-                @span 'Select'
-                @i class: 'icon chevron-down'
+              #@div class: 'action', =>
+              #  @span 'Select'
+              #  @i class: 'icon chevron-down'
 
           @div class: 'branches', outlet: 'remoteBranchView', =>
             @div class: 'heading', =>
               @i class: 'icon branch'
               @span 'Remote'
-              @div class: 'action', =>
-                @span 'Select'
-                @i class: 'icon chevron-down'
+              #@div class: 'action', =>
+              #  @span 'Select'
+              #  @i class: 'icon chevron-down'
 
         @div class: 'domain', =>
           @div class: 'diff', outlet: 'diffView'
