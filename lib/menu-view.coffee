@@ -1,4 +1,4 @@
-{View} = require 'atom'
+{View, $} = require 'atom'
 
 MenuViewItem = require './menu-view-item'
 
@@ -24,3 +24,11 @@ class MenuView extends View
 
   click: (id) ->
     @parentView["#{id}MenuClick"]()
+
+  activate: (type, active) ->
+    menuItems = @find(".item.type-#{type}")
+    if active
+      menuItems.removeClass('inactive')
+    else
+      menuItems.addClass('inactive')
+    return

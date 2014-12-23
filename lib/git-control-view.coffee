@@ -25,7 +25,6 @@ class GitControlView extends View
         @div class: 'sidebar', =>
           @subview 'filesView', new FileView()
 
-
           @div class: 'branches', outlet: 'localBranchView', =>
             @div class: 'heading', =>
               @i class: 'icon branch'
@@ -56,7 +55,6 @@ class GitControlView extends View
 
     @active = true
     @branchSelected = null
-    @files = {}
 
     return
 
@@ -100,8 +98,8 @@ class GitControlView extends View
       count.total = count.ahead + count.behind
       count.klass = 'invisible' unless count.total
 
-      @activateMenu('upstream', count.behind)
-      @activateMenu('downstream', count.ahead)
+      @menuView.activate('upstream', count.behind)
+      @menuView.activate('downstream', count.ahead)
 
     location.append $$ ->
       @div class: "branch #{klass}", 'data-name': branch, =>
@@ -135,94 +133,18 @@ class GitControlView extends View
 
     return
 
-  activateMenu: (type, active) ->
-    menuItems = @menuView.find(".item.type-#{type}")
-    if active
-      menuItems.removeClass('inactive')
-    else
-      menuItems.addClass('inactive')
-    return
-
-  hasSelectedFiles: ->
-    for name, file of @files when file.selected
-      return true
-
-    return false
-
   showSelectedFiles: ->
-    fnames = []
-    for div in @filesView.find('.file').toArray()
-      f = $(div)
-      if name = f.attr('data-name')
-        if @files[name].selected
-          fnames.push name
-          f.addClass('active')
-        else
-          f.removeClass('active')
-
-    for name, file of @files
-      unless name in fnames
-        file.selected = false
-
-    @activateMenu('file', fnames.length)
-
-    return
-
-  selectAllFiles: ->
-    val = !!!@filesView.allFilesCb.prop('checked')
-    @filesView.allFilesCb.prop('checked', val)
-
-    for name, file of @files
-      file.selected = val
-
-    @showSelectedFiles()
-    return
-
-  selectFile: (name) ->
-    if name
-      @files[name].selected = !!!@files[name].selected
-
-    @filesView.allFilesCb.prop('checked', false)
-    @showSelectedFiles()
-    return
-
-  addFile: (file) ->
-    @files[file.name] or= name: file.name
-    @files[file.name].type = file.type
-
-    file.click = (name) => @selectFile(name)
-
-    @filesView.append new FileViewItem(file)
-
+    @menuView.activate('file', @filesView.hasSelected())
     return
 
   showStatus: ->
     git.status().then (files) =>
-      fnames = []
-      @filesView.find('.file').remove()
-
-      if files.length
-        @filesView.removeClass('none')
-
-        for file in files
-          fnames.push file.name
-          @addFile(file)
-
-      else
-        @filesView.addClass('none')
-        @filesView.append $$ ->
-          @div class: 'file deleted', 'No local working copy changes detected'
-
-      for name, file of @files
-        unless name in fnames
-          file.selected = false
-
-      @showSelectedFiles()
+      @filesView.addAll(files)
       return
     return
 
   compareMenuClick: ->
-    return unless @hasSelectedFiles()
+    return unless @filesView.hasSelected()
 
     fmtNum = (num) ->
       return "     #{num or ''} ".slice(-6)
@@ -274,7 +196,7 @@ class GitControlView extends View
     return
 
   commitMenuClick: ->
-    return unless @hasSelectedFiles()
+    return unless @filesView.hasSelected()
 
     @commitView.addClass('active')
     @commitMsg.val('')
@@ -286,22 +208,12 @@ class GitControlView extends View
 
   commitPost: ->
     @commitCancel()
-    return unless @hasSelectedFiles()
+    return unless @filesView.hasSelected()
 
     msg = @commitMsg.val()
-    files =
-      all: []
-      add: []
-      rem: []
 
-    for name, file of @files when file.selected
-      files.all.push name
-      switch file.type
-        when 'new' then files.add.push name
-        when 'deleted' then files.rem.push name
-
-    for name in files.all
-      @files[name].selected = false
+    files = @filesView.getSelected()
+    @filesView.unselectAll()
 
     git.add(files.add)
       .then -> git.remove(files.rem)
@@ -324,10 +236,8 @@ class GitControlView extends View
   resetMenuClick: ->
     return unless @hasSelectedFiles()
 
-    files = []
-    for name, f of @files when f.selected
-      files.push name
+    files = @filesView.getSelected()
 
-    git.reset(files).then => @update()
+    git.reset(files.all).then => @update()
 
     return
