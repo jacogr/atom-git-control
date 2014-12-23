@@ -13,6 +13,7 @@ class FileView extends View
           @span 'Select'
           @i class: 'icon check'
           @input class: 'invisible', type: 'checkbox', outlet: 'allCheckbox'
+      @div class: 'placeholder', 'No local working copy changes detected'
 
   initialize: ->
     @files = {}
@@ -81,8 +82,6 @@ class FileView extends View
 
     else
       @view.addClass('none')
-      @view.append $$ ->
-        @div class: 'file deleted', 'No local working copy changes detected'
 
     for name, file of @files
       unless name in fnames
