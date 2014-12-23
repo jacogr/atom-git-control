@@ -1,8 +1,9 @@
 {View, $, $$} = require 'atom'
 
 git = require './git'
+
+BranchView = require './branch-view'
 FileView = require './file-view'
-FileViewItem = require './file-view-item'
 MenuView = require './menu-view'
 
 module.exports =
@@ -24,22 +25,8 @@ class GitControlView extends View
 
         @div class: 'sidebar', =>
           @subview 'filesView', new FileView()
-
-          @div class: 'branches', outlet: 'localBranchView', =>
-            @div class: 'heading', =>
-              @i class: 'icon branch'
-              @span 'Local'
-              #@div class: 'action', =>
-              #  @span 'Select'
-              #  @i class: 'icon chevron-down'
-
-          @div class: 'branches', outlet: 'remoteBranchView', =>
-            @div class: 'heading', =>
-              @i class: 'icon branch'
-              @span 'Remote'
-              #@div class: 'action', =>
-              #  @span 'Select'
-              #  @i class: 'icon chevron-down'
+          @subview 'localBranchView', new BranchView(name: 'Local')
+          @subview 'remoteBranchView', new BranchView(name: 'Remote')
 
         @div class: 'domain', =>
           @div class: 'diff', outlet: 'diffView'
