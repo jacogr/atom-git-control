@@ -12,7 +12,7 @@ menuItems = [
   { id: 'push', menu: 'Push', icon: 'push', type: 'downstream'}
   { id: 'merge', menu: 'Merge', icon: 'merge'}
   { id: 'branch', menu: 'Branch', icon: 'branch'}
-  { id: 'tag', menu: 'Tag', icon: 'tag'}
+  #{ id: 'tag', menu: 'Tag', icon: 'tag'}
 ]
 
 module.exports =
