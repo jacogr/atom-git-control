@@ -134,7 +134,7 @@ class GitControlView extends View
     if current
       count = git.count(branch)
       count.total = count.ahead + count.behind
-      count.klass = 'hidden' unless count.total
+      count.klass = 'invisible' unless count.total
 
       @activateMenu('upstream', count.behind)
       @activateMenu('downstream', count.ahead)
@@ -143,7 +143,7 @@ class GitControlView extends View
       @div class: "branch #{klass}", 'data-name': branch, =>
         @i class: 'icon chevron-right'
         @span class: 'clickable', branch
-        @div class: "count #{count.klass}", =>
+        @div class: "right-info count #{count.klass}", =>
           @span count.ahead
           @i class: 'icon cloud-upload'
           @span count.behind
