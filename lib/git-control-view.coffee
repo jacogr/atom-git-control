@@ -25,7 +25,7 @@ class GitControlView extends View
 
         @div class: 'sidebar', =>
           @subview 'filesView', new FileView()
-          @subview 'localBranchView', new BranchView(name: 'Local')
+          @subview 'localBranchView', new BranchView(name: 'Local', local: true)
           @subview 'remoteBranchView', new BranchView(name: 'Remote')
 
         @div class: 'domain', =>
@@ -75,47 +75,17 @@ class GitControlView extends View
     git.checkout(branch, remote).then => @update()
     return
 
-  addBranch: (location, branch, local) ->
-    current = local and branch is @selectedBranch
-    klass = if current then 'active' else ''
-    count = klass: 'hidden'
-
-    if current
-      count = git.count(branch)
-      count.total = count.ahead + count.behind
-      count.klass = 'invisible' unless count.total
-
-      @menuView.activate('upstream', count.behind)
-      @menuView.activate('downstream', count.ahead)
-
-    location.append $$ ->
-      @div class: "branch #{klass}", 'data-name': branch, =>
-        @i class: 'icon chevron-right'
-        @span class: 'clickable', branch
-        @div class: "right-info count #{count.klass}", =>
-          @span count.ahead
-          @i class: 'icon cloud-upload'
-          @span count.behind
-          @i class: 'icon cloud-download'
-
-    for div in location.find(".branch[data-name='#{branch}'] .clickable").toArray()
-      $(div).on 'click', => @checkoutBranch(branch, !local)
-
+  branchCount: (count) ->
+    @menuView.activate('upstream', count.behind)
+    @menuView.activate('downstream', count.ahead)
     return
 
   loadBranches: ->
     @selectedBranch = git.getLocalBranch()
 
-    append = (location, branches, local) =>
-      location.find('>.branch').remove()
-      for branch in branches
-        @addBranch(location, branch, local)
-
-      return
-
     git.getBranches().then (branches) =>
-      append(@remoteBranchView, branches.remote)
-      append(@localBranchView, branches.local, true)
+      @remoteBranchView.addAll(branches.remote)
+      @localBranchView.addAll(branches.local, true)
       return
 
     return

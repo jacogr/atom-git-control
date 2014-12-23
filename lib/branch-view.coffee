@@ -1,5 +1,7 @@
 {View, $} = require 'atom'
 
+git = require './git'
+
 BranchViewItem = require './branch-view-item'
 
 module.exports =
@@ -10,6 +12,37 @@ class BranchView extends View
         @i class: 'icon branch'
         @span params.name
 
-  initialize: ->
+  initialize: (params) ->
+    @params = params
     @branches = []
     @view = $(@element)
+
+  add: (branch) ->
+    current = @params.local and branch is @selectedBranch
+    count = klass: 'hidden'
+
+    if current
+      count = git.count(branch)
+      count.total = count.ahead + count.behind
+      count.klass = 'invisible' unless count.total
+
+      @parentView.branchCount(count)
+
+    click = (name) => @click(name)
+
+    @view.append new BranchViewItem(name: branch, count: count, current: current, click: click)
+
+    return
+
+  addAll: (branches) ->
+    @selectedBranch = git["get#{if @params.local then 'Local' else 'Remote'}Branch"]()
+    @view.find('>.branch').remove()
+
+    for branch in branches
+      @add(branch)
+
+    return
+
+  click: (name) ->
+    @parentView.checkoutBranch(name, !@params.local)
+    return
