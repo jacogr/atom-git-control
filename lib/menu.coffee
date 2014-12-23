@@ -19,7 +19,8 @@ module.exports =
 class Menu extends View
   @content: (params) ->
     @div class: 'menu', =>
-      @subview item.id, new MenuItem(item) for item in items
+      for item in items
+        @subview item.id, new MenuItem(item)
 
   click: (id) ->
     @parentView["#{id}MenuClick"]()
