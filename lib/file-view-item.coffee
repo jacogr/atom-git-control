@@ -1,7 +1,7 @@
 {View} = require 'atom'
 
 module.exports =
-class FileItemView extends View
+class FileViewItem extends View
   @content: (params) ->
     @div class: "file #{params.type}", 'data-name': params.name, =>
       @i class: 'icon check'

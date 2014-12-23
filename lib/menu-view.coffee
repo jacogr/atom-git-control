@@ -1,6 +1,6 @@
 {View} = require 'atom'
 
-MenuItemView = require './menu-item-view'
+MenuViewItem = require './menu-view-item'
 
 items = [
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'file'}
@@ -20,7 +20,7 @@ class MenuView extends View
   @content: (params) ->
     @div class: 'menu', =>
       for item in items
-        @subview item.id, new MenuItemView(item)
+        @subview item.id, new MenuViewItem(item)
 
   click: (id) ->
     @parentView["#{id}MenuClick"]()

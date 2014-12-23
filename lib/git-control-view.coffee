@@ -2,7 +2,7 @@
 
 git = require './git'
 FileView = require './file-view'
-FileItemView = require './file-item-view'
+FileViewItem = require './file-view-item'
 MenuView = require './menu-view'
 
 module.exports =
@@ -192,7 +192,7 @@ class GitControlView extends View
 
     file.click = (name) => @selectFile(name)
 
-    @filesView.append new FileItemView(file)
+    @filesView.append new FileViewItem(file)
 
     return
 
