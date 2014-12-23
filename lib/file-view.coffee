@@ -1,15 +1,16 @@
 {View} = require 'atom'
 
 module.exports =
-class FileView extends View
+class FileItemView extends View
   @content: (params) ->
-    @div class: "file #{params.type}", 'data-name': params.name, =>
-      @i class: 'icon check'
-      @i class: "icon file-#{params.type}"
-      @span class: 'clickable', click: 'click', params.name
+    @div class: 'files', =>
+      @div class: 'heading', =>
+        @i class: 'icon forked'
+        @span 'Workspace'
+        @div class: 'action', click: 'selectAllFiles', =>
+          @span 'Select'
+          @i class: 'icon check'
+          @input class: 'invisible', type: 'checkbox', outlet: 'allFilesCb'
 
-  initialize: (params) ->
-    @file = params
-
-  click: ->
-    @file.click(@file.name)
+  selectAllFiles: ->
+    @parentView.selectAllFiles()

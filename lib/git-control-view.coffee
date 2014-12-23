@@ -1,8 +1,9 @@
 {View, $, $$} = require 'atom'
 
 git = require './git'
-MenuView = require './menu-view'
 FileView = require './file-view'
+FileItemView = require './file-item-view'
+MenuView = require './menu-view'
 
 module.exports =
 class GitControlView extends View
@@ -22,15 +23,8 @@ class GitControlView extends View
             @span 'Commit'
 
         @div class: 'sidebar', =>
+          @subview 'filesView', new FileView()
 
-          @div class: 'files', outlet: 'filesView', =>
-            @div class: 'heading', =>
-              @i class: 'icon forked'
-              @span 'Workspace'
-              @div class: 'action', click: 'selectAllFiles', =>
-                @span 'Select'
-                @i class: 'icon check'
-                @input class: 'invisible', type: 'checkbox', outlet: 'allFilesCb'
 
           @div class: 'branches', outlet: 'localBranchView', =>
             @div class: 'heading', =>
@@ -175,8 +169,8 @@ class GitControlView extends View
     return
 
   selectAllFiles: ->
-    val = !!!@allFilesCb.prop('checked')
-    @allFilesCb.prop('checked', val)
+    val = !!!@filesView.allFilesCb.prop('checked')
+    @filesView.allFilesCb.prop('checked', val)
 
     for name, file of @files
       file.selected = val
@@ -188,7 +182,7 @@ class GitControlView extends View
     if name
       @files[name].selected = !!!@files[name].selected
 
-    @allFilesCb.prop('checked', false)
+    @filesView.allFilesCb.prop('checked', false)
     @showSelectedFiles()
     return
 
@@ -198,7 +192,7 @@ class GitControlView extends View
 
     file.click = (name) => @selectFile(name)
 
-    @filesView.append new FileView(file)
+    @filesView.append new FileItemView(file)
 
     return
 
