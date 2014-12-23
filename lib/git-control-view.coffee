@@ -1,25 +1,13 @@
 {View, $, $$} = require 'atom'
 
 git = require './git'
-
-menuItems = [
-  { id: 'compare', menu: 'Compare', icon: 'compare', type: 'file'}
-  { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file'}
-  { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
-  #{ id: 'clone', menu: 'Clone', icon: 'clone'}
-  { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'active'}
-  { id: 'pull', menu: 'Pull', icon: 'pull', type: 'upstream'}
-  { id: 'push', menu: 'Push', icon: 'push', type: 'downstream'}
-  { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}
-  { id: 'branch', menu: 'Branch', icon: 'branch', type: 'active'}
-  #{ id: 'tag', menu: 'Tag', icon: 'tag'}
-]
+Menu = require './menu'
 
 module.exports =
 class GitControlView extends View
   @content: ->
     @div class: 'git-control', =>
-      @div class: 'menu', outlet: 'menuView'
+      @subview 'menuView', new Menu()
 
       @div class: 'content', =>
 
@@ -75,8 +63,6 @@ class GitControlView extends View
     @branchSelected = null
     @files = {}
 
-    @createMenu()
-
     return
 
   destroy: ->
@@ -97,25 +83,6 @@ class GitControlView extends View
   log: (log, iserror) ->
     @logView.append "<pre class='#{if iserror then 'error' else ''}'>#{log}</pre>"
     @logView.scrollToBottom()
-    return
-
-  addMenuItem: (item) ->
-    id = item.id
-    active = if item.type is 'active' then '' else 'inactive'
-
-    @menuView.append $$ ->
-      @div class: "item #{active} type-#{item.type}", id: "menu#{id}", =>
-        @div class: "icon large #{item.icon}"
-        @div item.menu
-
-    @menuView.find(".item#menu#{id}").toArray().forEach (item) =>
-      $(item).on 'click', => @["#{id}MenuClick"]()
-      return
-    return
-
-  createMenu: ->
-    for item in menuItems
-      @addMenuItem(item)
     return
 
   loadLog: ->
