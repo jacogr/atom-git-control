@@ -1,7 +1,7 @@
 {View} = require 'atom'
 
 module.exports =
-class MenuItem extends View
+class MenuItemView extends View
   @content: (params) ->
     klass = if params.type is 'active' then '' else 'inactive'
 

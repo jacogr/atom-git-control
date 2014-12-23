@@ -1,13 +1,14 @@
 {View, $, $$} = require 'atom'
 
 git = require './git'
-Menu = require './menu'
+MenuView = require './menu-view'
+FileView = require './file-view'
 
 module.exports =
 class GitControlView extends View
   @content: ->
     @div class: 'git-control', =>
-      @subview 'menuView', new Menu()
+      @subview 'menuView', new MenuView()
 
       @div class: 'content', =>
 
@@ -195,14 +196,9 @@ class GitControlView extends View
     @files[file.name] or= name: file.name
     @files[file.name].type = file.type
 
-    @filesView.append $$ ->
-      @div class: "file #{file.type}", 'data-name': file.name, =>
-        @i class: 'icon check'
-        @i class: "icon file-#{file.type}"
-        @span class: 'clickable', file.name
+    file.click = (name) => @selectFile(name)
 
-    for div in @filesView.find(".file[data-name='#{file.name}'] .clickable").toArray()
-      $(div).on 'click', => @selectFile(file.name)
+    @filesView.append new FileView(file)
 
     return
 
