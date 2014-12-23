@@ -10,8 +10,8 @@ menuItems = [
   { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'active'}
   { id: 'pull', menu: 'Pull', icon: 'pull', type: 'upstream'}
   { id: 'push', menu: 'Push', icon: 'push', type: 'downstream'}
-  { id: 'merge', menu: 'Merge', icon: 'merge'}
-  { id: 'branch', menu: 'Branch', icon: 'branch'}
+  { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}
+  { id: 'branch', menu: 'Branch', icon: 'branch', type: 'active'}
   #{ id: 'tag', menu: 'Tag', icon: 'tag'}
 ]
 
@@ -22,6 +22,16 @@ class GitControlView extends View
       @div class: 'menu', outlet: 'menuView'
 
       @div class: 'content', =>
+
+        @div class: 'dialog', outlet: 'commitView', =>
+          @textarea class: 'native-key-bindings', outlet: 'commitMsg'
+          @button click: 'commitCancel', =>
+            @i class: 'icon x'
+            @span 'Cancel'
+          @button class: 'active', click: 'commitPost', =>
+            @i class: 'icon commit'
+            @span 'Commit'
+
         @div class: 'sidebar', =>
 
           @div class: 'files', outlet: 'filesView', =>
@@ -51,14 +61,6 @@ class GitControlView extends View
 
         @div class: 'domain', =>
           @div class: 'diff', outlet: 'diffView'
-          @div class: 'commit-msg', outlet: 'commitView', =>
-            @textarea class: 'native-key-bindings', outlet: 'commitMsg'
-            @button click: 'commitCancel', =>
-              @i class: 'icon x'
-              @span 'Cancel'
-            @button class: 'active', click: 'commitPost', =>
-              @i class: 'icon commit'
-              @span 'Commit'
 
       @div class: 'logger', outlet: 'logView'
 
