@@ -48,8 +48,11 @@ class GitControlView extends View
   update: (nofetch) ->
     @loadBranches()
     @showStatus()
-    @fetchMenuClick() unless nofetch
 
+    unless nofetch
+      @fetchMenuClick()
+      @diffView.clearAll()
+      
     return
 
   loadLog: ->

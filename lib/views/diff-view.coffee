@@ -14,8 +14,12 @@ class DiffView extends View
   @content: ->
     @div class: 'diff'
 
+  clearAll: ->
+    @find('>.line').remove()
+    return
+    
   addAll: (diffs) ->
-    @find('.line').remove()
+    @clearAll()
 
     diffs.forEach (diff) =>
       if (file = diff['+++']) is '+++ /dev/null'
@@ -36,7 +40,7 @@ class DiffView extends View
           noa = parseInt(linea, 10)
           nob = parseInt(lineb, 10)
           klass = 'subtle'
-          
+
         else
           lineno = "#{fmtNum noa}#{fmtNum nob}"
 
