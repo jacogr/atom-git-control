@@ -60,7 +60,8 @@ class FileView extends View
           f.addClass('active')
         else
           f.removeClass('active')
-
+      return
+      
     for name, file of @files
       unless name in fnames
         file.selected = false
@@ -77,7 +78,7 @@ class FileView extends View
       @removeClass('none')
 
       click = (name) => @select(name)
-      
+
       files.forEach (file) =>
         fnames.push file.name
 

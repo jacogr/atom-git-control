@@ -17,7 +17,7 @@ class DiffView extends View
   addAll: (diffs) ->
     @find('.line').remove()
 
-    for diff in diffs
+    diffs.forEach (diff) =>
       if (file = diff['+++']) is '+++ /dev/null'
         file = diff['---']
 
@@ -26,17 +26,18 @@ class DiffView extends View
       noa = 0
       nob = 0
 
-      for line in diff.lines
+      diff.lines.forEach (line) =>
+        klass = ''
+        lineno = undefined
+
         if /^@@ /.test(line)
           # @@ -100,11 +100,13 @@
           [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
           noa = parseInt(linea, 10)
           nob = parseInt(lineb, 10)
-
-          @append new DiffLine(type: 'subtle', text: line)
-
+          klass = 'subtle'
+          
         else
-          klass = ''
           lineno = "#{fmtNum noa}#{fmtNum nob}"
 
           if /^-/.test(line)
@@ -51,6 +52,8 @@ class DiffView extends View
             noa++
             nob++
 
-          @append new DiffLine(type: klass, text: line, lineno: lineno)
+        @append new DiffLine(type: klass, text: line, lineno: lineno)
 
+        return
+      return
     return

@@ -16,7 +16,7 @@ class GitControlView extends View
     @div class: 'git-control', =>
       @subview 'menuView', new MenuView()
       @div class: 'content', =>
-        @subview 'commitView', new CommitDialog()
+        @subview 'commitDialog', new CommitDialog()
         @div class: 'sidebar', =>
           @subview 'filesView', new FileView()
           @subview 'localBranchView', new BranchView(name: 'Local', local: true)
@@ -98,13 +98,13 @@ class GitControlView extends View
   commitMenuClick: ->
     return unless @filesView.hasSelected()
 
-    @commitView.activate()
+    @commitDialog.activate()
     return
 
   commit: ->
     return unless @filesView.hasSelected()
 
-    msg = @commitView.getMessage()
+    msg = @commitDialog.getMessage()
 
     files = @filesView.getSelected()
     @filesView.unselectAll()
