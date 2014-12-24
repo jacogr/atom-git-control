@@ -10,6 +10,7 @@ MenuView = require './views/menu-view'
 
 BranchDialog = require './dialogs/branch-dialog'
 CommitDialog = require './dialogs/commit-dialog'
+MergeDialog = require './dialogs/merge-dialog'
 
 module.exports =
 class GitControlView extends View
@@ -25,6 +26,7 @@ class GitControlView extends View
           @subview 'diffView', new DiffView()
         @subview 'branchDialog', new BranchDialog()
         @subview 'commitDialog', new CommitDialog()
+        @subview 'mergeDialog', new MergeDialog()
       @subview 'logView', new LogView()
 
   serialize: ->
@@ -76,6 +78,7 @@ class GitControlView extends View
     @selectedBranch = git.getLocalBranch()
 
     git.getBranches().then (branches) =>
+      @branches = branches
       @remoteBranchView.addAll(branches.remote)
       @localBranchView.addAll(branches.local, true)
       return
@@ -95,7 +98,7 @@ class GitControlView extends View
   branchMenuClick: ->
     @branchDialog.activate()
     return
-    
+
   compareMenuClick: ->
     return unless @filesView.hasSelected()
 
@@ -126,6 +129,10 @@ class GitControlView extends View
 
   fetchMenuClick: ->
     git.fetch().then => @loadBranches()
+    return
+
+  mergeMenuClick: ->
+    @mergeDialog.activate(@branches.local)
     return
 
   pullMenuClick: ->
