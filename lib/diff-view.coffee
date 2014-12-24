@@ -1,6 +1,10 @@
 {View} = require 'atom'
 
-DiffViewItem = require './diff-view-item'
+class DiffViewItem extends View
+  @content: (params) ->
+    @div class: "line #{params.type}", =>
+      @pre class: "lineno #{unless params.lineno then 'invisible' else ''}", params.lineno
+      @pre params.text
 
 fmtNum = (num) ->
   return "     #{num or ''} ".slice(-6)

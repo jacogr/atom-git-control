@@ -1,7 +1,5 @@
 {View, $} = require 'atom'
 
-MenuViewItem = require './menu-view-item'
-
 items = [
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'file'}
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file'}
@@ -15,6 +13,20 @@ items = [
   #{ id: 'tag', menu: 'Tag', icon: 'tag'}
 ]
 
+class MenuViewItem extends View
+  @content: (params) ->
+    klass = if params.type is 'active' then '' else 'inactive'
+
+    @div class: "item #{klass} type-#{params.type}", id: "menu#{params.id}", click: 'click', =>
+      @div class: "icon large #{params.icon}"
+      @div params.menu
+
+  initialize: (params) ->
+    @id = params.id
+
+  click: ->
+    @parentView.click(@id)
+    
 module.exports =
 class MenuView extends View
   @content: (params) ->
