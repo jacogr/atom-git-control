@@ -9,8 +9,9 @@ class BranchItem extends View
     dclass = if branch.current or !branch.local then 'invisible' else ''
 
     @div class: "branch #{bklass}", 'data-name': branch.name, =>
-      @i class: 'icon chevron-right'
-      @span class: 'clickable', click: 'checkout', branch.name
+      @div class: 'info', =>
+        @i class: 'icon chevron-right'
+        @span class: 'clickable', click: 'checkout', branch.name
       @div class: "right-info #{dclass}", =>
         @i class: 'icon trash clickable', click: 'deleteThis'
       @div class: "right-info count #{cklass}", =>

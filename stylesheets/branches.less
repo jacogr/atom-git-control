@@ -5,14 +5,22 @@
   margin-bottom: 15px;
 
   &>.branch {
-    margin: 2px 0 2px @component-icon-size;
+    margin: 0 0 0 @component-icon-size;
     padding: 2px 5px;
     border-radius: 4px;
     position: relative;
 
-    .icon.chevron-right {
-      color: @text-color-subtle;
-      opacity: 0.5;
+    .info {
+      span {
+        vertical-align: middle;
+        line-height: 1.42857143;
+      }
+
+      .icon.chevron-right {
+        color: @text-color-subtle;
+        opacity: 0.5;
+        vertical-align: middle;
+      }
     }
 
     &.active {
@@ -27,13 +35,14 @@
     }
 
     &:hover {
+      //background: @background-color-highlight;
       //color: @text-color-highlight;
     }
 
     .right-info {
       position: absolute;
       right: 0;
-      top: 0;
+      top: 1px;
       display: inline-block;
       color: @text-color;
     }
