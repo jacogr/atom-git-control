@@ -131,6 +131,11 @@ module.exports =
   fetch: ->
     return callGit "fetch", parseDefault
 
+  merge: (branch) ->
+    return callGit "merge #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
+
   pull: ->
     return callGit "pull", (data) ->
       atomRefresh()

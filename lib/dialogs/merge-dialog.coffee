@@ -15,7 +15,7 @@ class MergeDialog extends Dialog
         @label 'Merge From Branch'
         @select class: 'native-key-bindings', outlet: 'fromBranch'
       @div class: 'buttons', =>
-        @button class: 'active', click: 'branch', =>
+        @button class: 'active', click: 'merge', =>
           @i class: 'icon merge'
           @span 'Merge'
         @button click: 'cancel', =>
@@ -33,7 +33,7 @@ class MergeDialog extends Dialog
 
     return super()
 
-  branch: ->
+  merge: ->
     @deactivate()
-    #@parentView.commit()
+    @parentView.merge(@fromBranch.val())
     return
