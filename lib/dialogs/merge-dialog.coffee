@@ -16,8 +16,8 @@ class MergeDialog extends Dialog
         @select class: 'native-key-bindings', outlet: 'fromBranch'
       @div class: 'buttons', =>
         @button class: 'active', click: 'branch', =>
-          @i class: 'icon branch'
-          @span 'Branch'
+          @i class: 'icon merge'
+          @span 'Merge'
         @button click: 'cancel', =>
           @i class: 'icon x'
           @span 'Cancel'
