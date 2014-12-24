@@ -5,13 +5,13 @@ class FileItem extends View
     @div class: "file #{file.type}", 'data-name': file.name, =>
       @i class: 'icon check'
       @i class: "icon file-#{file.type}"
-      @span class: 'clickable', click: 'click', file.name
+      @span class: 'clickable', click: 'select', file.name
 
   initialize: (file) ->
     @file = file
 
-  click: ->
-    @file.click(@file.name)
+  select: ->
+    @file.select(@file.name)
 
 module.exports =
 class FileView extends View
@@ -72,7 +72,7 @@ class FileView extends View
   clearAll: ->
     @find('>.file').remove()
     return
-    
+
   addAll: (files) ->
     fnames = []
 
@@ -81,12 +81,12 @@ class FileView extends View
     if files.length
       @removeClass('none')
 
-      click = (name) => @select(name)
+      select = (name) => @selectFile(name)
 
       files.forEach (file) =>
         fnames.push file.name
 
-        file.click = click
+        file.select = select
 
         @files[file.name] or= name: file.name
         @files[file.name].type = file.type
@@ -103,7 +103,7 @@ class FileView extends View
     @showSelected()
     return
 
-  select: (name) ->
+  selectFile: (name) ->
     if name
       @files[name].selected = !!!@files[name].selected
 
