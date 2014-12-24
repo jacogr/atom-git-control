@@ -8,6 +8,7 @@ FileView = require './views/file-view'
 LogView = require './views/log-view'
 MenuView = require './views/menu-view'
 
+BranchDialog = require './dialogs/branch-dialog'
 CommitDialog = require './dialogs/commit-dialog'
 
 module.exports =
@@ -22,6 +23,7 @@ class GitControlView extends View
           @subview 'remoteBranchView', new BranchView(name: 'Remote')
         @div class: 'domain', =>
           @subview 'diffView', new DiffView()
+        @subview 'branchDialog', new BranchDialog()
         @subview 'commitDialog', new CommitDialog()
       @subview 'logView', new LogView()
 
@@ -90,6 +92,10 @@ class GitControlView extends View
       return
     return
 
+  branchMenuClick: ->
+    @branchDialog.activate()
+    return
+    
   compareMenuClick: ->
     return unless @filesView.hasSelected()
 
