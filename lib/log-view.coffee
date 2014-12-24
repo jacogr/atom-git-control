@@ -1,5 +1,9 @@
 {View} = require 'atom'
 
+class LogLine extends View
+  @content: (params) ->
+    @pre class: "#{if params.iserror then 'error' else ''}", params.log
+
 module.exports =
 class LogView extends View
   @content: (params) ->
@@ -8,6 +12,6 @@ class LogView extends View
   initialize: (params) ->
 
   log: (log, iserror) ->
-    @append "<pre class='#{if iserror then 'error' else ''}'>#{log}</pre>"
+    @append new LogLine(iserror: iserror, log: log)
     @scrollToBottom()
     return

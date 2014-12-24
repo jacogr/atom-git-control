@@ -2,7 +2,7 @@
 
 git = require './git'
 
-class BranchViewItem extends View
+class BranchItem extends View
   @content: (params) ->
     klass = if params.current then 'active' else ''
 
@@ -50,7 +50,7 @@ class BranchView extends View
 
         @parentView.branchCount(count)
 
-      @append new BranchViewItem(name: branch, count: count, current: current, click: click)
+      @append new BranchItem(name: branch, count: count, current: current, click: click)
       return
     return
 

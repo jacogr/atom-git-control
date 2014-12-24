@@ -13,7 +13,7 @@ items = [
   #{ id: 'tag', menu: 'Tag', icon: 'tag'}
 ]
 
-class MenuViewItem extends View
+class MenuItem extends View
   @content: (params) ->
     klass = if params.type is 'active' then '' else 'inactive'
 
@@ -32,7 +32,7 @@ class MenuView extends View
   @content: (params) ->
     @div class: 'menu', =>
       for item in items
-        @subview item.id, new MenuViewItem(item)
+        @subview item.id, new MenuItem(item)
 
   click: (id) ->
     @parentView["#{id}MenuClick"]()

@@ -1,6 +1,6 @@
 {View} = require 'atom'
 
-class DiffViewItem extends View
+class DiffLine extends View
   @content: (params) ->
     @div class: "line #{params.type}", =>
       @pre class: "lineno #{unless params.lineno then 'invisible' else ''}", params.lineno
@@ -21,7 +21,7 @@ class DiffView extends View
       if (file = diff['+++']) is '+++ /dev/null'
         file = diff['---']
 
-      @append new DiffViewItem(type: 'heading', text: file)
+      @append new DiffLine(type: 'heading', text: file)
 
       noa = 0
       nob = 0
@@ -33,7 +33,7 @@ class DiffView extends View
           noa = parseInt(linea, 10)
           nob = parseInt(lineb, 10)
 
-          @append new DiffViewItem(type: 'subtle', text: line)
+          @append new DiffLine(type: 'subtle', text: line)
 
         else
           klass = ''
@@ -51,6 +51,6 @@ class DiffView extends View
             noa++
             nob++
 
-          @append new DiffViewItem(type: klass, text: line, lineno: lineno)
+          @append new DiffLine(type: klass, text: line, lineno: lineno)
 
     return

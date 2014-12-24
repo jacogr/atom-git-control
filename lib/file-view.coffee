@@ -1,6 +1,6 @@
 {View, $} = require 'atom'
 
-class FileViewItem extends View
+class FileItem extends View
   @content: (params) ->
     @div class: "file #{params.type}", 'data-name': params.name, =>
       @i class: 'icon check'
@@ -85,7 +85,7 @@ class FileView extends View
 
         @files[file.name] or= name: file.name
         @files[file.name].type = file.type
-        @append new FileViewItem(file)
+        @append new FileItem(file)
         return
 
     else
