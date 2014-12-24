@@ -3,6 +3,7 @@
 git = require './git'
 
 BranchView = require './branch-view'
+DiffView = require './diff-view'
 FileView = require './file-view'
 LogView = require './log-view'
 MenuView = require './menu-view'
@@ -30,7 +31,7 @@ class GitControlView extends View
           @subview 'remoteBranchView', new BranchView(name: 'Remote')
 
         @div class: 'domain', =>
-          @div class: 'diff', outlet: 'diffView'
+          @subview 'diffView', new DiffView()
 
       @subview 'logView', new LogView()
 
@@ -99,52 +100,8 @@ class GitControlView extends View
   compareMenuClick: ->
     return unless @filesView.hasSelected()
 
-    fmtNum = (num) ->
-      return "     #{num or ''} ".slice(-6)
-
     git.diff().then (diffs) =>
-      @diffView.find('.line').remove()
-      for diff in diffs
-        if (file = diff['+++']) is '+++ /dev/null'
-          file = diff['---']
-
-        @diffView.append $$ ->
-          @div class: 'line heading', =>
-            @pre "#{file}"
-
-        noa = 0
-        nob = 0
-
-        for line in diff.lines
-          if /^@@ /.test(line)
-            # @@ -100,11 +100,13 @@
-            [atstart, linea, lineb, atend] = line.replace(/-|\+/g, '').split(' ')
-            noa = parseInt(linea, 10)
-            nob = parseInt(lineb, 10)
-            @diffView.append $$ ->
-              @div class: 'line subtle', =>
-                @pre line
-          else
-            klass = ''
-            lineno = "#{fmtNum noa}#{fmtNum nob}"
-
-            if /^-/.test(line)
-              klass = 'red'
-              lineno = "#{fmtNum noa}#{fmtNum 0}"
-              noa++
-            else if /^\+/.test(line)
-              klass = 'green'
-              lineno = "#{fmtNum 0}#{fmtNum nob}"
-              nob++
-            else
-              noa++
-              nob++
-
-            @diffView.append $$ ->
-              @div class: "line #{klass}", =>
-                @pre class: 'lineno', lineno
-                @pre line
-
+      @diffView.addAll(diffs)
       return
     return
 
