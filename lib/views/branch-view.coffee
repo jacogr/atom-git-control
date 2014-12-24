@@ -3,20 +3,20 @@
 git = require '../git'
 
 class BranchItem extends View
-  @content: (params) ->
-    klass = if params.current then 'active' else ''
+  @content: (branch) ->
+    klass = if branch.current then 'active' else ''
 
-    @div class: "branch #{klass}", 'data-name': params.name, =>
+    @div class: "branch #{klass}", 'data-name': branch.name, =>
       @i class: 'icon chevron-right'
-      @span class: 'clickable', click: 'click', params.name
-      @div class: "right-info count #{params.count.klass}", =>
-        @span params.count.ahead
+      @span class: 'clickable', click: 'click', branch.name
+      @div class: "right-info count #{branch.count.klass}", =>
+        @span branch.count.ahead
         @i class: 'icon cloud-upload'
-        @span params.count.behind
+        @span branch.count.behind
         @i class: 'icon cloud-download'
 
-  initialize: (params) ->
-    @branch = params
+  initialize: (branch) ->
+    @branch = branch
 
   click: ->
     @branch.click(@branch.name)
@@ -38,7 +38,7 @@ class BranchView extends View
     @find('>.branch').remove()
 
     click = (name) => @click(name)
-
+    
     branches.forEach (branch) =>
       current = @params.local and branch is @selectedBranch
       count = klass: 'hidden'

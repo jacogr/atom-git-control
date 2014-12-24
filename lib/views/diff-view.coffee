@@ -1,10 +1,10 @@
 {View} = require 'atom'
 
 class DiffLine extends View
-  @content: (params) ->
-    @div class: "line #{params.type}", =>
-      @pre class: "lineno #{unless params.lineno then 'invisible' else ''}", params.lineno
-      @pre params.text
+  @content: (line) ->
+    @div class: "line #{line.type}", =>
+      @pre class: "lineno #{unless line.lineno then 'invisible' else ''}", line.lineno
+      @pre line.text
 
 fmtNum = (num) ->
   return "     #{num or ''} ".slice(-6)

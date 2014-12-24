@@ -14,22 +14,22 @@ items = [
 ]
 
 class MenuItem extends View
-  @content: (params) ->
-    klass = if params.type is 'active' then '' else 'inactive'
+  @content: (item) ->
+    klass = if item.type is 'active' then '' else 'inactive'
 
-    @div class: "item #{klass} type-#{params.type}", id: "menu#{params.id}", click: 'click', =>
-      @div class: "icon large #{params.icon}"
-      @div params.menu
+    @div class: "item #{klass} type-#{item.type}", id: "menu#{item.id}", click: 'click', =>
+      @div class: "icon large #{item.icon}"
+      @div item.menu
 
-  initialize: (params) ->
-    @id = params.id
+  initialize: (item) ->
+    @item = item
 
   click: ->
-    @parentView.click(@id)
-    
+    @parentView.click(@item.id)
+
 module.exports =
 class MenuView extends View
-  @content: (params) ->
+  @content: (item) ->
     @div class: 'menu', =>
       for item in items
         @subview item.id, new MenuItem(item)

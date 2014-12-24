@@ -1,21 +1,21 @@
 {View, $} = require 'atom'
 
 class FileItem extends View
-  @content: (params) ->
-    @div class: "file #{params.type}", 'data-name': params.name, =>
+  @content: (file) ->
+    @div class: "file #{file.type}", 'data-name': file.name, =>
       @i class: 'icon check'
-      @i class: "icon file-#{params.type}"
-      @span class: 'clickable', click: 'click', params.name
+      @i class: "icon file-#{file.type}"
+      @span class: 'clickable', click: 'click', file.name
 
-  initialize: (params) ->
-    @file = params
+  initialize: (file) ->
+    @file = file
 
   click: ->
     @file.click(@file.name)
 
 module.exports =
 class FileView extends View
-  @content: (params) ->
+  @content: ->
     @div class: 'files', =>
       @div class: 'heading', =>
         @i class: 'icon forked'
@@ -77,7 +77,7 @@ class FileView extends View
       @removeClass('none')
 
       click = (name) => @select(name)
-
+      
       files.forEach (file) =>
         fnames.push file.name
 
