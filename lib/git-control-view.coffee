@@ -4,6 +4,7 @@ git = require './git'
 
 BranchView = require './branch-view'
 FileView = require './file-view'
+LogView = require './log-view'
 MenuView = require './menu-view'
 
 module.exports =
@@ -31,14 +32,14 @@ class GitControlView extends View
         @div class: 'domain', =>
           @div class: 'diff', outlet: 'diffView'
 
-      @div class: 'logger', outlet: 'logView'
+      @subview 'logView', new LogView()
 
   serialize: ->
 
   initialize: ->
     console.log 'GitControlView: initialize'
 
-    git.setLogger (log, iserror) => @log(log, iserror)
+    git.setLogger (log, iserror) => @logView.log(log, iserror)
 
     @active = true
     @branchSelected = null
@@ -58,11 +59,6 @@ class GitControlView extends View
     @showStatus()
     @fetchMenuClick() unless nofetch
 
-    return
-
-  log: (log, iserror) ->
-    @logView.append "<pre class='#{if iserror then 'error' else ''}'>#{log}</pre>"
-    @logView.scrollToBottom()
     return
 
   loadLog: ->
