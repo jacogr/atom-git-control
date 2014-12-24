@@ -8,31 +8,21 @@ FileView = require './views/file-view'
 LogView = require './views/log-view'
 MenuView = require './views/menu-view'
 
+CommitDialog = require './dialogs/commit-dialog'
+
 module.exports =
 class GitControlView extends View
   @content: ->
     @div class: 'git-control', =>
       @subview 'menuView', new MenuView()
-
       @div class: 'content', =>
-
-        @div class: 'dialog', outlet: 'commitView', =>
-          @textarea class: 'native-key-bindings', outlet: 'commitMsg'
-          @button click: 'commitCancel', =>
-            @i class: 'icon x'
-            @span 'Cancel'
-          @button class: 'active', click: 'commitPost', =>
-            @i class: 'icon commit'
-            @span 'Commit'
-
+        @subview 'commitView', new CommitDialog()
         @div class: 'sidebar', =>
           @subview 'filesView', new FileView()
           @subview 'localBranchView', new BranchView(name: 'Local', local: true)
           @subview 'remoteBranchView', new BranchView(name: 'Remote')
-
         @div class: 'domain', =>
           @subview 'diffView', new DiffView()
-
       @subview 'logView', new LogView()
 
   serialize: ->
@@ -108,19 +98,13 @@ class GitControlView extends View
   commitMenuClick: ->
     return unless @filesView.hasSelected()
 
-    @commitView.addClass('active')
-    @commitMsg.val('')
+    @commitView.activate()
     return
 
-  commitCancel: ->
-    @commitView.removeClass('active')
-    return
-
-  commitPost: ->
-    @commitCancel()
+  commit: ->
     return unless @filesView.hasSelected()
 
-    msg = @commitMsg.val()
+    msg = @commitView.getMessage()
 
     files = @filesView.getSelected()
     @filesView.unselectAll()
@@ -144,7 +128,7 @@ class GitControlView extends View
     return
 
   resetMenuClick: ->
-    return unless @hasSelectedFiles()
+    return unless @filesView.hasSelected()
 
     files = @filesView.getSelected()
 
