@@ -33,12 +33,16 @@ class BranchView extends View
     @params = params
     @branches = []
 
+  clearAll: ->
+    @find('>.branch').remove()
+    return
+    
   addAll: (branches) ->
     @selectedBranch = git["get#{if @params.local then 'Local' else 'Remote'}Branch"]()
-    @find('>.branch').remove()
+    @clearAll()
 
     click = (name) => @click(name)
-    
+
     branches.forEach (branch) =>
       current = @params.local and branch is @selectedBranch
       count = klass: 'hidden'

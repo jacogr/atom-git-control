@@ -61,7 +61,7 @@ class FileView extends View
         else
           f.removeClass('active')
       return
-      
+
     for name, file of @files
       unless name in fnames
         file.selected = false
@@ -69,10 +69,14 @@ class FileView extends View
     @parentView.showSelectedFiles()
     return
 
+  clearAll: ->
+    @find('>.file').remove()
+    return
+    
   addAll: (files) ->
     fnames = []
 
-    @find('.file').remove()
+    @clearAll()
 
     if files.length
       @removeClass('none')
