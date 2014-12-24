@@ -15,11 +15,12 @@ class BranchView extends View
   initialize: (params) ->
     @params = params
     @branches = []
-    @view = $(@element)
+
+    console.log @
 
   addAll: (branches) ->
     @selectedBranch = git["get#{if @params.local then 'Local' else 'Remote'}Branch"]()
-    @view.find('>.branch').remove()
+    @find('>.branch').remove()
 
     click = (name) => @click(name)
 
@@ -34,7 +35,7 @@ class BranchView extends View
 
         @parentView.branchCount(count)
 
-      @view.append new BranchViewItem(name: branch, count: count, current: current, click: click)
+      @append new BranchViewItem(name: branch, count: count, current: current, click: click)
       return
     return
 

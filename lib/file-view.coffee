@@ -17,7 +17,6 @@ class FileView extends View
 
   initialize: ->
     @files = {}
-    @view = $(@element)
 
   hasSelected: ->
     for name, file of @files when file.selected
@@ -40,7 +39,7 @@ class FileView extends View
 
   showSelected: ->
     fnames = []
-    for div in @view.find('.file').toArray()
+    @find('.file').toArray().forEach (div) =>
       f = $(div)
       if name = f.attr('data-name')
         if @files[name].selected
@@ -59,10 +58,10 @@ class FileView extends View
   addAll: (files) ->
     fnames = []
 
-    @view.find('.file').remove()
+    @find('.file').remove()
 
     if files.length
-      @view.removeClass('none')
+      @removeClass('none')
 
       click = (name) => @select(name)
       files.forEach (file) =>
@@ -72,11 +71,11 @@ class FileView extends View
 
         @files[file.name] or= name: file.name
         @files[file.name].type = file.type
-        @view.append new FileViewItem(file)
+        @append new FileViewItem(file)
         return
 
     else
-      @view.addClass('none')
+      @addClass('none')
 
     for name, file of @files
       unless name in fnames
