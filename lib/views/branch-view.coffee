@@ -8,13 +8,11 @@ class BranchItem extends View
     cklass = if branch.count.total then '' else 'invisible'
     dclass = if branch.current or !branch.local then 'invisible' else ''
 
-    console.log branch, dclass
-
     @div class: "branch #{bklass}", 'data-name': branch.name, =>
       @i class: 'icon chevron-right'
-      @span class: 'clickable', click: 'click', branch.name
+      @span class: 'clickable', click: 'checkout', branch.name
       @div class: "right-info #{dclass}", =>
-        @i class: 'icon x clickable', click: 'delete'
+        @i class: 'icon x clickable', click: 'deleteThis'
       @div class: "right-info count #{cklass}", =>
         @span branch.count.ahead
         @i class: 'icon cloud-upload'
@@ -24,10 +22,10 @@ class BranchItem extends View
   initialize: (branch) ->
     @branch = branch
 
-  click: ->
-    @branch.click(@branch.name)
+  checkout: ->
+    @branch.checkout(@branch.name)
 
-  delete: ->
+  deleteThis: ->
     @branch.delete(@branch.name)
 
 module.exports =
@@ -50,7 +48,8 @@ class BranchView extends View
     @selectedBranch = git["get#{if @params.local then 'Local' else 'Remote'}Branch"]()
     @clearAll()
 
-    click = (name) => @click(name)
+    remove = (name) => @deleteBranch(name)
+    checkout = (name) => @checkoutBranch(name)
 
     branches.forEach (branch) =>
       current = @params.local and branch is @selectedBranch
@@ -62,13 +61,21 @@ class BranchView extends View
 
         @parentView.branchCount(count)
 
-      @append new BranchItem(name: branch, count: count, current: current, click: click, local: @params.local)
+      @append new BranchItem
+        name: branch
+        count: count
+        current: current
+        local: @params.local
+        delete: remove
+        checkout: checkout
+
       return
     return
 
-  click: (name) ->
+  checkoutBranch: (name) ->
     @parentView.checkoutBranch(name, !@params.local)
     return
 
-  delete: (name) ->
-    console.log 'deleting', name
+  deleteBranch: (name) ->
+    @parentView.deleteBranch(name)
+    return

@@ -10,6 +10,7 @@ MenuView = require './views/menu-view'
 
 BranchDialog = require './dialogs/branch-dialog'
 CommitDialog = require './dialogs/commit-dialog'
+ConfirmDialog = require './dialogs/confirm-dialog'
 MergeDialog = require './dialogs/merge-dialog'
 
 module.exports =
@@ -17,7 +18,7 @@ class GitControlView extends View
   @content: ->
     @div class: 'git-control', =>
       @subview 'menuView', new MenuView()
-      @div class: 'content', =>
+      @div class: 'content', outlet: 'contentView', =>
         @div class: 'sidebar', =>
           @subview 'filesView', new FileView()
           @subview 'localBranchView', new BranchView(name: 'Local', local: true)
@@ -125,6 +126,18 @@ class GitControlView extends View
       .then -> git.remove(files.rem)
       .then -> git.commit(files.all, msg)
       .then => @update()
+    return
+
+  deleteBranch: (branch) ->
+    confirmCb = (params) =>
+      git.deleteBranch(params.branch).then => @update()
+      return
+
+    @contentView.append new ConfirmDialog
+      hdr: 'Delete Branch'
+      msg: "Are you sure you want to delete the local branch '#{branch}'?"
+      cb: confirmCb
+      branch: branch
     return
 
   fetchMenuClick: ->
