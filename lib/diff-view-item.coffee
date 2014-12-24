@@ -6,6 +6,3 @@ class DiffViewItem extends View
     @div class: "line #{params.type}", =>
       @pre class: "lineno #{unless params.lineno then 'invisible' else ''}", params.lineno
       @pre params.text
-
-  initilize: (params) ->
-    console.log params
