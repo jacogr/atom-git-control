@@ -39,8 +39,10 @@ class FileView extends View
 
   showSelected: ->
     fnames = []
+
     @find('.file').toArray().forEach (div) =>
       f = $(div)
+
       if name = f.attr('data-name')
         if @files[name].selected
           fnames.push name
@@ -64,6 +66,7 @@ class FileView extends View
       @removeClass('none')
 
       click = (name) => @select(name)
+
       files.forEach (file) =>
         fnames.push file.name
 

@@ -1,4 +1,4 @@
-{View, $} = require 'atom'
+{View} = require 'atom'
 
 git = require './git'
 
@@ -15,8 +15,6 @@ class BranchView extends View
   initialize: (params) ->
     @params = params
     @branches = []
-
-    console.log @
 
   addAll: (branches) ->
     @selectedBranch = git["get#{if @params.local then 'Local' else 'Remote'}Branch"]()
