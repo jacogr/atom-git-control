@@ -6,6 +6,9 @@ module.exports =
 class MergeDialog extends Dialog
   @content: ->
     @div class: 'dialog', =>
+      @div class: 'heading', =>
+        @i class: 'icon x clickable', click: 'cancel'
+        @strong 'Merge'
       @label 'Current Branch'
       @input class: 'native-key-bindings', type: 'text', readonly: true, outlet: 'toBranch'
       @label 'Merge From Branch'

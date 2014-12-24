@@ -4,6 +4,9 @@ module.exports =
 class CommitDialog extends Dialog
   @content: ->
     @div class: 'dialog', =>
+      @div class: 'heading', =>
+        @i class: 'icon x clickable', click: 'cancel'
+        @strong 'Commit'
       @label 'Commit Message'
       @textarea class: 'native-key-bindings', outlet: 'msg'
       @button click: 'cancel', =>

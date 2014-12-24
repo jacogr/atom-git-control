@@ -6,6 +6,9 @@ module.exports =
 class BranchDialog extends Dialog
   @content: ->
     @div class: 'dialog', =>
+      @div class: 'heading', =>
+        @i class: 'icon x clickable', click: 'cancel'
+        @strong 'Branch'
       @label 'Current Branch'
       @input class: 'native-key-bindings', type: 'text', readonly: true, outlet: 'fromBranch'
       @label 'New Branch'
