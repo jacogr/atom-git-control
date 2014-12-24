@@ -2,11 +2,11 @@
 
 git = require './git'
 
-BranchView = require './branch-view'
-DiffView = require './diff-view'
-FileView = require './file-view'
-LogView = require './log-view'
-MenuView = require './menu-view'
+BranchView = require './views/branch-view'
+DiffView = require './views/diff-view'
+FileView = require './views/file-view'
+LogView = require './views/log-view'
+MenuView = require './views/menu-view'
 
 module.exports =
 class GitControlView extends View

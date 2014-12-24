@@ -1,6 +1,6 @@
 {View} = require 'atom'
 
-git = require './git'
+git = require '../git'
 
 class BranchItem extends View
   @content: (params) ->
