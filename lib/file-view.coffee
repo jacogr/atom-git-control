@@ -56,18 +56,6 @@ class FileView extends View
     @parentView.showSelectedFiles()
     return
 
-  add: (file) ->
-    file.click = (name) =>
-      @select(name)
-      return
-
-    @files[file.name] or= name: file.name
-    @files[file.name].type = file.type
-
-    @view.append new FileViewItem(file)
-
-    return
-
   addAll: (files) ->
     fnames = []
 
@@ -76,9 +64,16 @@ class FileView extends View
     if files.length
       @view.removeClass('none')
 
-      for file in files
+      click = (name) => @select(name)
+      files.forEach (file) =>
         fnames.push file.name
-        @add(file)
+
+        file.click = click
+
+        @files[file.name] or= name: file.name
+        @files[file.name].type = file.type
+        @view.append new FileViewItem(file)
+        return
 
     else
       @view.addClass('none')

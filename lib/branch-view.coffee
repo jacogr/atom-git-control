@@ -17,30 +17,25 @@ class BranchView extends View
     @branches = []
     @view = $(@element)
 
-  add: (branch) ->
-    current = @params.local and branch is @selectedBranch
-    count = klass: 'hidden'
-
-    if current
-      count = git.count(branch)
-      count.total = count.ahead + count.behind
-      count.klass = 'invisible' unless count.total
-
-      @parentView.branchCount(count)
-
-    click = (name) => @click(name)
-
-    @view.append new BranchViewItem(name: branch, count: count, current: current, click: click)
-
-    return
-
   addAll: (branches) ->
     @selectedBranch = git["get#{if @params.local then 'Local' else 'Remote'}Branch"]()
     @view.find('>.branch').remove()
 
-    for branch in branches
-      @add(branch)
+    click = (name) => @click(name)
 
+    branches.forEach (branch) =>
+      current = @params.local and branch is @selectedBranch
+      count = klass: 'hidden'
+
+      if current
+        count = git.count(branch)
+        count.total = count.ahead + count.behind
+        count.klass = 'invisible' unless count.total
+
+        @parentView.branchCount(count)
+
+      @view.append new BranchViewItem(name: branch, count: count, current: current, click: click)
+      return
     return
 
   click: (name) ->
