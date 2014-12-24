@@ -12,7 +12,7 @@ class BranchItem extends View
       @i class: 'icon chevron-right'
       @span class: 'clickable', click: 'checkout', branch.name
       @div class: "right-info #{dclass}", =>
-        @i class: 'icon x clickable', click: 'deleteThis'
+        @i class: 'icon trash clickable', click: 'deleteThis'
       @div class: "right-info count #{cklass}", =>
         @span branch.count.ahead
         @i class: 'icon cloud-upload'
