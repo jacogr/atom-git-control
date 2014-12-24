@@ -101,11 +101,7 @@ class GitControlView extends View
     return
 
   compareMenuClick: ->
-    return unless @filesView.hasSelected()
-
-    git.diff().then (diffs) =>
-      @diffView.addAll(diffs)
-      return
+    git.diff().then (diffs) => @diffView.addAll(diffs)
     return
 
   commitMenuClick: ->
