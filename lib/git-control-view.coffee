@@ -16,13 +16,13 @@ class GitControlView extends View
     @div class: 'git-control', =>
       @subview 'menuView', new MenuView()
       @div class: 'content', =>
-        @subview 'commitDialog', new CommitDialog()
         @div class: 'sidebar', =>
           @subview 'filesView', new FileView()
           @subview 'localBranchView', new BranchView(name: 'Local', local: true)
           @subview 'remoteBranchView', new BranchView(name: 'Remote')
         @div class: 'domain', =>
           @subview 'diffView', new DiffView()
+        @subview 'commitDialog', new CommitDialog()
       @subview 'logView', new LogView()
 
   serialize: ->
@@ -52,7 +52,7 @@ class GitControlView extends View
     unless nofetch
       @fetchMenuClick()
       @diffView.clearAll()
-      
+
     return
 
   loadLog: ->
