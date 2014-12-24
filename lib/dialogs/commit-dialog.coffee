@@ -7,14 +7,16 @@ class CommitDialog extends Dialog
       @div class: 'heading', =>
         @i class: 'icon x clickable', click: 'cancel'
         @strong 'Commit'
-      @label 'Commit Message'
-      @textarea class: 'native-key-bindings', outlet: 'msg'
-      @button click: 'cancel', =>
-        @i class: 'icon x'
-        @span 'Cancel'
-      @button class: 'active', click: 'commit', =>
-        @i class: 'icon commit'
-        @span 'Commit'
+      @div class: 'body', =>
+        @label 'Commit Message'
+        @textarea class: 'native-key-bindings', outlet: 'msg'
+      @div class: 'buttons', =>
+        @button class: 'active', click: 'commit', =>
+          @i class: 'icon commit'
+          @span 'Commit'
+        @button click: 'cancel', =>
+          @i class: 'icon x'
+          @span 'Cancel'
 
   activate: ->
     @msg.val('')

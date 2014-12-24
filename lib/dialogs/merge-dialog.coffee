@@ -9,16 +9,18 @@ class MergeDialog extends Dialog
       @div class: 'heading', =>
         @i class: 'icon x clickable', click: 'cancel'
         @strong 'Merge'
-      @label 'Current Branch'
-      @input class: 'native-key-bindings', type: 'text', readonly: true, outlet: 'toBranch'
-      @label 'Merge From Branch'
-      @select class: 'native-key-bindings', outlet: 'fromBranch'
-      @button click: 'cancel', =>
-        @i class: 'icon x'
-        @span 'Cancel'
-      @button class: 'active', click: 'branch', =>
-        @i class: 'icon branch'
-        @span 'Branch'
+      @div class: 'body', =>
+        @label 'Current Branch'
+        @input class: 'native-key-bindings', type: 'text', readonly: true, outlet: 'toBranch'
+        @label 'Merge From Branch'
+        @select class: 'native-key-bindings', outlet: 'fromBranch'
+      @div class: 'buttons', =>
+        @button class: 'active', click: 'branch', =>
+          @i class: 'icon branch'
+          @span 'Branch'
+        @button click: 'cancel', =>
+          @i class: 'icon x'
+          @span 'Cancel'
 
   activate: (branches) ->
     current = git.getLocalBranch()
