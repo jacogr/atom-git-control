@@ -72,7 +72,7 @@ class GitControlView extends View
 
   branchCount: (count) ->
     @menuView.activate('upstream', count.behind)
-    @menuView.activate('downstream', count.ahead)
+    @menuView.activate('downstream', count.ahead or !git.getRemoteBranch())
     return
 
   loadBranches: ->
