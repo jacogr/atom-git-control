@@ -88,6 +88,7 @@ class GitControlView extends View
 
   showSelectedFiles: ->
     @menuView.activate('file', @filesView.hasSelected())
+    @menuView.activate('merging', git.isMerging())
     return
 
   showStatus: ->
