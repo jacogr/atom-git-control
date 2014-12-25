@@ -1,7 +1,7 @@
 {
   "name": "git-control",
   "main": "./lib/git-control",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "GUI interface for git in Atom",
   "activationCommands": {
     "atom-workspace": "git-control:toggle"
