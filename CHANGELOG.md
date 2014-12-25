@@ -1,8 +1,9 @@
 ## 0.1.3
 
-- Fetch also prunes branches now and then
+- Fetch also prunes branches now
+- Commit dialog is also available when in merge mode
 
-... cleanups for any branches not available anymore
+... cleanups for edgy cases
 
 ## 0.1.2
 
