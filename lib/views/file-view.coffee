@@ -44,6 +44,7 @@ class FileView extends View
       files.all.push name
       switch file.type
         when 'new' then files.add.push name
+        when 'conflict' then files.add.push name
         when 'deleted' then files.rem.push name
 
     return files
