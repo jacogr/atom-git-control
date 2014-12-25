@@ -151,7 +151,11 @@ module.exports =
       return parseDefault(data)
 
   push: ->
-    return callGit "-c push.default=simple push --porcelain", (data) ->
+    cmd = "-c push.default=simple push --porcelain"
+    unless repo.getUpstreamBranch()
+      cmd = "#{cmd} --set-upstream origin #{repo.getShortHead()}"
+      
+    return callGit cmd, (data) ->
       atomRefresh()
       return parseDefault(data)
 
