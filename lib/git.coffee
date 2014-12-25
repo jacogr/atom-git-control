@@ -58,7 +58,7 @@ parseDiff = (data) -> q.fcall ->
 parseStatus = (data) -> q.fcall ->
   files = []
   for line in data.split('\n') when line.length
-    [type, name] = line.trim().split(' ')
+    [type, name] = line.replace(/\ \ /g, ' ').trim().split(' ')
     files.push
       name: name
       type: switch type
@@ -66,6 +66,7 @@ parseStatus = (data) -> q.fcall ->
         when 'D' then 'deleted'
         when 'M' then 'modified'
         when '??' then 'new'
+        when 'UU' then 'conflict'
         else 'unknown'
 
   return files
