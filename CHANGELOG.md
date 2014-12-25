@@ -1,6 +1,6 @@
 ## 0.1.3
 
-- Fetch also prunes branches now
+- Fetch also prunes branches now and whenever
 
 ... cleanups for any branches not available anymore
 
