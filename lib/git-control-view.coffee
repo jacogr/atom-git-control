@@ -124,6 +124,10 @@ class GitControlView extends View
       .then => @update()
     return
 
+  createBranch: (branch) ->
+    git.createBranch(branch).then => @update()
+    return
+    
   deleteBranch: (branch) ->
     confirmCb = (params) =>
       git.deleteBranch(params.branch).then => @update()

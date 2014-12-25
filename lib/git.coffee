@@ -122,6 +122,9 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
+  createBranch: (branch) ->
+    return callGit "checkout -b #{branch}", parseDefault
+
   deleteBranch: (branch) ->
     return callGit "branch -d #{branch}", parseDefault
 

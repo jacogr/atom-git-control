@@ -29,5 +29,5 @@ class BranchDialog extends Dialog
 
   branch: ->
     @deactivate()
-    #@parentView.commit()
+    @parentView.createBranch(@toBranch.val())
     return
