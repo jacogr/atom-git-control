@@ -7,3 +7,4 @@
   - Fetch fetches on tab activation, menu item always available
   - Push activated when there are actual local changes available
   - Pull activated when there are remote changes detected via fetch
+  - Branching and merging works
