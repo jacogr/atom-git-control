@@ -1,7 +1,7 @@
 {View, $} = require 'atom'
 
 items = [
-  { id: 'compare', menu: 'Compare', icon: 'compare', type: 'downstream'}
+  { id: 'compare', menu: 'Compare', icon: 'compare', type: 'active'}
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file'}
   { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
   #{ id: 'clone', menu: 'Clone', icon: 'clone'}
