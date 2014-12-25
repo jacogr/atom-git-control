@@ -154,13 +154,13 @@ module.exports =
     cmd = "-c push.default=simple push --porcelain"
     unless repo.getUpstreamBranch()
       cmd = "#{cmd} --set-upstream origin #{repo.getShortHead()}"
-      
+
     return callGit cmd, (data) ->
       atomRefresh()
       return parseDefault(data)
 
   log: (branch) ->
-    return callGit "log origin/#{branch}..#{branch}", parseDefault
+    return callGit "log origin/#{repo.getUpstreamBranch() or 'master'}..#{branch}", parseDefault
 
   reset: (files) ->
     return callGit "checkout -- #{files.join(' ')}", (data) ->
