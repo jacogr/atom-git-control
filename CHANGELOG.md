@@ -8,9 +8,7 @@
 
 - Initial version
 - Shows information of local vs remote branches (current active)
-- Actions allowed this is something that will conflict
-  - local something here
-  - remote whatever
+- Actions allowed
   - Allows reset of files to previous state
   - Fetch fetches on tab activation, menu item always available
   - Push activated when there are actual local changes available
