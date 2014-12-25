@@ -61,12 +61,14 @@ parseStatus = (data) -> q.fcall ->
     [type, name] = line.replace(/\ \ /g, ' ').trim().split(' ')
     files.push
       name: name
-      type: switch type
+      type: switch type[type.length - 1]
         when 'A' then 'added'
+        when 'C' then 'modified' #'copied'
         when 'D' then 'deleted'
         when 'M' then 'modified'
-        when '??' then 'new'
-        when 'UU' then 'conflict'
+        when 'R' then 'modified' #'renamed'
+        when 'U' then 'conflict'
+        when '?' then 'new'
         else 'unknown'
 
   return files
