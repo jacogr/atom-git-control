@@ -1,9 +1,3 @@
-## 0.1.3
-
-- Commit button also available when there are locally staged files
-
-... handle stages by external interfaces
-
 ## 0.1.2
 
 - Always do an add for modified files before doing a commit without specifying files
