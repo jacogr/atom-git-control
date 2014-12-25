@@ -127,7 +127,7 @@ class GitControlView extends View
   createBranch: (branch) ->
     git.createBranch(branch).then => @update()
     return
-    
+
   deleteBranch: (branch) ->
     confirmCb = (params) =>
       git.deleteBranch(params.branch).then => @update()
@@ -149,7 +149,7 @@ class GitControlView extends View
     return
 
   merge: (branch) =>
-    git.merge(branch).then => update()
+    git.merge(branch).then => @update()
     return
 
   pullMenuClick: ->
