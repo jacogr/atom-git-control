@@ -76,12 +76,13 @@ parseDefault = (data) -> q.fcall ->
 callGit = (cmd, parser, nodatalog) ->
   logcb "> git #{cmd}"
 
-  return git(cmd, cwd: cwd)
+  return git(cmd, {cwd: cwd})
     .then (data) ->
       logcb data unless nodatalog
       return parser(data)
-    .catch (e) ->
-      logcb e, true
+    .fail (e) ->
+      logcb e.stdout, true
+      logcb e.message, true
       return
 
 module.exports =
@@ -123,7 +124,8 @@ module.exports =
       return parseDefault(data)
 
   createBranch: (branch) ->
-    return callGit "checkout -b #{branch}", parseDefault
+    return callGit "checkout -b #{branch}", (data) ->
+      return callGit "push origin #{branch}", parseDefault
 
   deleteBranch: (branch) ->
     return callGit "branch -d #{branch}", parseDefault
