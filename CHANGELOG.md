@@ -10,7 +10,7 @@
 - Shows information of local vs remote branches (current active)
 - Actions allowed this is something that will conflict
   - local something here
-  - remote something here
+  - remote whatever
   - Allows reset of files to previous state
   - Fetch fetches on tab activation, menu item always available
   - Push activated when there are actual local changes available
