@@ -141,7 +141,7 @@ module.exports =
     return callGit "--no-pager diff #{file or ''}", parseDiff, true
 
   fetch: ->
-    return callGit "fetch", parseDefault
+    return callGit "fetch --prune", parseDefault
 
   merge: (branch) ->
     return callGit "merge #{branch}", (data) ->

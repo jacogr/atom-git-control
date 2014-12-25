@@ -1,3 +1,9 @@
+## 0.1.3
+
+- Fetch also prunes branches
+
+... cleanups for any branches not available anymore
+
 ## 0.1.2
 
 - Always do an add for modified files before doing a commit without specifying files
