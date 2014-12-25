@@ -113,11 +113,11 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
-  commit: (files, message) ->
+  commit: (message) ->
     message = message or Date.now()
     message = message.replace(/"/g, '\\"')
 
-    return callGit "commit -m \"#{message}\" -- #{files.join(' ')}", (data) ->
+    return callGit "commit -m \"#{message}\"", (data) ->
       atomRefresh()
       return parseDefault(data)
 

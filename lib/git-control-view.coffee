@@ -120,7 +120,7 @@ class GitControlView extends View
 
     git.add(files.add)
       .then -> git.remove(files.rem)
-      .then -> git.commit(files.all, msg)
+      .then -> git.commit(msg)
       .then => @update()
     return
 

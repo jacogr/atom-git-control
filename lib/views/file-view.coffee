@@ -43,9 +43,8 @@ class FileView extends View
     for name, file of @files when file.selected
       files.all.push name
       switch file.type
-        when 'new' then files.add.push name
-        when 'conflict' then files.add.push name
         when 'deleted' then files.rem.push name
+        else files.add.push name
 
     return files
 
