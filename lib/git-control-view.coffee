@@ -106,7 +106,7 @@ class GitControlView extends View
     return
 
   commitMenuClick: ->
-    return unless @filesView.hasSelected()
+    return unless @filesView.hasSelected() or git.isMerging()
 
     @commitDialog.activate()
     return
