@@ -1,3 +1,9 @@
+## 0.1.2
+
+- Always do an add for modified files before doing a commit without specifying files
+
+... helps a lot with other packages that stages (or does not)
+
 ## 0.1.1
 
 - Updated description in package.json
