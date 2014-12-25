@@ -125,10 +125,13 @@ module.exports =
 
   createBranch: (branch) ->
     return callGit "checkout -b #{branch}", (data) ->
+      atomRefresh()
       return callGit "push origin #{branch}", parseDefault
 
   deleteBranch: (branch) ->
-    return callGit "branch -d #{branch}", parseDefault
+    return callGit "branch -d #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault
 
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff, true
