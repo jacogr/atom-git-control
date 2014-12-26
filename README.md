@@ -17,6 +17,8 @@ This is a first-release, while tested as part of creating this package, it has n
 - Create branches, either by remote selection of local branching
 - Reset any file to its previous state with a checkout
 - All git commands are logged, the commands used and ouput is visible
+- Command available are activated based on working tree status
+- Automatically fetches remote status on activation
 
 ## Where
 
