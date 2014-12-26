@@ -1,7 +1,7 @@
 {
   "name": "git-control",
   "main": "./lib/git-control",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Provides a GUI interface to manage all commonly-used git commands.",
   "activationCommands": {
     "atom-workspace": "git-control:toggle"
