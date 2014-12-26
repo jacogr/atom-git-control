@@ -2,6 +2,7 @@
 
 - Fetch also prunes branches now
 - Commit dialog is also available when in merge mode
+- Updated README to go through functionality
 
 ... cleanups for edgy cases
 
