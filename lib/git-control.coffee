@@ -5,12 +5,15 @@ CMD_TOGGLE = 'git-control:toggle'
 EVT_SWITCH = 'pane-container:active-pane-item-changed'
 
 views = []
+view = undefined
+pane = undefined
+item = undefined
 
 module.exports = GitControl =
   activate: (state) ->
     console.log 'GitControl: activate'
 
-    atom.workspaceView.command CMD_TOGGLE, => @newView()
+    atom.workspaceView.command CMD_TOGGLE, => @toggleView()
     atom.workspaceView.on EVT_SWITCH, => @updateViews()
     return
 
@@ -18,22 +21,24 @@ module.exports = GitControl =
     console.log 'GitControl: deactivate'
     return
 
-  newView: ->
+  toggleView: ->
     console.log 'GitControl: toggle'
 
-    view = new GitControlView()
-    views.push view
+    unless view and view.active
+      view = new GitControlView()
+      views.push view
 
-    pane = atom.workspace.getActivePane()
-    item = pane.addItem view, 0
+      pane = atom.workspace.getActivePane()
+      item = pane.addItem view, 0
+
     pane.activateItem item
 
     return
 
   updateViews: ->
     activeView = atom.workspace.getActivePane().getActiveItem()
-    for view in views when view is activeView
-      view.update()
+    for v in views when v is activeView
+      v.update()
     return
 
   serialize: ->

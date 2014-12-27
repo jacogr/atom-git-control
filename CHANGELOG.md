@@ -1,3 +1,10 @@
+## 0.1.4
+
+- Address 'toggle' not actually 'toggling' the control tab
+- https://github.com/jacogr/atom-git-control/issues/5
+
+... yeap, more usability
+
 ## 0.1.3
 
 - Fetch also prunes branches now
