@@ -2,6 +2,7 @@
 
 - Address 'toggle' not actually 'toggling' the control tab
 - https://github.com/jacogr/atom-git-control/issues/5
+- Toggle currently doesn't toggle to the 'off' state, rather only controls switching
 
 ... yeap, more usability
 
