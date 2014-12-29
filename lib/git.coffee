@@ -113,6 +113,10 @@ module.exports =
 
   getBranches: getBranches
 
+  hasRemotes: ->
+    refs = repo.getReferences()
+    return refs.remotes and refs.remotes.length
+
   add: (files) ->
     return noop() unless files.length
     return callGit "add -- #{files.join(' ')}", (data) ->

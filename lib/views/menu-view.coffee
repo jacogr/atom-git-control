@@ -5,7 +5,7 @@ items = [
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file merging'}
   { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
   #{ id: 'clone', menu: 'Clone', icon: 'clone'}
-  { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'active'}
+  { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'remote'}
   { id: 'pull', menu: 'Pull', icon: 'pull', type: 'upstream'}
   { id: 'push', menu: 'Push', icon: 'push', type: 'downstream'}
   { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}

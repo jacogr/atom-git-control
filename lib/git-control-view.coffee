@@ -71,8 +71,11 @@ class GitControlView extends View
     return
 
   branchCount: (count) ->
-    @menuView.activate('upstream', count.behind)
-    @menuView.activate('downstream', count.ahead or !git.getRemoteBranch())
+    remotes = git.hasRemotes()
+
+    @menuView.activate('upstream', remotes and count.behind)
+    @menuView.activate('downstream', remotes and (count.ahead or !git.getRemoteBranch()))
+    @menuView.activate('remote', remotes)
     return
 
   loadBranches: ->
@@ -142,6 +145,8 @@ class GitControlView extends View
     return
 
   fetchMenuClick: ->
+    return unless git.hasRemotes()
+
     git.fetch().then => @loadBranches()
     return
 
