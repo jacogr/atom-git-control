@@ -1,3 +1,10 @@
+## 0.1.5
+
+- Toggle closes when open, opens when closed
+- https://github.com/jacogr/atom-git-control/issues/5
+
+... last nigglies for issue #5
+
 ## 0.1.4
 
 - Address 'toggle' not actually 'toggling' the control tab

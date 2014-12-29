@@ -31,7 +31,10 @@ module.exports = GitControl =
       pane = atom.workspace.getActivePane()
       item = pane.addItem view, 0
 
-    pane.activateItem item
+      pane.activateItem item
+
+    else
+      pane.destroyItem item
 
     return
 
