@@ -1,7 +1,16 @@
+## 0.1.6
+
+- Don't do a fetch when there are no remotes
+- Don't make the push/pull/fetch items active without remotes
+- - https://github.com/jacogr/atom-git-control/issues/6
+
+... working with local-only repos
+
 ## 0.1.5
 
 - Toggle closes when open, opens when closed
 - https://github.com/jacogr/atom-git-control/issues/5
+- not an official release, 0.1.6 fix combines (no rapid-fire releases)
 
 ... last nigglies for issue #5
 
