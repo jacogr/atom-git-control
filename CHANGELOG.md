@@ -2,7 +2,7 @@
 
 - Don't do a fetch when there are no remotes
 - Don't make the push/pull/fetch items active without remotes
-- - https://github.com/jacogr/atom-git-control/issues/6
+- https://github.com/jacogr/atom-git-control/issues/6
 
 ... working with local-only repos
 
