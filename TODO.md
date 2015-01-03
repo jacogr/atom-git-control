@@ -1,2 +1,2 @@
-- prompt should justb "sit there"
+- prompt should just "sit there"
 - go through all issues, draw up list of what/where
