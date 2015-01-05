@@ -1,3 +1,10 @@
+## 0.1.7
+
+- When a new folder is created, explicitly show all the files in it
+- https://github.com/jacogr/atom-git-control/issues/9
+
+... show untracked files
+
 ## 0.1.6
 
 - Don't do a fetch when there are no remotes

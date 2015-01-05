@@ -187,4 +187,4 @@ module.exports =
       return parseDefault(true)
 
   status: ->
-    return callGit 'status --porcelain', parseStatus
+    return callGit 'status --porcelain --untracked-files=all', parseStatus
