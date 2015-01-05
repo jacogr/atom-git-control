@@ -1,3 +1,10 @@
+## 0.1.8
+
+- Actually test if a remote origin exists (getOrigin()) as opposed to remove branches
+- https://github.com/jacogr/atom-git-control/issues/8
+
+... getting things ticking on anything where a fetch or clone hasn't been done
+
 ## 0.1.7
 
 - When a new folder is created, explicitly show all the files in it
