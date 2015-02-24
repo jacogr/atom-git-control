@@ -13,8 +13,8 @@ module.exports = GitControl =
   activate: (state) ->
     console.log 'GitControl: activate'
 
-    atom.workspaceView.command CMD_TOGGLE, => @toggleView()
-    atom.workspaceView.on EVT_SWITCH, => @updateViews()
+    atom.commands.add 'atom-workspace', CMD_TOGGLE, => @toggleView()
+    atom.workspace.onDidChangeActivePaneItem (item) => @updateViews()
     return
 
   deactivate: ->
