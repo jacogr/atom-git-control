@@ -1,7 +1,5 @@
 # Atom git-control
 
-[![Join the chat at https://gitter.im/jacogr/atom-git-control](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jacogr/atom-git-control?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ## What
 
 Provides a GUI interface to manage all commonly-used git commands.
@@ -27,3 +25,5 @@ This is a first-release, while tested as part of creating this package, it has n
 The Atom package can be found on the Atom registry, [https://atom.io/packages/git-control](https://atom.io/packages/git-control).
 
 Pull requests, issues, feature requests are all welcome and encouraged via [https://github.com/jacogr/atom-git-control](https://github.com/jacogr/atom-git-control).
+
+Discussion and additional input is promoted here: [![Join the chat at https://gitter.im/jacogr/atom-git-control](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jacogr/atom-git-control?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
