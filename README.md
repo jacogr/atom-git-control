@@ -1,5 +1,7 @@
 # Atom git-control
 
+[![Join the chat at https://gitter.im/jacogr/atom-git-control](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jacogr/atom-git-control?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## What
 
 Provides a GUI interface to manage all commonly-used git commands.
