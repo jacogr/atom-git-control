@@ -1,3 +1,12 @@
+## 0.1.9
+
+- Fixing defineProperty.get deprecation #16
+- Fixing Stylesheet Path deprecation warning #53
+- Minor style changes introduced by #39
+- Creating a Gitter room and some small updates in Readme and TODO #50
+
+... fixing deprecations and getting things running again
+
 ## 0.1.8
 
 - Actually test if a remote origin exists (getOrigin()) as opposed to remove branches
