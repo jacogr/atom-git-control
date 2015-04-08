@@ -1,4 +1,3 @@
-- focus on critical issues (deprecations, breaking bugs ...)
+- focus on critical issues (bugs, performance)
 
-- go through all issues, draw up list of what/where
 - prompt should just "sit there" - i.e. mark-khan's issue
