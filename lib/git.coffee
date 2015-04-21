@@ -167,7 +167,7 @@ module.exports =
       return parseDefault(data)
 
   flow: (type,action,branch) ->
-    return callGit "flow feature #{type} #{action} #{branch}", (data) ->
+    return callGit "flow #{type} #{action} #{branch}", (data) ->
       atomRefresh()
       return parseDefault(data)
 

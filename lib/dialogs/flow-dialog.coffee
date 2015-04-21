@@ -16,8 +16,8 @@ class FlowDialog extends Dialog
         @label 'Branch Name:'
         @input class: 'native-key-bindings', type: 'text', outlet: 'branchName'
       @div class: 'buttons', =>
-        @button class: 'active', click: 'flowfeature', =>
-          @i class: 'icon flowfeature'
+        @button class: 'active', click: 'flow', =>
+          @i class: 'icon flow'
           @span 'Ok'
         @button click: 'cancel', =>
           @i class: 'icon x'
@@ -40,7 +40,7 @@ class FlowDialog extends Dialog
 
     return super()
 
-  flowfeaturee: ->
+  flow: ->
     @deactivate()
     @parentView.flow(@flowType.val(),@flowAction.val(),@branchName.val());
     return
