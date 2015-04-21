@@ -11,7 +11,7 @@ class FlowDialog extends Dialog
         @strong 'Workflow - GitFlow'
       @div class: 'body', =>
         @label 'Git Flow '
-        @select class: 'native-key-bindings', outlet: 'flowType'
+        @select class: 'native-key-bindings', outlet: 'flowType', change: 'flowTypeChange'
         @select class: 'native-key-bindings', outlet: 'flowAction'
         @label 'Branch Name:'
         @input class: 'native-key-bindings', type: 'text', outlet: 'branchName'
@@ -30,7 +30,7 @@ class FlowDialog extends Dialog
     @flowType.append "<option value='feature'>feature</option>"
     @flowType.append "<option value='release'>release</option>"
     @flowType.append "<option value='hotfix'>hotfix</option>"
-    #@flowType.append "<option value='init'>init</option>"
+    @flowType.append "<option value='init'>init</option>"
 
     @flowAction.find('option').remove()
     @flowAction.append "<option value='start'>start</option>"
@@ -42,5 +42,17 @@ class FlowDialog extends Dialog
 
   flow: ->
     @deactivate()
-    @parentView.flow(@flowType.val(),@flowAction.val(),@branchName.val());
+    #init with default branch name
+    if (@flowType.val() == "init")
+      @parentView.flow(@flowType.val(),'-d','')
+    else
+      @parentView.flow(@flowType.val(),@flowAction.val(),@branchName.val())
+
+    return
+
+  flowTypeChange: ->
+    if (@flowType.val() == "init")
+      @flowAction.hide()
+    else
+      @flowAction.show()
     return
