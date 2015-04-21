@@ -79,8 +79,8 @@ class FlowDialog extends Dialog
         if (branch.indexOf(@flowType.val()) != -1 )
           value = branch.replace(@flowType.val()+'/','')
           @branchChoose.append "<option value='#{value}'>#{value}</option>"
-        #if (@branchChoose.find('option').length <= 0)
-        #  @branchChoose.append "<option value=''> -no "+@flowType.val()+" branches</option>"
+      if (@branchChoose.find('option').length <= 0)
+        @branchChoose.append "<option value=''> -no "+@flowType.val()+" branches</option>"
       @branchChoose.show()
     else
       @branchName.show()
