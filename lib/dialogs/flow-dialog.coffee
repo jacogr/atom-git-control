@@ -12,9 +12,10 @@ class FlowDialog extends Dialog
       @div class: 'body', =>
         @label 'Git Flow '
         @select class: 'native-key-bindings', outlet: 'flowType', change: 'flowTypeChange'
-        @select class: 'native-key-bindings', outlet: 'flowAction'
-        @label 'Branch Name:'
+        @select class: 'native-key-bindings', outlet: 'flowAction', change: 'flowActionChange'
+        @label 'Branch Name:', outlet: 'labelBranchName'
         @input class: 'native-key-bindings', type: 'text', outlet: 'branchName'
+        @select class: 'native-key-bindings', outlet: 'branchChoose'
       @div class: 'buttons', =>
         @button class: 'active', click: 'flow', =>
           @i class: 'icon flow'
@@ -25,6 +26,8 @@ class FlowDialog extends Dialog
 
   activate: (branches) ->
     current = git.getLocalBranch()
+    @branches = branches;
+    @branchChoose.hide();
 
     @flowType.find('option').remove()
     @flowType.append "<option value='feature'>feature</option>"
@@ -46,13 +49,39 @@ class FlowDialog extends Dialog
     if (@flowType.val() == "init")
       @parentView.flow(@flowType.val(),'-d','')
     else
-      @parentView.flow(@flowType.val(),@flowAction.val(),@branchName.val())
-
+      branchSelected = @branchName.val();
+      if(branchSelected == '')
+        branchSelected = @branchChoose.val();
+      if(branchSelected == '')
+        @parentView.flow(@flowType.val(),@flowAction.val(),branchSelected)
+      else
+        #pop some error "no branch selected"
     return
 
   flowTypeChange: ->
     if (@flowType.val() == "init")
       @flowAction.hide()
+      @branchName.hide()
+      @branchChoose.hide()
+      @labelBranchName.hide()
     else
-      @flowAction.show()
+      @flowAction.show();
+      @flowActionChange();
+      @labelBranchName.show();
     return
+
+  flowActionChange: ->
+    if (@flowAction.val() != "start")
+      @branchName.hide()
+      @branchName.val('')
+      @branchChoose.find('option').remove()
+      for branch in @branches
+        if (branch.indexOf(@flowType.val()) != -1 )
+          value = branch.replace(@flowType.val()+'/','')
+          @branchChoose.append "<option value='#{value}'>#{value}</option>"
+        #if (@branchChoose.find('option').length <= 0)
+        #  @branchChoose.append "<option value=''> -no "+@flowType.val()+" branches</option>"
+      @branchChoose.show()
+    else
+      @branchName.show()
+      @branchChoose.hide()
