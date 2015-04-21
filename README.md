@@ -33,15 +33,26 @@ Discussion and additional input is promoted here: [![Join the chat at https://gi
 For git-flow commands to work, you need to [install git flow](https://github.com/nvie/gitflow/wiki/Installation)
 
 then, on mac, do the following:
+
+``
 sudo ln -s /usr/local/bin/git-flow /usr/bin/
+
 sudo ln -s /usr/local/bin/git-flow-hotfix /usr/bin/
+
 sudo ln -s /usr/local/bin/git-flow-release /usr/bin/
+
 sudo ln -s /usr/local/bin/git-flow-version /usr/bin/
+
 sudo ln -s /usr/local/bin/git-flow-support /usr/bin/
+
 sudo ln -s /usr/local/bin/git-flow-init /usr/bin/
+
 sudo ln -s /usr/local/bin/git-flow-feature /usr/bin/
+
 sudo ln -s /usr/local/bin/gitflow-shFlags /usr/bin/
+
 sudo ln -s /usr/local/bin/gitflow-common /usr/bin/
+``
 
 ## Maintainers
 
