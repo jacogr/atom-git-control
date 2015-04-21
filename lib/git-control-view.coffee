@@ -12,6 +12,7 @@ BranchDialog = require './dialogs/branch-dialog'
 CommitDialog = require './dialogs/commit-dialog'
 ConfirmDialog = require './dialogs/confirm-dialog'
 MergeDialog = require './dialogs/merge-dialog'
+FlowDialog = require './dialogs/flow-dialog'
 
 module.exports =
 class GitControlView extends View
@@ -28,6 +29,7 @@ class GitControlView extends View
         @subview 'branchDialog', new BranchDialog()
         @subview 'commitDialog', new CommitDialog()
         @subview 'mergeDialog', new MergeDialog()
+        @subview 'flowDialog', new FlowDialog()
       @subview 'logView', new LogView()
 
   serialize: ->
@@ -156,6 +158,14 @@ class GitControlView extends View
 
   merge: (branch) =>
     git.merge(branch).then => @update()
+    return
+
+  flowMenuClick: ->
+    @flowDialog.activate(@branches.local)
+    return
+
+  flow: (type,action,branch) =>
+    git.flow(type,action,branch).then => @update()
     return
 
   pullMenuClick: ->

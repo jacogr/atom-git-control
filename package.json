@@ -6,7 +6,10 @@
   "activationCommands": {
     "atom-workspace": "git-control:toggle"
   },
-  "repository": "https://github.com/jacogr/atom-git-control",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacogr/atom-git-control"
+  },
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
@@ -14,5 +17,129 @@
   "dependencies": {
     "git-promise": "^0.2.0",
     "q": "^1.0.1"
+  },
+  "readme": "# Atom git-control\n\n## What\n\nProvides a GUI interface to manage all commonly-used git commands.\n\nThis is a first-release, while tested as part of creating this package, it has not been extensively used on much larger projects. In short: there are possibly still some issues remaining. At the same time, wanted to get the package out there and used.\n\n![Git](https://raw.githubusercontent.com/jacogr/atom-git-control/master/screenshots/git-01.png)\n\n## How\n\n- Checkout or switch to any available branch with a click on the local/remote branch\n- Select files to commit, either all or with an individual selection\n- Compare the current working tree changes to the selected local branch\n- Merge any other branch into the current active branch\n- Create branches, either by remote selection of local branching\n- Reset any file to its previous state with a checkout\n- All git commands are logged, the commands used and output is visible\n- Command available are activated based on working tree status\n- Automatically fetches remote status on activation\n\n## Where\n\nThe Atom package can be found on the Atom registry, [https://atom.io/packages/git-control](https://atom.io/packages/git-control).\n\nPull requests, issues, feature requests are all welcome and encouraged via [https://github.com/jacogr/atom-git-control](https://github.com/jacogr/atom-git-control).\n\nDiscussion and additional input is promoted here: [![Join the chat at https://gitter.im/jacogr/atom-git-control](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jacogr/atom-git-control?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/jacogr/atom-git-control/issues"
+  },
+  "homepage": "https://github.com/jacogr/atom-git-control",
+  "_id": "git-control@0.1.9",
+  "_shasum": "0088e162f0e4e47185ff62e3c7558f90f81fa20a",
+  "_resolved": "file:../d-115321-43649-18kicey/package.tgz",
+  "_from": "../d-115321-43649-18kicey/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [
+      {
+        "name": "git-promise",
+        "version": "0.2.0",
+        "path": "node_modules/git-promise/index.js"
+      },
+      {
+        "name": "q",
+        "version": "1.0.1",
+        "path": "node_modules/git-promise/node_modules/q/q.js"
+      },
+      {
+        "name": "shelljs",
+        "version": "0.3.0",
+        "path": "node_modules/git-promise/node_modules/shelljs/shell.js"
+      },
+      {
+        "name": "q",
+        "version": "1.2.0",
+        "path": "node_modules/q/q.js"
+      }
+    ],
+    "extensions": {
+      ".coffee": [
+        "lib/dialogs/branch-dialog.coffee",
+        "lib/dialogs/commit-dialog.coffee",
+        "lib/dialogs/confirm-dialog.coffee",
+        "lib/dialogs/dialog.coffee",
+        "lib/dialogs/merge-dialog.coffee",
+        "lib/git-control-view.coffee",
+        "lib/git-control.coffee",
+        "lib/git.coffee",
+        "lib/views/branch-view.coffee",
+        "lib/views/diff-view.coffee",
+        "lib/views/file-view.coffee",
+        "lib/views/log-view.coffee",
+        "lib/views/menu-view.coffee"
+      ],
+      ".js": [
+        "node_modules/git-promise/index.js",
+        "node_modules/git-promise/node_modules/q/benchmark/compare-with-callbacks.js",
+        "node_modules/git-promise/node_modules/q/benchmark/scenarios.js",
+        "node_modules/git-promise/node_modules/q/q.js",
+        "node_modules/git-promise/node_modules/q/queue.js",
+        "node_modules/git-promise/node_modules/shelljs/global.js",
+        "node_modules/git-promise/node_modules/shelljs/make.js",
+        "node_modules/git-promise/node_modules/shelljs/scripts/generate-docs.js",
+        "node_modules/git-promise/node_modules/shelljs/scripts/run-tests.js",
+        "node_modules/git-promise/node_modules/shelljs/shell.js",
+        "node_modules/git-promise/node_modules/shelljs/src/cat.js",
+        "node_modules/git-promise/node_modules/shelljs/src/cd.js",
+        "node_modules/git-promise/node_modules/shelljs/src/chmod.js",
+        "node_modules/git-promise/node_modules/shelljs/src/common.js",
+        "node_modules/git-promise/node_modules/shelljs/src/cp.js",
+        "node_modules/git-promise/node_modules/shelljs/src/dirs.js",
+        "node_modules/git-promise/node_modules/shelljs/src/echo.js",
+        "node_modules/git-promise/node_modules/shelljs/src/error.js",
+        "node_modules/git-promise/node_modules/shelljs/src/exec.js",
+        "node_modules/git-promise/node_modules/shelljs/src/find.js",
+        "node_modules/git-promise/node_modules/shelljs/src/grep.js",
+        "node_modules/git-promise/node_modules/shelljs/src/ln.js",
+        "node_modules/git-promise/node_modules/shelljs/src/ls.js",
+        "node_modules/git-promise/node_modules/shelljs/src/mkdir.js",
+        "node_modules/git-promise/node_modules/shelljs/src/mv.js",
+        "node_modules/git-promise/node_modules/shelljs/src/popd.js",
+        "node_modules/git-promise/node_modules/shelljs/src/pushd.js",
+        "node_modules/git-promise/node_modules/shelljs/src/pwd.js",
+        "node_modules/git-promise/node_modules/shelljs/src/rm.js",
+        "node_modules/git-promise/node_modules/shelljs/src/sed.js",
+        "node_modules/git-promise/node_modules/shelljs/src/tempdir.js",
+        "node_modules/git-promise/node_modules/shelljs/src/test.js",
+        "node_modules/git-promise/node_modules/shelljs/src/to.js",
+        "node_modules/git-promise/node_modules/shelljs/src/toEnd.js",
+        "node_modules/git-promise/node_modules/shelljs/src/which.js",
+        "node_modules/git-promise/util.js",
+        "node_modules/q/q.js",
+        "node_modules/q/queue.js"
+      ],
+      ".json": [
+        "node_modules/git-promise/node_modules/q/package.json",
+        "node_modules/git-promise/node_modules/shelljs/.documentup.json",
+        "node_modules/git-promise/node_modules/shelljs/package.json",
+        "node_modules/git-promise/package.json",
+        "node_modules/q/package.json",
+        "package.json"
+      ]
+    },
+    "folders": [
+      {
+        "paths": [
+          "lib/dialogs",
+          "lib",
+          "lib/views",
+          "",
+          "spec"
+        ],
+        "dependencies": {
+          "git-promise": "^0.2.0",
+          "q": "^1.0.1"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/git-promise"
+        ],
+        "dependencies": {
+          "q": "~1.0.1",
+          "shelljs": "~0.3.0"
+        }
+      }
+    ]
   }
 }

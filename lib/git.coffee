@@ -166,6 +166,11 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
+  flow: (type,action,branch) ->
+    return callGit "flow feature #{type} #{action} #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
+
   push: ->
     cmd = "-c push.default=simple push --porcelain"
     unless repo.getUpstreamBranch()
