@@ -15,6 +15,7 @@ if project
   repo = project.getRepo()
   cwd = repo.getWorkingDirectory()
 
+
 noop = -> q.fcall -> true
 
 atomRefresh = ->
@@ -94,6 +95,10 @@ callGit = (cmd, parser, nodatalog) ->
 module.exports =
   isInitialised: ->
     return repo
+
+  alert: (text) ->
+    logcb text
+    return
 
   setLogger: (cb) ->
     logcb = cb
