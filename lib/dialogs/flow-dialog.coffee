@@ -52,10 +52,10 @@ class FlowDialog extends Dialog
       @parentView.flow(@flowType.val(),'-d','')
     else
       branchSelected = if (@branchName.val() != '') then @branchName.val() else @branchChoose.val();
-      if(branchSelected == '')
+      if(branchSelected != '')
         @parentView.flow(@flowType.val(),@flowAction.val(),branchSelected)
       else
-        console.log("No branches selected... Git flow action not valid.")
+        @parentView.parseDefault("No branches selected... Git flow action not valid.")
     return
 
   flowTypeChange: ->
