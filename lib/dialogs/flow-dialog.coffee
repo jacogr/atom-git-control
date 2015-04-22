@@ -27,7 +27,6 @@ class FlowDialog extends Dialog
   activate: (branches) ->
     current = git.getLocalBranch()
     @branches = branches;
-    @branchChoose.hide();
 
     @flowType.find('option').remove()
     @flowType.append "<option value='feature'>feature</option>"
@@ -41,6 +40,9 @@ class FlowDialog extends Dialog
     @flowAction.append "<option value='publish'>publish</option>"
     @flowAction.append "<option value='pull'>pull</option>"
 
+    @flowTypeChange()
+    @flowActionChange()
+
     return super()
 
   flow: ->
@@ -49,11 +51,11 @@ class FlowDialog extends Dialog
     if (@flowType.val() == "init")
       @parentView.flow(@flowType.val(),'-d','')
     else
-      branchSelected = if @branchName.val() != '' then @branchName.val() else @branchChoose.val();
+      branchSelected = if (@branchName.val() != '') then @branchName.val() else @branchChoose.val();
       if(branchSelected == '')
         @parentView.flow(@flowType.val(),@flowAction.val(),branchSelected)
       else
-        console.log "No branches selected... Git flow action not valid."
+        console.log("No branches selected... Git flow action not valid.")
     return
 
   flowTypeChange: ->
@@ -78,7 +80,7 @@ class FlowDialog extends Dialog
           value = branch.replace(@flowType.val()+'/','')
           @branchChoose.append "<option value='#{value}'>#{value}</option>"
       if (@branchChoose.find('option').length <= 0)
-        @branchChoose.append "<option value=''> -no "+@flowType.val()+" branches</option>"
+        @branchChoose.append "<option value=''> --no "+@flowType.val()+" branches--</option>"
       @branchChoose.show()
     else
       @branchName.show()
