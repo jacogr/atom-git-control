@@ -13,7 +13,8 @@ project = atom.project
 
 if project
   repo = project.getRepo()
-  cwd = repo.getWorkingDirectory()
+  cwd = if repo then repo.getWorkingDirectory() #prevent startup errors if repo is undefined
+
 
 
 noop = -> q.fcall -> true
@@ -94,9 +95,9 @@ callGit = (cmd, parser, nodatalog) ->
 
 module.exports =
   isInitialised: ->
-    return repo
+    return cwd
 
-  alert: (text) ->
+  alert: (text) -> #making the console available elsewhere
     logcb text
     return
 
