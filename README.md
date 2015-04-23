@@ -34,6 +34,7 @@ For git-flow commands to work, you need to [install git flow](https://github.com
 
 then, on mac, do the following:
 
+```
   sudo ln -s /usr/local/bin/git-flow /usr/bin/
 
   sudo ln -s /usr/local/bin/git-flow-hotfix /usr/bin/
@@ -51,7 +52,7 @@ then, on mac, do the following:
   sudo ln -s /usr/local/bin/gitflow-shFlags /usr/bin/
 
   sudo ln -s /usr/local/bin/gitflow-common /usr/bin/
-
+```
 
 ## Maintainers
 
