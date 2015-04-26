@@ -1,4 +1,4 @@
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 class DiffLine extends View
   @content: (line) ->
@@ -17,7 +17,7 @@ class DiffView extends View
   clearAll: ->
     @find('>.line').remove()
     return
-    
+
   addAll: (diffs) ->
     @clearAll()
 

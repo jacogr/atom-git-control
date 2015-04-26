@@ -1,4 +1,4 @@
-{View, $} = require 'atom'
+{View, $} = require 'atom-space-pen-views'
 
 items = [
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'active'}
