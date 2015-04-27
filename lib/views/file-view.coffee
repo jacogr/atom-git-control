@@ -1,4 +1,4 @@
-{View, $} = require 'atom'
+{View, $} = require 'atom-space-pen-views'
 
 class FileItem extends View
   @content: (file) ->
