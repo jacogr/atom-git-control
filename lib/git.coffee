@@ -16,6 +16,7 @@ if project
   cwd = if repo then repo.getWorkingDirectory() #prevent startup errors if repo is undefined
 
 
+
 noop = -> q.fcall -> true
 
 atomRefresh = ->
@@ -168,6 +169,11 @@ module.exports =
 
   pull: ->
     return callGit "pull", (data) ->
+      atomRefresh()
+      return parseDefault(data)
+
+  flow: (type,action,branch) ->
+    return callGit "flow #{type} #{action} #{branch}", (data) ->
       atomRefresh()
       return parseDefault(data)
 

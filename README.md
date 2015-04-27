@@ -28,6 +28,32 @@ Pull requests, issues, feature requests are all welcome and encouraged via [http
 
 Discussion and additional input is promoted here: [![Join the chat at https://gitter.im/jacogr/atom-git-control](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jacogr/atom-git-control?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+##GitFlow
+
+For git-flow commands to work, you need to [install git flow](https://github.com/nvie/gitflow/wiki/Installation)
+
+then, on mac, do the following:
+
+```
+  sudo ln -s /usr/local/bin/git-flow /usr/bin/
+
+  sudo ln -s /usr/local/bin/git-flow-hotfix /usr/bin/
+
+  sudo ln -s /usr/local/bin/git-flow-release /usr/bin/
+
+  sudo ln -s /usr/local/bin/git-flow-version /usr/bin/
+
+  sudo ln -s /usr/local/bin/git-flow-support /usr/bin/
+
+  sudo ln -s /usr/local/bin/git-flow-init /usr/bin/
+
+  sudo ln -s /usr/local/bin/git-flow-feature /usr/bin/
+
+  sudo ln -s /usr/local/bin/gitflow-shFlags /usr/bin/
+
+  sudo ln -s /usr/local/bin/gitflow-common /usr/bin/
+```
+
 ## Maintainers
 
  - [MarcelMue](https://github.com/MarcelMue)

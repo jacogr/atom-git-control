@@ -11,6 +11,7 @@ items = [
   { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}
   { id: 'branch', menu: 'Branch', icon: 'branch', type: 'active'}
   #{ id: 'tag', menu: 'Tag', icon: 'tag'}
+  { id: 'flow', menu: 'GitFlow', icon: 'flow', type: 'active'}
 ]
 
 class MenuItem extends View
