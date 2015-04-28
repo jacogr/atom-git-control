@@ -1,3 +1,10 @@
+## 0.2.0
+- Added git-flow support
+- Prevented error message if git-control is opened in project that is not a repository
+- Fixed deprecation warnings
+
+... working on new features
+
 ## 0.1.9
 
 - Fixing defineProperty.get deprecation #16
