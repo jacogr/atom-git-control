@@ -163,8 +163,8 @@ module.exports =
     return callGit "fetch --prune", parseDefault
 
   merge: (branch,noff) ->
-    noFF = if noff then "--no-ff" else ""
-    return callGit "merge #{noFF} #{branch}", (data) ->
+    noffOutput = if noff then "--no-ff" else ""
+    return callGit "merge #{noffOutput} #{branch}", (data) ->
       atomRefresh()
       return parseDefault(data)
 
