@@ -4,7 +4,10 @@ class DiffLine extends View
   @content: (line) ->
     @div class: "line #{line.type}", =>
       @pre class: "lineno #{unless line.lineno then 'invisible' else ''}", line.lineno
-      @pre line.text
+      @pre outlet: 'linetext', line.text
+
+  initialize: (params) ->
+    if params.type == 'heading' then @linetext.click(-> atom.workspace.open(params.text))
 
 fmtNum = (num) ->
   return "     #{num or ''} ".slice(-6)
