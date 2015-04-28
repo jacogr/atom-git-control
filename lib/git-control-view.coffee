@@ -167,8 +167,8 @@ class GitControlView extends View
     @mergeDialog.activate(@branches.local)
     return
 
-  merge: (branch) =>
-    git.merge(branch).then => @update()
+  merge: (branch,noff) =>
+    git.merge(branch,noff).then => @update()
     return
 
   flowMenuClick: ->

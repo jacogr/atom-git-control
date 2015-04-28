@@ -14,6 +14,9 @@ class MergeDialog extends Dialog
         @input class: 'native-key-bindings', type: 'text', readonly: true, outlet: 'toBranch'
         @label 'Merge From Branch'
         @select class: 'native-key-bindings', outlet: 'fromBranch'
+        @div =>
+          @input type: 'checkbox',class: 'checkbox',outlet: 'noff'
+          @label 'No Fast-Forward'
       @div class: 'buttons', =>
         @button class: 'active', click: 'merge', =>
           @i class: 'icon merge'
@@ -35,5 +38,8 @@ class MergeDialog extends Dialog
 
   merge: ->
     @deactivate()
-    @parentView.merge(@fromBranch.val())
+    @parentView.merge(@fromBranch.val(),@noFF())
     return
+
+  noFF: ->
+     return @noff.is(':checked')
