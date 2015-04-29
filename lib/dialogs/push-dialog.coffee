@@ -23,6 +23,7 @@ class PushDialog extends Dialog
 
   activate: (remotes) ->
     @fromBranch.val(git.getLocalBranch())
+    @toBranch.find('option').remove()
     for remote in remotes
       @toBranch.append "<option value='#{remote}'>#{remote}</option>"
     return super()
@@ -31,5 +32,5 @@ class PushDialog extends Dialog
     @deactivate()
     remote = @toBranch.val().split('/')[0]
     branch = @toBranch.val().split('/')[1]
-    git.push(remote,branch)
+    @parentView.push(remote,branch)
     return

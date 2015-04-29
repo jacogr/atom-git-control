@@ -189,6 +189,9 @@ class GitControlView extends View
     git.getBranches().then (branches) =>  @pushDialog.activate(branches.remote)
     return
 
+  push: (remote, branches) ->
+    git.push(remote,branches).then => @update()
+
   resetMenuClick: ->
     return unless @filesView.hasSelected()
 
