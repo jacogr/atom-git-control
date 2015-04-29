@@ -9,6 +9,10 @@ class PushDialog extends Dialog
         @i class: 'icon x clickable',click: 'cancel'
         @strong 'Push'
       @div class: 'body', =>
+        @div =>
+          @button click: 'upstream',=>
+            @p 'Push upstream', =>
+              @i class: 'icon push'
         @label 'Push from branch'
         @input class: 'native-key-bindings',readonly: true,outlet: 'fromBranch'
         @label 'To branch'
@@ -34,3 +38,7 @@ class PushDialog extends Dialog
     branch = @toBranch.val().split('/')[1]
     @parentView.push(remote,branch)
     return
+
+  upstream: ->
+    @deactivate()
+    @parentView.push('','')
