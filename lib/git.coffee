@@ -31,7 +31,7 @@ getBranches = -> q.fcall ->
     branches.local.push h.replace('refs/heads/', '')
 
   for h in refs.remotes
-    branches.remote.push h.replace('refs/remotes/origin/', '')
+    branches.remote.push h.replace('refs/remotes/', '')
 
   return branches
 
@@ -178,10 +178,8 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
-  push: ->
-    cmd = "-c push.default=simple push --porcelain"
-    unless repo.getUpstreamBranch()
-      cmd = "#{cmd} --set-upstream origin #{repo.getShortHead()}"
+  push: (remote,branch)->
+    cmd = "-c push.default=simple push #{remote} #{branch} --porcelain"
 
     return callGit cmd, (data) ->
       atomRefresh()
