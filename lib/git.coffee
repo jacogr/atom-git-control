@@ -124,7 +124,7 @@ module.exports =
     return refs and refs.remotes and refs.remotes.length
 
   hasOrigin: ->
-    return repo.getOriginUrl() isnt null
+    return repo.getOriginURL() isnt null
 
   add: (files) ->
     return noop() unless files.length
