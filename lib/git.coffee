@@ -12,7 +12,7 @@ cwd = undefined
 project = atom.project
 
 if project
-  repo = project.getRepo()
+  repo = project.getRepositories()[0]
   cwd = if repo then repo.getWorkingDirectory() #prevent startup errors if repo is undefined
 
 
