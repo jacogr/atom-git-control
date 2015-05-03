@@ -24,9 +24,9 @@ class CommitDialog extends Dialog
 
   colorLength: ->
     if @msg.val().length > 50
-      @msg.css('color', 'rgb(232, 94, 94)')
+      @msg.addClass('over-fifty')
     else
-      @msg.css('color', '')
+      @msg.removeClass('over-fifty')
 
   commit: ->
     @deactivate()
