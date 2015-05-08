@@ -66,6 +66,9 @@ parseStatus = (data) -> q.fcall ->
     [type, name] = line.replace(/\ \ /g, ' ').trim().split(' ')
     files.push
       name: name
+      selected: switch type[type.length - 1]
+        when 'C','M','R','D','A' then true
+        else false
       type: switch type[type.length - 1]
         when 'A' then 'added'
         when 'C' then 'modified' #'copied'

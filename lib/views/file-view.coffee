@@ -23,7 +23,7 @@ class FileView extends View
         @div class: 'action', click: 'selectAll', =>
           @span 'Select'
           @i class: 'icon check'
-          @input class: 'invisible', type: 'checkbox', outlet: 'allCheckbox'
+          @input class: 'invisible', type: 'checkbox', outlet: 'allCheckbox', checked: true
       @div class: 'placeholder', 'No local working copy changes detected'
 
   initialize: ->
@@ -90,6 +90,7 @@ class FileView extends View
 
         @files[file.name] or= name: file.name
         @files[file.name].type = file.type
+        @files[file.name].selected = file.selected
         @append new FileItem(file)
         return
 
