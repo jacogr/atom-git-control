@@ -13,6 +13,7 @@ CommitDialog = require './dialogs/commit-dialog'
 ConfirmDialog = require './dialogs/confirm-dialog'
 MergeDialog = require './dialogs/merge-dialog'
 FlowDialog = require './dialogs/flow-dialog'
+PushDialog = require './dialogs/push-dialog'
 
 module.exports =
 class GitControlView extends View
@@ -31,6 +32,7 @@ class GitControlView extends View
           @subview 'commitDialog', new CommitDialog()
           @subview 'mergeDialog', new MergeDialog()
           @subview 'flowDialog', new FlowDialog()
+          @subview 'pushDialog', new PushDialog()
         @subview 'logView', new LogView()
     else #This is so that no error messages can be created by pushing buttons that are unavailable.
         @div class: 'git-control', =>
@@ -184,8 +186,11 @@ class GitControlView extends View
     return
 
   pushMenuClick: ->
-    git.push().then => @update(true)
+    git.getBranches().then (branches) =>  @pushDialog.activate(branches.remote)
     return
+
+  push: (remote, branches) ->
+    git.push(remote,branches).then => @update()
 
   resetMenuClick: ->
     return unless @filesView.hasSelected()

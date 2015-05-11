@@ -9,7 +9,7 @@ class CommitDialog extends Dialog
         @strong 'Commit'
       @div class: 'body', =>
         @label 'Commit Message'
-        @textarea class: 'native-key-bindings', outlet: 'msg'
+        @textarea class: 'native-key-bindings', outlet: 'msg', keyUp: 'colorLength'
       @div class: 'buttons', =>
         @button class: 'active', click: 'commit', =>
           @i class: 'icon commit'
@@ -21,6 +21,12 @@ class CommitDialog extends Dialog
   activate: ->
     @msg.val('')
     return super()
+
+  colorLength: ->
+    if @msg.val().length > 50
+      @msg.addClass('over-fifty')
+    else
+      @msg.removeClass('over-fifty')
 
   commit: ->
     @deactivate()
