@@ -57,7 +57,7 @@ class FlowDialog extends Dialog
       actionSelected = @flowAction.val()
       if(branchSelected? && branchSelected != '')
         if(actionSelected == "finish" && @message.val()!= '')
-          actionSelected = 'finish -m "'+@message.val().replace(/\ /g, "\\ ")+'"';#spaces replaced for mac cli compatibility
+          actionSelected = 'finish -m "'+@message.val()+'"';
         @parentView.flow(@flowType.val(),actionSelected,branchSelected)
       else
         git.alert "> No branches selected... Git flow action not valid."
