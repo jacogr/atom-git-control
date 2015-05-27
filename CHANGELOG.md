@@ -1,3 +1,13 @@
+## 0.3.0
+
+- Further gitflow updates
+- Allow opening files from the diff
+- Push to upstream button
+- Fix last remailing deprecations, [#57](https://github.com/jacogr/atom-git-control/pull/57) and [#66](https://github.com/jacogr/atom-git-control/pull/66)
+- Release to ensure that package doesn't break on June 1
+
+... Atom 1.0
+
 ## 0.2.0
 - Added git-flow support
 - Prevented error message if git-control is opened in project that is not a repository
