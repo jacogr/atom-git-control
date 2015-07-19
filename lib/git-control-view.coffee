@@ -119,7 +119,7 @@ class GitControlView extends View
     return
 
   compareMenuClick: ->
-    git.diff().then (diffs) => @diffView.addAll(diffs)
+    git.diff(@filesView.getSelected().all.join(' ')).then (diffs) => @diffView.addAll(diffs)
     return
 
   commitMenuClick: ->
