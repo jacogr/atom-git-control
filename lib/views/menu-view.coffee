@@ -36,7 +36,8 @@ class MenuView extends View
         @subview item.id, new MenuItem(item)
 
   click: (id) ->
-    @parentView["#{id}MenuClick"]()
+    if !(@find("#menu#{id}").hasClass('inactive'))
+      @parentView["#{id}MenuClick"]()
 
   activate: (type, active) ->
     menuItems = @find(".item.#{type}")
