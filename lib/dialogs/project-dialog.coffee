@@ -27,8 +27,10 @@ class ProjectDialog extends Dialog
     for repo in atom.project.getRepositories()
       do(repo) ->
         if repo
-          repoName = repo.path.split('/').reverse()[1]
-          projectList.append $('<option>').val(projectIndex).text(repoName)
+          option = document.createElement("option")
+          option.value = projectIndex
+          option.text = repo.path.split('/').reverse()[1]
+          projectList.append(option)
         projectIndex = projectIndex + 1
 
     projectList.val(git.getProjectIndex)
