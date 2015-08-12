@@ -197,6 +197,11 @@ class GitControlView extends View
 
     files = @filesView.getSelected()
 
-    git.reset(files.all).then => @update()
-
-    return
+    atom.confirm
+      message: "Reset will erase changes since the last commit in the selected files. Are you sure?"
+      buttons:
+        Cancel: =>
+          return
+        Reset: =>
+          git.reset(files.all).then => @update()
+          return
