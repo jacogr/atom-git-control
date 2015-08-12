@@ -3,7 +3,7 @@
 class FileItem extends View
   @content: (file) ->
     @div class: "file #{file.type}", 'data-name': file.name, =>
-      @i class: 'icon check'
+      @i class: 'icon check clickable', click: 'select'
       @i class: "icon file-#{file.type}"
       @span class: 'clickable', click: 'select', file.name
 
