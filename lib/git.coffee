@@ -159,6 +159,11 @@ module.exports =
       atomRefresh()
       return parseDefault
 
+  forceDeleteBranch: (branch) ->
+    return callGit "branch -D #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault
+
   diff: (file) ->
     return callGit "--no-pager diff #{file or ''}", parseDiff, true
 
