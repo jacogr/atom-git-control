@@ -144,7 +144,7 @@ module.exports =
       return parseDefault(data)
 
   checkout: (branch, remote) ->
-    return callGit "checkout #{if remote then '-b ' else ''}#{branch}", (data) ->
+    return callGit "checkout #{if remote then '--track ' else ''}#{branch}", (data) ->
       atomRefresh()
       return parseDefault(data)
 
