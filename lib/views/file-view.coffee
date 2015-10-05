@@ -17,9 +17,9 @@ module.exports =
 class FileView extends View
   @content: ->
     @div class: 'files', =>
-      @div class: 'heading', =>
-        @i class: 'icon forked'
-        @span 'Workspace'
+      @div class: 'heading clickable', =>
+        @i click: 'toggleBranch', class: 'icon forked'
+        @span click: 'toggleBranch', 'Workspace'
         @div class: 'action', click: 'selectAll', =>
           @span 'Select'
           @i class: 'icon check'
@@ -28,6 +28,12 @@ class FileView extends View
 
   initialize: ->
     @files = {}
+    @arrayOfFiles = new Array
+    @hidden = false
+
+  toggleBranch: ->
+    if @hidden then @addAll @arrayOfFiles else do @clearAll
+    @hidden = !@hidden
 
   hasSelected: ->
     for name, file of @files when file.selected
@@ -50,7 +56,7 @@ class FileView extends View
 
   showSelected: ->
     fnames = []
-
+    @arrayOfFiles = Object.keys(@files).map((file) => @files[file]);
     @find('.file').toArray().forEach (div) =>
       f = $(div)
 
@@ -113,6 +119,7 @@ class FileView extends View
     return
 
   selectAll: ->
+    return if @hidden
     val = !!!@allCheckbox.prop('checked')
     @allCheckbox.prop('checked', val)
 

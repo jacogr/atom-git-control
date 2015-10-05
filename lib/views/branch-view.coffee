@@ -33,19 +33,25 @@ module.exports =
 class BranchView extends View
   @content: (params) ->
     @div class: 'branches', =>
-      @div class: 'heading', =>
+      @div click: 'toggleBranch', class: 'heading clickable', =>
         @i class: 'icon branch'
         @span params.name
 
   initialize: (params) ->
     @params = params
     @branches = []
+    @hidden = false
+
+  toggleBranch : ->
+    if @hidden then @addAll @branches else do @clearAll
+    @hidden = !@hidden
 
   clearAll: ->
     @find('>.branch').remove()
     return
 
   addAll: (branches) ->
+    @branches = branches
     @selectedBranch = git["get#{if @params.local then 'Local' else 'Remote'}Branch"]()
     @clearAll()
 
