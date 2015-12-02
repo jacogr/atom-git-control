@@ -23,10 +23,17 @@ class CommitDialog extends Dialog
     return super()
 
   colorLength: ->
-    if @msg.val().length > 50
+    too_long = false
+    for line, i in @msg.val().split("\n")
+      if (i == 0 && line.length > 50) || (i > 0 && line.length > 80)
+        too_long = true
+        break
+
+    if too_long
       @msg.addClass('over-fifty')
     else
       @msg.removeClass('over-fifty')
+    return
 
   commit: ->
     @deactivate()
