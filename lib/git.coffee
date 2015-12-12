@@ -176,6 +176,11 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
+  pullup: (branch) ->
+    return callGit "pull upstream #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
+
   pull: ->
     return callGit "pull", (data) ->
       atomRefresh()

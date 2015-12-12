@@ -7,6 +7,7 @@ items = [
   #{ id: 'clone', menu: 'Clone', icon: 'clone'}
   { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'remote'}
   { id: 'pull', menu: 'Pull', icon: 'pull', type: 'upstream'}
+  { id: 'pullup', menu: 'Pull Upstream', icon: 'arrow-down', type: 'upstream'}
   { id: 'push', menu: 'Push', icon: 'push', type: 'downstream'}
   { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}
   { id: 'branch', menu: 'Branch', icon: 'branch', type: 'active'}
