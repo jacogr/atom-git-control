@@ -11,12 +11,13 @@ items = [
   { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}
   { id: 'branch', menu: 'Branch', icon: 'branch', type: 'active'}
   #{ id: 'tag', menu: 'Tag', icon: 'tag'}
-  { id: 'flow', menu: 'GitFlow', icon: 'flow', type: 'active'}
+  { id: 'flow', menu: 'GitFlow', icon: 'flow', type: 'active', showConfig: 'git-control.showGitFlowButton'}
 ]
 
 class MenuItem extends View
   @content: (item) ->
     klass = if item.type is 'active' then '' else 'inactive'
+    klass += if item.showConfig? && !atom.config.get(item.showConfig) then ' hide' else ''
 
     @div class: "item #{klass} #{item.type}", id: "menu#{item.id}", click: 'click', =>
       @div class: "icon large #{item.icon}"
@@ -24,6 +25,11 @@ class MenuItem extends View
 
   initialize: (item) ->
     @item = item
+
+    if item.showConfig?
+      atom.config.observe item.showConfig, (show) ->
+        if show then $("#menu#{item.id}").removeClass('hide')
+        else $("#menu#{item.id}").addClass('hide')
 
   click: ->
     @parentView.click(@item.id)
@@ -45,4 +51,5 @@ class MenuView extends View
       menuItems.removeClass('inactive')
     else
       menuItems.addClass('inactive')
+
     return
