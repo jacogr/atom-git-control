@@ -190,6 +190,10 @@ class GitControlView extends View
     git.pull().then => @update(true)
     return
 
+  pullupMenuClick: (branch) ->
+    git.pullup(branch).then => @update(true)
+    return
+
   pushMenuClick: ->
     git.getBranches().then (branches) =>  @pushDialog.activate(branches.remote)
     return
