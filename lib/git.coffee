@@ -95,10 +95,7 @@ callGit = (cmd, parser, nodatalog) ->
       logcb e.stdout, true
       logcb e.message, true
       return
-
-workingbranch = ->
-  return callGit "branch | grep '^\*' | sed -n 's/\*[ ]*//p'"
-
+      
 module.exports =
   isInitialised: ->
     return cwd
@@ -180,8 +177,7 @@ module.exports =
       return parseDefault(data)
 
   pullup: ->
-    mybranch = workingbranch()
-    return callGit "pull upstream #{mybranch}", (data) ->
+    return callGit "pull upstream $(git branch | grep '^\*' | sed -n 's/\*[ ]*//p')", (data) ->
       atomRefresh()
       return parseDefault(data)
 
