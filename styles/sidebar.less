@@ -14,6 +14,7 @@
     color: @text-color-highlight;
     margin-bottom: 5px;
     position:relative;
+    -webkit-user-select: none;
 
     .action {
       position: absolute;
@@ -22,6 +23,7 @@
       display: inline-block;
       cursor: pointer;
       color: @text-color;
+      -webkit-user-select: none;
 
       &:hover {
         color: @text-color-highlight;
@@ -36,7 +38,7 @@
   .none .heading .action {
     color: @text-color-subtle;
     cursor: default;
-    
+
     &:hover {
       color: @text-color-subtle;
     }
