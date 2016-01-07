@@ -1,8 +1,15 @@
 {
   "name": "git-control",
   "main": "./lib/git-control",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Provides a GUI interface to manage all commonly-used git commands.",
+  "keywords": [
+    "git-control",
+    "git-flow",
+    "github",
+    "bitbucket",
+    "git"
+  ],
   "activationCommands": {
     "atom-workspace": "git-control:toggle"
   },

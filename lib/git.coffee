@@ -9,13 +9,7 @@ logcb = (log, error) ->
 
 repo = undefined
 cwd = undefined
-project = atom.project
-
-if project
-  repo = project.getRepositories()[0]
-  cwd = if repo then repo.getWorkingDirectory() #prevent startup errors if repo is undefined
-
-
+projectIndex = 0
 
 noop = -> q.fcall -> true
 
@@ -34,6 +28,16 @@ getBranches = -> q.fcall ->
     branches.remote.push h.replace('refs/remotes/', '')
 
   return branches
+
+setProjectIndex = (index) ->
+  repo = undefined
+  cwd = undefined
+  projectIndex = index
+  if atom.project
+    repo = atom.project.getRepositories()[index]
+    cwd = if repo then repo.getWorkingDirectory() #prevent startup errors if repo is undefined
+  return
+setProjectIndex(projectIndex)
 
 parseDiff = (data) -> q.fcall ->
   diffs = []
@@ -108,6 +112,14 @@ module.exports =
     logcb = cb
     return
 
+  setProjectIndex: setProjectIndex
+
+  getProjectIndex: ->
+    return projectIndex
+
+  getRepository: ->
+    return repo
+
   count: (branch) ->
     return repo.getAheadBehindCount(branch)
 
@@ -144,7 +156,7 @@ module.exports =
       return parseDefault(data)
 
   checkout: (branch, remote) ->
-    return callGit "checkout #{if remote then '-b ' else ''}#{branch}", (data) ->
+    return callGit "checkout #{if remote then '--track ' else ''}#{branch}", (data) ->
       atomRefresh()
       return parseDefault(data)
 
@@ -156,6 +168,11 @@ module.exports =
 
   deleteBranch: (branch) ->
     return callGit "branch -d #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault
+
+  forceDeleteBranch: (branch) ->
+    return callGit "branch -D #{branch}", (data) ->
       atomRefresh()
       return parseDefault
 
