@@ -1,6 +1,7 @@
 {View, $} = require 'atom-space-pen-views'
 
 items = [
+  { id: 'project', menu: 'Project', icon: 'icon-repo', type: 'active'}
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'active'}
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file merging'}
   { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
