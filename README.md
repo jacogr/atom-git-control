@@ -20,7 +20,7 @@ This is a first-release, while tested as part of creating this package, it has n
 - Command available are activated based on working tree status
 - Automatically fetches remote status on activation
 
-##GitFlow
+## GitFlow
 
 For git-flow commands to work, you need to [install git flow](https://github.com/petervanderdoes/gitflow/wiki)
 
