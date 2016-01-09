@@ -14,6 +14,15 @@ class RebaseDialog extends Dialog
         @input class: 'native-key-bindings', type: 'text', readonly: true, outlet: 'toBranch'
         @label 'Rebase On Branch'
         @select class: 'native-key-bindings', outlet: 'fromBranch'
+        @div =>
+          @strong 'If you are in the middle of a rebase, please select one of the options below.'
+          @div =>
+            @label 'Continue Rebase'
+            @input type: 'checkbox',class: 'checkbox',outlet: 'contin'
+            @label 'Abort Rebase'
+            @input type: 'checkbox',class: 'checkbox',outlet: 'abort'
+            @label 'Skip The Patch'
+            @input type: 'checkbox',class: 'checkbox',outlet: 'skip'
       @div class: 'buttons', =>
         @button class: 'active', click: 'rebase', =>
           @i class: 'icon circuit-board'
@@ -35,5 +44,14 @@ class RebaseDialog extends Dialog
 
   rebase: ->
     @deactivate()
-    @parentView.rebase(@fromBranch.val())
+    @parentView.rebase(@fromBranch.val(),@Contin(),@Abort(),@Skip())
     return
+
+  Contin: ->
+     return @contin.is(':checked')
+
+  Abort: ->
+     return @abort.is(':checked')
+
+  Skip: ->
+     return @skip.is(':checked')

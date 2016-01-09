@@ -212,10 +212,23 @@ module.exports =
   log: (branch) ->
     return callGit "log origin/#{repo.getUpstreamBranch() or 'master'}..#{branch}", parseDefault
 
-  rebase: (branch) ->
-    return callGit "rebase #{branch}", (data) ->
-      atomRefresh()
-      return parseDefault(data)
+  rebase: (branch,contin,abort,skip) ->
+    if contin
+      return callGit "rebase --continue", (data) ->
+        atomRefresh()
+        return parseDefault(data)
+    else if abort
+      return callGit "rebase --abort", (data) ->
+        atomRefresh()
+        return parseDefault(data)
+    else if skip
+      return callGit "rebase --skip", (data) ->
+        atomRefresh()
+        return parseDefault(data)
+    else
+      return callGit "rebase #{branch}", (data) ->
+        atomRefresh()
+        return parseDefault(data)
 
   reset: (files) ->
     return callGit "checkout -- #{files.join(' ')}", (data) ->

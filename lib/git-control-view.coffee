@@ -222,8 +222,8 @@ class GitControlView extends View
     @rebaseDialog.activate(@branches.local)
     return
 
-  rebase: (branch) =>
-    git.rebase(branch).then => @update()
+  rebase: (branch, contin, abort, skip) =>
+    git.rebase(branch,contin,abort,skip).then => @update()
     return
 
   resetMenuClick: ->
