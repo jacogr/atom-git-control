@@ -95,7 +95,7 @@ callGit = (cmd, parser, nodatalog) ->
       logcb e.stdout, true
       logcb e.message, true
       return
-
+      
 module.exports =
   isInitialised: ->
     return cwd
@@ -173,6 +173,11 @@ module.exports =
   merge: (branch,noff) ->
     noffOutput = if noff then "--no-ff" else ""
     return callGit "merge #{noffOutput} #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
+
+  pullup: ->
+    return callGit "pull upstream $(git branch | grep '^\*' | sed -n 's/\*[ ]*//p')", (data) ->
       atomRefresh()
       return parseDefault(data)
 
