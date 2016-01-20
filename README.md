@@ -22,7 +22,7 @@ This is a first-release, while tested as part of creating this package, it has n
 
 ##GitFlow
 
-For git-flow commands to work, you need to [install git flow](https://github.com/petervanderdoes/gitflow/wiki)
+For git-flow commands to work, you need to [install git flow](https://github.com/petervanderdoes/gitflow-avh/wiki)
 
 then, on mac, do the following:
 
