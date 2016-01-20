@@ -8,6 +8,7 @@ FileView = require './views/file-view'
 LogView = require './views/log-view'
 MenuView = require './views/menu-view'
 
+ProjectDialog = require './dialogs/project-dialog'
 BranchDialog = require './dialogs/branch-dialog'
 CommitDialog = require './dialogs/commit-dialog'
 ConfirmDialog = require './dialogs/confirm-dialog'
@@ -15,6 +16,8 @@ DeleteDialog = require './dialogs/delete-dialog'
 MergeDialog = require './dialogs/merge-dialog'
 FlowDialog = require './dialogs/flow-dialog'
 PushDialog = require './dialogs/push-dialog'
+
+gitWorkspaceTitle = ''
 
 module.exports =
 class GitControlView extends View
@@ -29,6 +32,7 @@ class GitControlView extends View
             @subview 'remoteBranchView', new BranchView(name: 'Remote')
           @div class: 'domain', =>
             @subview 'diffView', new DiffView()
+          @subview 'projectDialog', new ProjectDialog()
           @subview 'branchDialog', new BranchDialog()
           @subview 'commitDialog', new CommitDialog()
           @subview 'mergeDialog', new MergeDialog()
@@ -51,6 +55,9 @@ class GitControlView extends View
 
     if !git.isInitialised()
       git.alert "> This project is not a git repository. Either open another project or create a repository."
+    else
+      @setWorkspaceTitle(git.getRepository().path.split('/').reverse()[1])
+    @update(true)
 
     return
 
@@ -59,6 +66,9 @@ class GitControlView extends View
     @active = false
     return
 
+  setWorkspaceTitle: (title) ->
+    gitWorkspaceTitle = title
+
   getTitle: ->
     return 'git:control'
 
@@ -66,10 +76,11 @@ class GitControlView extends View
     if git.isInitialised()
       @loadBranches()
       @showStatus()
-
+      @filesView.setWorkspaceTitle(gitWorkspaceTitle)
       unless nofetch
         @fetchMenuClick()
-        @diffView.clearAll()
+        if @diffView
+          @diffView.clearAll()
 
     return
 
@@ -113,6 +124,10 @@ class GitControlView extends View
     git.status().then (files) =>
       @filesView.addAll(files)
       return
+    return
+
+  projectMenuClick: ->
+    @projectDialog.activate()
     return
 
   branchMenuClick: ->

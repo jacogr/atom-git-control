@@ -25,7 +25,8 @@ class FileView extends View
     @div class: 'files', =>
       @div class: 'heading clickable', =>
         @i click: 'toggleBranch', class: 'icon forked'
-        @span click: 'toggleBranch', 'Workspace'
+        @span click: 'toggleBranch', 'Workspace:'
+        @span '', outlet: 'workspaceTitle'
         @div class: 'action', click: 'selectAll', =>
           @span 'Select'
           @i class: 'icon check'
@@ -147,4 +148,8 @@ class FileView extends View
     for name, file in @files when file.selected
       file.selected = false
 
+    return
+
+  setWorkspaceTitle: (title) ->
+    @workspaceTitle.text(title)
     return

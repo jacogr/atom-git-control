@@ -9,13 +9,7 @@ logcb = (log, error) ->
 
 repo = undefined
 cwd = undefined
-project = atom.project
-
-if project
-  repo = project.getRepositories()[0]
-  cwd = if repo then repo.getWorkingDirectory() #prevent startup errors if repo is undefined
-
-
+projectIndex = 0
 
 noop = -> q.fcall -> true
 
@@ -34,6 +28,16 @@ getBranches = -> q.fcall ->
     branches.remote.push h.replace('refs/remotes/', '')
 
   return branches
+
+setProjectIndex = (index) ->
+  repo = undefined
+  cwd = undefined
+  projectIndex = index
+  if atom.project
+    repo = atom.project.getRepositories()[index]
+    cwd = if repo then repo.getWorkingDirectory() #prevent startup errors if repo is undefined
+  return
+setProjectIndex(projectIndex)
 
 parseDiff = (data) -> q.fcall ->
   diffs = []
@@ -107,6 +111,14 @@ module.exports =
   setLogger: (cb) ->
     logcb = cb
     return
+
+  setProjectIndex: setProjectIndex
+
+  getProjectIndex: ->
+    return projectIndex
+
+  getRepository: ->
+    return repo
 
   count: (branch) ->
     return repo.getAheadBehindCount(branch)
