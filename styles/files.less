@@ -16,9 +16,20 @@
   }
 
   .file, .allfiles {
+    position: relative;
     margin: 2px 0 2px @component-icon-size;
     padding: 2px 5px;
     border-radius: 4px;
+
+    .clickable.text {
+        width: 80%;
+        display: inline;
+        position: absolute;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 5px 0 0 45px;
+    }
 
     &.deleted {
       color: @text-color-subtle;

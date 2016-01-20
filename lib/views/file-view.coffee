@@ -5,9 +5,9 @@ class FileItem extends View
   @content: (file) ->
     console.log('file', file)
     @div class: "file #{file.type}", 'data-name': file.name, =>
+      @span class: 'clickable text', click: 'select', title: file.name, file.name
       @i class: 'icon check clickable', click: 'select'
       @i class: "icon #{if (file.type == 'modified') then 'clickable' else ''} file-#{file.type}", click: 'showFileDiff'
-      @span class: 'clickable', click: 'select', file.name
 
   initialize: (file) ->
     @file = file
