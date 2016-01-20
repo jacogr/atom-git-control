@@ -10,6 +10,7 @@ pane = undefined
 item = undefined
 
 module.exports = GitControl =
+
   activate: (state) ->
     console.log 'GitControl: activate'
 
@@ -45,3 +46,10 @@ module.exports = GitControl =
     return
 
   serialize: ->
+
+  config:
+    showGitFlowButton:
+      title: 'Show GitFlow button'
+      description: 'Show the GitFlow button in the Git Control toolbar'
+      type: 'boolean'
+      default: true
