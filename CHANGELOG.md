@@ -1,3 +1,9 @@
+## 0.7.0
+
+- Manual version push for apm publish issues
+
+... things should just work
+
 ## 0.3.0
 
 - Further gitflow updates
