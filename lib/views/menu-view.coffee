@@ -15,7 +15,7 @@ items = [
   { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}
   { id: 'branch', menu: 'Branch', icon: 'branch', type: 'active'}
   { id: 'flow', menu: 'GitFlow', icon: 'flow', type: 'active', showConfig: 'git-control.showGitFlowButton'}
-
+]
 
 class MenuItem extends View
   @content: (item) ->
