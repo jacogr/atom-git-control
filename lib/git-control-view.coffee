@@ -236,7 +236,7 @@ class GitControlView extends View
         if error isnt null
           console.log('exec error: ' + error))
     if true
-      @rerebaseDialog.activate(@branches.local)
+      @rebaseDialog.activate(@branches.local)
     else if false
       @rerebaseDialog.activate()
     return
