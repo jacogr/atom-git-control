@@ -16,6 +16,7 @@ DeleteDialog = require './dialogs/delete-dialog'
 MergeDialog = require './dialogs/merge-dialog'
 FlowDialog = require './dialogs/flow-dialog'
 PushDialog = require './dialogs/push-dialog'
+RebaseDialog = require './dialogs/rebase-dialog'
 
 gitWorkspaceTitle = ''
 
@@ -38,6 +39,7 @@ class GitControlView extends View
           @subview 'mergeDialog', new MergeDialog()
           @subview 'flowDialog', new FlowDialog()
           @subview 'pushDialog', new PushDialog()
+          @subview 'rebaseDialog', new RebaseDialog()
         @subview 'logView', new LogView()
     else #This is so that no error messages can be created by pushing buttons that are unavailable.
         @div class: 'git-control', =>
@@ -215,6 +217,14 @@ class GitControlView extends View
 
   push: (remote, branches) ->
     git.push(remote,branches).then => @update()
+
+  rebaseMenuClick: ->
+    @rebaseDialog.activate(@branches.local)
+    return
+
+  rebase: (branch) =>
+    git.rebase(branch).then => @update()
+    return
 
   resetMenuClick: ->
     return unless @filesView.hasSelected()

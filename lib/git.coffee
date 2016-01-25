@@ -99,7 +99,7 @@ callGit = (cmd, parser, nodatalog) ->
       logcb e.stdout, true
       logcb e.message, true
       return
-      
+
 module.exports =
   isInitialised: ->
     return cwd
@@ -211,6 +211,11 @@ module.exports =
 
   log: (branch) ->
     return callGit "log origin/#{repo.getUpstreamBranch() or 'master'}..#{branch}", parseDefault
+
+  rebase: (branch) ->
+    return callGit "rebase #{branch}", (data) ->
+      atomRefresh()
+      return parseDefault(data)
 
   reset: (files) ->
     return callGit "checkout -- #{files.join(' ')}", (data) ->
