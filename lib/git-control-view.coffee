@@ -1,5 +1,7 @@
 {View, $, $$} = require 'atom-space-pen-views'
 
+child_process = require 'child_process'
+
 git = require './git'
 
 BranchView = require './views/branch-view'
@@ -17,6 +19,7 @@ MergeDialog = require './dialogs/merge-dialog'
 FlowDialog = require './dialogs/flow-dialog'
 PushDialog = require './dialogs/push-dialog'
 RebaseDialog = require './dialogs/rebase-dialog'
+RerebaseDialog = require './dialogs/rerebase-dialog'
 
 gitWorkspaceTitle = ''
 
@@ -40,10 +43,11 @@ class GitControlView extends View
           @subview 'flowDialog', new FlowDialog()
           @subview 'pushDialog', new PushDialog()
           @subview 'rebaseDialog', new RebaseDialog()
+          @subview 'rerebaseDialog', new RebaseDialog()
         @subview 'logView', new LogView()
     else #This is so that no error messages can be created by pushing buttons that are unavailable.
-        @div class: 'git-control', =>
-          @subview 'logView', new LogView()
+      @div class: 'git-control', =>
+        @subview 'logView', new LogView()
 
   serialize: ->
 
@@ -219,11 +223,30 @@ class GitControlView extends View
     git.push(remote,branches).then => @update()
 
   rebaseMenuClick: ->
-    @rebaseDialog.activate(@branches.local)
+    child_process.exec(
+      'ls `git rev-parse --git-dir` | grep rebase || echo norebase',
+      func = (error, stdout) ->
+        stdout = stdout.trim()
+        if stdout is 'norebase'
+          console.log('true')
+          true
+        else if stdout isnt 'norebase'
+          console.log('false')
+          false
+        if error isnt null
+          console.log('exec error: ' + error))
+    if true
+      @rerebaseDialog.activate(@branches.local)
+    else if false
+      @rerebaseDialog.activate()
     return
 
-  rebase: (branch, contin, abort, skip) =>
-    git.rebase(branch,contin,abort,skip).then => @update()
+  rebase: (branch) =>
+    git.rebase(branch).then => @update()
+    return
+
+  rerebase: (contin, abort, skip) =>
+    git.rerebase(contin,abort,skip).then => @update()
     return
 
   resetMenuClick: ->
