@@ -21,6 +21,25 @@ PushDialog = require './dialogs/push-dialog'
 RebaseDialog = require './dialogs/rebase-dialog'
 RerebaseDialog = require './dialogs/rerebase-dialog'
 
+runShell = (cmd, output) ->
+  child_process.exec(
+    cmd,
+    func = (error, stdout) ->
+      output = output
+      stdout = stdout.trim()
+      if stdout is output
+        console.log('true')
+        true
+      else if stdout isnt output
+        console.log('false')
+        false
+      if error isnt null
+        console.log('exec error: ' + error))
+  if true
+    return true
+  else if false
+    return false
+
 gitWorkspaceTitle = ''
 
 module.exports =
@@ -223,21 +242,10 @@ class GitControlView extends View
     git.push(remote,branches).then => @update()
 
   rebaseMenuClick: ->
-    child_process.exec(
-      'ls `git rev-parse --git-dir` | grep rebase || echo norebase',
-      func = (error, stdout) ->
-        stdout = stdout.trim()
-        if stdout is 'norebase'
-          console.log('true')
-          true
-        else if stdout isnt 'norebase'
-          console.log('false')
-          false
-        if error isnt null
-          console.log('exec error: ' + error))
-    if true
+    check = runShell('ls `git rev-parse --git-dir` | grep rebase || echo norebase','norebase')
+    if check is true
       @rebaseDialog.activate(@branches.local)
-    else if false
+    else if check is false
       @rerebaseDialog.activate()
     return
 
