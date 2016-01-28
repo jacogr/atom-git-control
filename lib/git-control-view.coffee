@@ -238,8 +238,8 @@ class GitControlView extends View
     git.getBranches().then (branches) =>  @pushDialog.activate(branches.remote)
     return
 
-  push: (remote, branches) ->
-    git.push(remote,branches).then => @update()
+  push: (remote, branches, force) ->
+    git.push(remote,branches,force).then => @update()
 
   rebaseMenuClick: ->
     check = runShell('ls `git rev-parse --git-dir` | grep rebase || echo norebase','norebase')

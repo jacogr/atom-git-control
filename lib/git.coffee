@@ -203,8 +203,9 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
-  push: (remote,branch)->
-    cmd = "-c push.default=simple push #{remote} #{branch} --porcelain"
+  push: (remote,branch,force)->
+    forced = if force then "-f" else ""
+    cmd = "-c push.default=simple push #{remote} #{branch} #{forced} --porcelain"
     return callGit cmd, (data) ->
       atomRefresh()
       return parseDefault(data)
