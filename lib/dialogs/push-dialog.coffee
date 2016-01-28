@@ -50,4 +50,4 @@ class PushDialog extends Dialog
     @parentView.push('','')
 
   Force: ->
-  return @force.is(':checked')
+    return @force.is(':checked')
