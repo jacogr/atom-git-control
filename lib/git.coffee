@@ -218,7 +218,7 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
-  rerebase: (contin,abort,skip) ->
+  midrebase: (contin,abort,skip) ->
     if contin
       return callGit "rebase --continue", (data) ->
         atomRefresh()

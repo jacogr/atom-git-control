@@ -19,7 +19,7 @@ MergeDialog = require './dialogs/merge-dialog'
 FlowDialog = require './dialogs/flow-dialog'
 PushDialog = require './dialogs/push-dialog'
 RebaseDialog = require './dialogs/rebase-dialog'
-RerebaseDialog = require './dialogs/rerebase-dialog'
+MidrebaseDialog = require './dialogs/midrebase-dialog'
 
 runShell = (cmd, output) ->
   child_process.exec(
@@ -62,7 +62,7 @@ class GitControlView extends View
           @subview 'flowDialog', new FlowDialog()
           @subview 'pushDialog', new PushDialog()
           @subview 'rebaseDialog', new RebaseDialog()
-          @subview 'rerebaseDialog', new RebaseDialog()
+          @subview 'midrebaseDialog', new MidrebaseDialog()
         @subview 'logView', new LogView()
     else #This is so that no error messages can be created by pushing buttons that are unavailable.
       @div class: 'git-control', =>
@@ -246,15 +246,15 @@ class GitControlView extends View
     if check is true
       @rebaseDialog.activate(@branches.local)
     else if check is false
-      @rerebaseDialog.activate()
+      @midrebaseDialog.activate()
     return
 
   rebase: (branch) =>
     git.rebase(branch).then => @update()
     return
 
-  rerebase: (contin, abort, skip) =>
-    git.rerebase(contin,abort,skip).then => @update()
+  midrebase: (contin, abort, skip) =>
+    git.midrebase(contin,abort,skip).then => @update()
     return
 
   resetMenuClick: ->

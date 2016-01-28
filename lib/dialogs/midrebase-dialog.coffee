@@ -3,7 +3,7 @@ Dialog = require './dialog'
 git = require '../git'
 
 module.exports =
-class RerebaseDialog extends Dialog
+class MidrebaseDialog extends Dialog
   @content: ->
     @div class: 'dialog', =>
       @div class: 'heading', =>
@@ -19,16 +19,16 @@ class RerebaseDialog extends Dialog
           @label 'Skip the patch'
           @input type: 'checkbox',class: 'checkbox',outlet: 'skip'
       @div class: 'buttons', =>
-        @button class: 'active', click: 'rerebase', =>
+        @button class: 'active', click: 'midrebase', =>
           @i class: 'icon circuit-board'
           @span 'Rebase'
         @button click: 'cancel', =>
           @i class: 'icon x'
           @span 'Cancel'
 
-  rerebase: ->
+  midrebase: ->
     @deactivate()
-    @parentView.rerebase(@Contin(),@Abort(),@Skip())
+    @parentView.midrebase(@Contin(),@Abort(),@Skip())
     return
 
   Contin: ->
