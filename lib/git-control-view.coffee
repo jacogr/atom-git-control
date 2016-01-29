@@ -22,22 +22,10 @@ RebaseDialog = require './dialogs/rebase-dialog'
 MidrebaseDialog = require './dialogs/midrebase-dialog'
 
 runShell = (cmd, output) ->
-  child_process.exec(
-    cmd,
-    func = (error, stdout) ->
-      output = output
-      stdout = stdout.trim()
-      if stdout is output
-        console.log('true')
-        true
-      else if stdout isnt output
-        console.log('false')
-        false
-      if error isnt null
-        console.log('exec error: ' + error))
-  if true
+  shell = child_process.execSync(cmd, { encoding: 'utf8'}).trim()
+  if shell is output
     return true
-  else if false
+  else if shell isnt output
     return false
 
 gitWorkspaceTitle = ''
