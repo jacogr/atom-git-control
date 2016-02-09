@@ -188,6 +188,11 @@ module.exports =
       atomRefresh()
       return parseDefault(data)
 
+  ptag: (remote) ->
+    return callGit "push #{remote} --tags", (data) ->
+      atomRefresh()
+      return parseDefault(data)
+
   pullup: ->
     return callGit "pull upstream $(git branch | grep '^\*' | sed -n 's/\*[ ]*//p')", (data) ->
       atomRefresh()
@@ -245,3 +250,8 @@ module.exports =
 
   status: ->
     return callGit 'status --porcelain --untracked-files=all', parseStatus
+
+  tag: (name,href,msg) ->
+    return callGit "tag -a #{name} -m '#{msg}' #{href}", (data) ->
+      atomRefresh()
+      return parseDefault(data)

@@ -4,7 +4,8 @@ items = [
   { id: 'project', menu: 'Project', icon: 'icon-repo', type: 'active'}
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'active'}
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file merging'}
-  # { id: 'tag', menu: 'Tag', icon: 'tag'}
+  { id: 'tag', menu: 'Tag', icon: 'tag', type: 'active'}
+  { id: 'ptag', menu: 'Push Tags', icon: 'versions', type: 'active'}
   { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
   # { id: 'clone', menu: 'Clone', icon: 'clone'}
   { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'remote'}
