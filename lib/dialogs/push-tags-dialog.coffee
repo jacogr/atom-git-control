@@ -7,23 +7,25 @@ class PushTagsDialog extends Dialog
     @div class: 'dialog', =>
       @div class: 'heading', =>
         @i class: 'icon x clickable',click: 'cancel'
-        @strong 'Push'
+        @strong 'Push Tags'
       @div class: 'body', =>
-        @button click: 'ptago',=>
-          @p 'Push tags to origin', =>
-            @i class: 'icon versions'
-        @button click: 'ptagup',=>
-          @p 'Push tags to upstream', =>
-            @i class: 'icon versions'
+        @button class: 'active', click: 'ptago',=>
+          @i class: 'icon versions'
+          @span 'Push tags to origin'
+        @button class: 'active', click: 'ptagup',=>
+          @i class: 'icon versions'
+          @span 'Push tags to upstream'
         @button click: 'cancel', =>
           @i class: 'icon x'
           @span 'Cancel'
 
 
-  Ptago: ->
+  ptago: ->
     @deactivate()
-    @parentView.ptag('origin')
+    remote = 'origin'
+    @parentView.ptag(remote)
 
-  Ptagup: ->
+  ptagup: ->
     @deactivate()
-    @parentView.push('upstream')
+    remote = 'upstream'
+    @parentView.ptag(remote)
