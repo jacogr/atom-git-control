@@ -67,7 +67,9 @@ parseDiff = (data) -> q.fcall ->
 parseStatus = (data) -> q.fcall ->
   files = []
   for line in data.split('\n') when line.length
-    [type, name] = line.replace(/\ \ /g, ' ').trim().split(' ')
+    # [type, name] = line.replace(/\ \ /g, ' ').trim().split(' ')
+    type = line.substring(0, 2)
+    name = line.substring(2).trim().replace(new RegExp('\"', 'g'), '')
     files.push
       name: name
       selected: switch type[type.length - 1]
@@ -99,7 +101,7 @@ callGit = (cmd, parser, nodatalog) ->
       logcb e.stdout, true
       logcb e.message, true
       return
-      
+
 module.exports =
   isInitialised: ->
     return cwd
