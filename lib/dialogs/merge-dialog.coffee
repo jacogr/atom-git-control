@@ -28,7 +28,8 @@ class MergeDialog extends Dialog
   activate: (branches) ->
     current = git.getLocalBranch()
 
-    @noff.val(atom.config.get("git-control.noFastForward"))
+    if atom.config.get("git-control.noFastForward")
+      @noff.prop("checked", true)
 
     @toBranch.val(current)
     @fromBranch.find('option').remove()
