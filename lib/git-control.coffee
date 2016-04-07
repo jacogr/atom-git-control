@@ -16,6 +16,7 @@ module.exports = GitControl =
 
     atom.commands.add 'atom-workspace', CMD_TOGGLE, => @toggleView()
     atom.workspace.onDidChangeActivePaneItem (item) => @updateViews()
+    atom.project.onDidChangePaths => @updatePaths()
     return
 
   deactivate: ->
@@ -43,6 +44,11 @@ module.exports = GitControl =
     activeView = atom.workspace.getActivePane().getActiveItem()
     for v in views when v is activeView
       v.update()
+    return
+
+  updatePaths: ->
+    //when projects paths changed restart within 0
+    git.setProjectIndex(0);
     return
 
   serialize: ->
