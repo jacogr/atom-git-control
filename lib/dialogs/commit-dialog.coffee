@@ -41,4 +41,4 @@ class CommitDialog extends Dialog
     return
 
   getMessage: ->
-    return @msg.val()
+    return "#{@msg.val()} "
