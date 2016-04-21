@@ -1,6 +1,7 @@
 Dialog = require './dialog'
 
 git = require '../git'
+path = require 'path'
 
 module.exports =
 class ProjectDialog extends Dialog
@@ -29,7 +30,7 @@ class ProjectDialog extends Dialog
         if repo
           option = document.createElement("option")
           option.value = projectIndex
-          option.text = repo.path.split('/').reverse()[1]
+          option.text = path.basename(path.resolve(repo.path, '..'))
           projectList.append(option)
         projectIndex = projectIndex + 1
 
