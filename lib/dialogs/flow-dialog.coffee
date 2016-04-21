@@ -18,6 +18,8 @@ class FlowDialog extends Dialog
         @select class: 'native-key-bindings', outlet: 'branchChoose'
         @label 'Message:', outlet: 'labelMessage'
         @textarea class: 'native-key-bindings', outlet: 'message'
+        @input class: 'native-key-bindings', type: 'checkbox', outlet: 'noTag', id: 'noTag'
+        @label 'No Tag', outlet: 'labelNoTag', for: 'noTag'
       @div class: 'buttons', =>
         @button class: 'active', click: 'flow', =>
           @i class: 'icon flow'
@@ -56,8 +58,11 @@ class FlowDialog extends Dialog
       branchSelected = if (@branchName.val() != '') then @branchName.val() else @branchChoose.val();
       actionSelected = @flowAction.val()
       if(branchSelected? && branchSelected != '')
-        if(actionSelected == "finish" && @message.val()!= '')
-          actionSelected = 'finish -m "'+@message.val()+'"';
+        if(actionSelected == "finish")
+          if(@message.val()!= '')
+            actionSelected += ' -m "'+@message.val()+'"';
+          if(@noTag.prop('checked'))
+            actionSelected += ' -n';
         @parentView.flow(@flowType.val(),actionSelected,branchSelected)
       else
         git.alert "> No branches selected... Git flow action not valid."
@@ -73,6 +78,15 @@ class FlowDialog extends Dialog
       @labelMessage.hide()
     return
 
+  checkNoTagNeeded: ->
+    if(@flowAction.val() == "finish" && (@flowType.val() == "release" || @flowType.val() == "hotfix" ) )
+      @noTag.show()
+      @labelNoTag.show()
+    else
+      @noTag.hide()
+      @labelNoTag.hide()
+    return
+
   flowTypeChange: ->
     if (@flowType.val() == "init")
       @flowAction.hide()
@@ -84,10 +98,12 @@ class FlowDialog extends Dialog
       @flowActionChange()
       @labelBranchName.show()
     @checkMessageNeeded()
+    @checkNoTagNeeded()
     return
 
   flowActionChange: ->
     @checkMessageNeeded()
+    @checkNoTagNeeded()
     if (@flowAction.val() != "start")
       @branchName.hide()
       @branchName.val('')
