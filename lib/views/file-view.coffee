@@ -28,7 +28,7 @@ class FileView extends View
         @span click: 'toggleBranch', 'Workspace:'
         @span '', outlet: 'workspaceTitle'
         @div class: 'action', click: 'selectAll', =>
-          @span 'Select'
+          @span 'Select all'
           @i class: 'icon check'
           @input class: 'invisible', type: 'checkbox', outlet: 'allCheckbox', checked: true
       @div class: 'placeholder', 'No local working copy changes detected'
