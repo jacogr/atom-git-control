@@ -48,6 +48,7 @@ module.exports = GitControl =
 
   updatePaths: ->
     # when projects paths changed restart within 0
+    git.atomRefresh();
     git.setProjectIndex(0);
     return
 
