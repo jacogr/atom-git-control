@@ -64,3 +64,8 @@ module.exports = GitControl =
       description: 'Show the GitFlow button in the Git Control toolbar'
       type: 'boolean'
       default: true
+    noFastForward:
+      title: 'Disable Fast Forward'
+      description: 'Disable Fast Forward for default at Git Merge'
+      type: 'boolean'
+      default: false
