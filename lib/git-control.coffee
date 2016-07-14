@@ -1,5 +1,6 @@
 GitControlView = require './git-control-view'
 {CompositeDisposable} = require 'atom'
+git = require './git'
 
 CMD_TOGGLE = 'git-control:toggle'
 EVT_SWITCH = 'pane-container:active-pane-item-changed'
@@ -39,6 +40,10 @@ module.exports = GitControl =
       pane.destroyItem item
 
     return
+
+  updatePaths: ->
+     git.setProjectIndex(0)
+     return
 
   updateViews: ->
     activeView = atom.workspace.getActivePane().getActiveItem()
