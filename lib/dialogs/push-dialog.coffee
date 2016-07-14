@@ -17,6 +17,9 @@ class PushDialog extends Dialog
         @input class: 'native-key-bindings',readonly: true,outlet: 'fromBranch'
         @label 'To branch'
         @select class: 'native-key-bindings',outlet: 'toBranch'
+        @div =>
+          @label 'Force Push'
+          @input type: 'checkbox',class: 'checkbox',outlet: 'force'
       @div class: 'buttons', =>
         @button class: 'active', click: 'push', =>
           @i class: 'icon push'
@@ -39,9 +42,12 @@ class PushDialog extends Dialog
     remote = @toBranch.val().split('/')[0]
     # branch = @toBranch.val().split('/')[1]
     branch = git.getLocalBranch()
-    @parentView.push(remote,branch)
+    @parentView.push(remote,branch,@Force())
     return
 
   upstream: ->
     @deactivate()
     @parentView.push('','')
+
+  Force: ->
+    return @force.is(':checked')

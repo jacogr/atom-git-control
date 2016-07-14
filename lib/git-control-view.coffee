@@ -1,5 +1,7 @@
 {View, $, $$} = require 'atom-space-pen-views'
 
+child_process = require 'child_process'
+
 git = require './git'
 
 BranchView = require './views/branch-view'
@@ -12,10 +14,21 @@ ProjectDialog = require './dialogs/project-dialog'
 BranchDialog = require './dialogs/branch-dialog'
 CommitDialog = require './dialogs/commit-dialog'
 ConfirmDialog = require './dialogs/confirm-dialog'
+CreateTagDialog = require './dialogs/create-tag-dialog'
 DeleteDialog = require './dialogs/delete-dialog'
 MergeDialog = require './dialogs/merge-dialog'
 FlowDialog = require './dialogs/flow-dialog'
 PushDialog = require './dialogs/push-dialog'
+PushTagsDialog = require './dialogs/push-tags-dialog'
+RebaseDialog = require './dialogs/rebase-dialog'
+MidrebaseDialog = require './dialogs/midrebase-dialog'
+
+runShell = (cmd, output) ->
+  shell = child_process.execSync(cmd, { encoding: 'utf8'}).trim()
+  if shell is output
+    return true
+  else if shell isnt output
+    return false
 
 gitWorkspaceTitle = ''
 
@@ -35,13 +48,17 @@ class GitControlView extends View
           @subview 'projectDialog', new ProjectDialog()
           @subview 'branchDialog', new BranchDialog()
           @subview 'commitDialog', new CommitDialog()
+          @subview 'createtagDialog', new CreateTagDialog()
           @subview 'mergeDialog', new MergeDialog()
           @subview 'flowDialog', new FlowDialog()
           @subview 'pushDialog', new PushDialog()
+          @subview 'pushtagDialog', new PushTagsDialog()
+          @subview 'rebaseDialog', new RebaseDialog()
+          @subview 'midrebaseDialog', new MidrebaseDialog()
         @subview 'logView', new LogView()
     else #This is so that no error messages can be created by pushing buttons that are unavailable.
-        @div class: 'git-control', =>
-          @subview 'logView', new LogView()
+      @div class: 'git-control', =>
+        @subview 'logView', new LogView()
 
   serialize: ->
 
@@ -201,6 +218,14 @@ class GitControlView extends View
     git.flow(type,action,branch).then => @update()
     return
 
+  ptagMenuClick: ->
+    @pushtagDialog.activate()
+    return
+
+  ptag: (remote) ->
+    git.ptag(remote).then => @update(true)
+    return
+
   pullMenuClick: ->
     git.pull().then => @update(true)
     return
@@ -213,8 +238,24 @@ class GitControlView extends View
     git.getBranches().then (branches) =>  @pushDialog.activate(branches.remote)
     return
 
-  push: (remote, branches) ->
-    git.push(remote,branches).then => @update()
+  push: (remote, branches, force) ->
+    git.push(remote,branches,force).then => @update()
+
+  rebaseMenuClick: ->
+    check = runShell('ls `git rev-parse --git-dir` | grep rebase || echo norebase','norebase')
+    if check is true
+      @rebaseDialog.activate(@branches.local)
+    else if check is false
+      @midrebaseDialog.activate()
+    return
+
+  rebase: (branch) =>
+    git.rebase(branch).then => @update()
+    return
+
+  midrebase: (contin, abort, skip) =>
+    git.midrebase(contin,abort,skip).then => @update()
+    return
 
   resetMenuClick: ->
     return unless @filesView.hasSelected()
@@ -229,3 +270,11 @@ class GitControlView extends View
         Reset: =>
           git.reset(files.all).then => @update()
           return
+
+  tagMenuClick: ->
+    @createtagDialog.activate()
+    return
+
+  tag: (name, href, msg) =>
+    git.tag(name, href, msg).then => @update()
+    return

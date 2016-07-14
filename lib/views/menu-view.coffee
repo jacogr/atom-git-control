@@ -4,15 +4,17 @@ items = [
   { id: 'project', menu: 'Project', icon: 'icon-repo', type: 'active'}
   { id: 'compare', menu: 'Compare', icon: 'compare', type: 'active'}
   { id: 'commit', menu: 'Commit', icon: 'commit', type: 'file merging'}
+  { id: 'tag', menu: 'Tag', icon: 'tag', type: 'active'}
+  { id: 'ptag', menu: 'Push Tags', icon: 'versions', type: 'active'}
   { id: 'reset', menu: 'Reset', icon: 'sync', type: 'file'}
-  #{ id: 'clone', menu: 'Clone', icon: 'clone'}
+  # { id: 'clone', menu: 'Clone', icon: 'clone'}
   { id: 'fetch', menu: 'Fetch', icon: 'cloud-download', type: 'remote'}
   { id: 'pull', menu: 'Pull', icon: 'pull', type: 'upstream'}
   { id: 'pullup', menu: 'Pull Upstream', icon: 'desktop-download', type: 'active'}
   { id: 'push', menu: 'Push', icon: 'push', type: 'downstream'}
+  { id: 'rebase', menu: 'Rebase', icon: 'circuit-board', type: 'active'}
   { id: 'merge', menu: 'Merge', icon: 'merge', type: 'active'}
   { id: 'branch', menu: 'Branch', icon: 'branch', type: 'active'}
-  #{ id: 'tag', menu: 'Tag', icon: 'tag'}
   { id: 'flow', menu: 'GitFlow', icon: 'flow', type: 'active', showConfig: 'git-control.showGitFlowButton'}
 ]
 
