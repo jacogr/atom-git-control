@@ -52,7 +52,7 @@ module.exports = GitControl =
     return
 
   updatePaths: ->
-    //when projects paths changed restart within 0
+    # when projects paths changed restart within 0
     git.setProjectIndex(0);
     return
 
