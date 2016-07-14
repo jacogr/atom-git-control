@@ -54,10 +54,10 @@ class FileView extends View
       rem: []
 
     for name, file of @files when file.selected
-      files.all.push name
+      files.all.push file.name
       switch file.type
-        when 'deleted' then files.rem.push name
-        else files.add.push name
+        when 'deleted' then files.rem.push file.name
+        else files.add.push file.name
 
     return files
 
@@ -103,7 +103,10 @@ class FileView extends View
         file.select = select
         file.showFileDiff = showFileDiff
 
-        @files[file.name] or= name: file.name
+        tempName = file.name
+        if tempName.indexOf(' ') > 0 then tempName = '\"' + tempName + '\"'
+
+        @files[file.name] or= name: tempName
         @files[file.name].type = file.type
         @files[file.name].selected = file.selected
         @append new FileItem(file)
