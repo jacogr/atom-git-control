@@ -22,6 +22,11 @@ class CreateTagDialog extends Dialog
           @i class: 'icon x'
           @span 'Cancel'
 
+  activate: ->
+    super()
+    @name.focus()
+    return
+    
   tag: ->
     @deactivate()
     @parentView.tag(@Name(), @Href(), @Msg())
