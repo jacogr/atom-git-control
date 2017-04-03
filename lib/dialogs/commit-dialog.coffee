@@ -19,8 +19,10 @@ class CommitDialog extends Dialog
           @span 'Cancel'
 
   activate: ->
+    super()
     @msg.val('')
-    return super()
+    @msg.focus()
+    return
 
   colorLength: ->
     too_long = false
