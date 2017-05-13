@@ -2,7 +2,7 @@
 
 ## What
 
-Provides a GUI interface to manage all commonly-used git commands.
+Provides a GUI to manage all commonly-used git commands.
 
 This is a first-release, while tested as part of creating this package, it has not been extensively used on much larger projects. In short: there are possibly still some issues remaining. At the same time, wanted to get the package out there and used.
 
